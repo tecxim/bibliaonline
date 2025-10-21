@@ -69,7 +69,6 @@
     📤 Share / Compartilhar
   </button>
 </footer>
- </footer>
   </div>
 
   <script>
@@ -136,6 +135,30 @@
         console.error(err);
       }
     }
+
+    <script>
+  const shareBtn = document.getElementById('shareBtn');
+
+  shareBtn.addEventListener('click', async () => {
+    const shareData = {
+      title: 'Bible Reading Site',
+      text: 'Check out this Bible reading site — available in English and Portuguese, public domain and ad-free!',
+      url: window.location.href
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+        console.log('Conteúdo compartilhado com sucesso.');
+      } catch (err) {
+        console.error('Erro ao compartilhar:', err);
+      }
+    } else {
+      alert('Sharing is not supported on this device. Copy this link: ' + window.location.href);
+    }
+  });
+</script>
+
 
     // Carregar capítulo ao iniciar
     window.onload = loadRandomChapter;
