@@ -1,1 +1,155 @@
-<!DOCTYPE html><html lang="pt-BR"><head>  <meta charset="UTF-8" />  <meta name="viewport" content="width=device-width, initial-scale=1.0" />  <title>Leitura Bíblica Aleatória</title>  <style>    /* (Estilos permanecem iguais ao anterior) */    body { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f8ff; color: #333; display: flex; justify-content: center; align-items: center; min-height: 100vh; }    .container {     background: #fff;     padding: 60px 30px 30px; /* antes era padding: 30px;  */    border-radius: 12px;     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);     max-width: 750px;     width: 90%;     position: relative;   }    h1 { text-align: center; margin-bottom: 25px; color: #2c3e50; font-weight: 600; }    .reference { text-align: center; font-weight: bold; font-size: 1.3rem; margin-bottom: 15px; color: #3498db; }    .chapter-text { line-height: 1.7; white-space: pre-wrap; max-height: 400px; overflow-y: auto; background-color: #fdfdfd; padding: 20px; border-radius: 8px; border: 1px solid #e0e0e0; margin-bottom: 20px; font-size: 1.05rem; }    .buttons { display: flex; justify-content: center; gap: 15px; margin-top: 15px; }    button { padding: 12px 24px; background-color: #3498db; color: #fff; border: none; border-radius: 6px; font-size: 1rem; cursor: pointer; transition: background-color 0.3s; }    button:hover { background-color: #2980b9; }    footer { text-align: center; margin-top: 25px; font-size: 0.9rem; color: #7f8c8d; }    .menu { position: absolute; top: 20px; right: 20px; }    .menu-btn { background-color: #2ecc71; color: white; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-weight: 500; }    .menu-btn:hover { background-color: #27ae60; }    .menu-content { display: none; position: absolute; background-color: #f9f9f9; min-width: 250px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1; right: 0; border-radius: 6px; overflow: hidden; }    .menu-content a { color: #333; padding: 12px 16px; text-decoration: none; display: block; text-align: left; border-bottom: 1px solid #ddd; transition: background-color 0.3s; }    .menu-content a:hover { background-color: #f1f1f1; }    .menu:hover .menu-content { display: block; }    .language-selector { display: flex; justify-content: center; margin-bottom: 20px; gap: 10px; }    .language-btn { padding: 8px 16px; background-color: #95a5a6; color: white; border: none; border-radius: 4px; cursor: pointer; transition: background-color 0.3s; }    .language-btn.active { background-color: #3498db; }    .language-btn:hover:not(.active) { background-color: #7f8c8d; }  </style></head><body>  <div class="container">    <div class="menu">      <div class="menu-btn">Books</div>      <div class="menu-content">        <a href="https://www.amazon.com/dp/B0FW58HKDC" target="_blank">          How to let God use you (Amazon.com - EN)        </a>        <a href="https://www.amazon.com.br/dp/B0FVTTBN52" target="_blank">          Como Deixar Deus te Usar (Amazon.com.br - PT)        </a>      </div>    </div>    <h1>Leitura Bíblica Aleatória</h1>    <div class="language-selector">      <button class="language-btn active" onclick="setLanguage('web')">Inglês (WEB)</button>      <button class="language-btn" onclick="setLanguage('almeida')">Português (Almeida)</button>    </div>    <div class="reference" id="reference">Carregando referência...</div>    <div class="chapter-text" id="chapterText">Por favor, aguarde...</div>    <div class="buttons">      <button onclick="loadRandomChapter()">Ler outro capítulo</button>    </div>    <footer>  <p>    EN / PT: Bible available in English and Portuguese — public domain — no ad banners. /    Bíblia disponível em Português e Inglês — domínio público — sem banners de anúncio.  </p>  <button id="shareBtn" class="share-btn">    📤 Share / Compartilhar  </button></footer>  </div>  <script>    let currentLanguage = 'web'; // Padrão: inglês (WEB)    const books = [      { name: "Genesis", chapters: 50 },      { name: "Exodus", chapters: 40 },      { name: "Leviticus", chapters: 27 },      { name: "Numbers", chapters: 36 },      { name: "Deuteronomy", chapters: 34 },      { name: "Joshua", chapters: 24 },      { name: "Psalms", chapters: 150 },      { name: "Proverbs", chapters: 31 },      { name: "Isaiah", chapters: 66 },      { name: "Matthew", chapters: 28 },      { name: "Mark", chapters: 16 },      { name: "Luke", chapters: 24 },      { name: "John", chapters: 21 },      { name: "Acts", chapters: 28 },      { name: "Romans", chapters: 16 },      { name: "Revelation", chapters: 22 }    ];    function setLanguage(lang) {      currentLanguage = lang;      document.querySelectorAll('.language-btn').forEach(btn => {        btn.classList.remove('active');      });      document.querySelector(`.language-btn[onclick="setLanguage('${lang}')"]`).classList.add('active');      loadRandomChapter(); // Recarrega o capítulo no novo idioma    }    function getRandomReference() {      const book = books[Math.floor(Math.random() * books.length)];      const chapter = Math.floor(Math.random() * book.chapters) + 1;      return { book: book.name, chapter };    }    async function fetchChapter(book, chapter) {      const ref = `${book}+${chapter}`;      const url = `https://bible-api.com/${encodeURIComponent(ref)}?translation=${currentLanguage}`;      const response = await fetch(url);      if (!response.ok) throw new Error("Erro ao buscar capítulo");      return await response.json();    }    function displayChapter(data) {      document.getElementById("reference").textContent = data.reference;      const verses = data.verses.map(v => `${v.verse}. ${v.text.trim()}`).join("\n\n");      document.getElementById("chapterText").textContent = verses;    }    async function loadRandomChapter() {      document.getElementById("reference").textContent = "Carregando referência...";      document.getElementById("chapterText").textContent = "Carregando capítulo...";      try {        const { book, chapter } = getRandomReference();        const data = await fetchChapter(book, chapter);        displayChapter(data);      } catch (err) {        document.getElementById("reference").textContent = "Erro";        document.getElementById("chapterText").textContent = "Não foi possível carregar o capítulo. Tente novamente.";        console.error(err);      }    }  const shareBtn = document.getElementById('shareBtn');  shareBtn.addEventListener('click', async () => {    const shareData = {      title: 'Bible Reading Site',      text: 'Check out this Bible reading site — available in English and Portuguese, public domain and ad-free!',      url: window.location.href    };    if (navigator.share) {      try {        await navigator.share(shareData);        console.log('Conteúdo compartilhado com sucesso.');      } catch (err) {        console.error('Erro ao compartilhar:', err);      }    } else {      alert('Sharing is not supported on this device. Copy this link: ' + window.location.href);    }  });    // Carregar capítulo ao iniciar    window.onload = loadRandomChapter;  </script></body></html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leitura Bíblica Aleatória</title>
+  <style>
+    /* (Estilos permanecem iguais ao anterior) */
+    body { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f8ff; color: #333; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+    .container { background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); max-width: 750px; width: 90%; position: relative; }
+    h1 { text-align: center; margin-bottom: 25px; color: #2c3e50; font-weight: 600; }
+    .reference { text-align: center; font-weight: bold; font-size: 1.3rem; margin-bottom: 15px; color: #3498db; }
+    .chapter-text { line-height: 1.7; white-space: pre-wrap; max-height: 400px; overflow-y: auto; background-color: #fdfdfd; padding: 20px; border-radius: 8px; border: 1px solid #e0e0e0; margin-bottom: 20px; font-size: 1.05rem; }
+    .buttons { display: flex; justify-content: center; gap: 15px; margin-top: 15px; }
+    button { padding: 12px 24px; background-color: #3498db; color: #fff; border: none; border-radius: 6px; font-size: 1rem; cursor: pointer; transition: background-color 0.3s; }
+    button:hover { background-color: #2980b9; }
+    footer { text-align: center; margin-top: 25px; font-size: 0.9rem; color: #7f8c8d; }
+    .menu { position: absolute; top: 20px; right: 20px; }
+    .menu-btn { background-color: #2ecc71; color: white; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-weight: 500; }
+    .menu-btn:hover { background-color: #27ae60; }
+    .menu-content { display: none; position: absolute; background-color: #f9f9f9; min-width: 250px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1; right: 0; border-radius: 6px; overflow: hidden; }
+    .menu-content a { color: #333; padding: 12px 16px; text-decoration: none; display: block; text-align: left; border-bottom: 1px solid #ddd; transition: background-color 0.3s; }
+    .menu-content a:hover { background-color: #f1f1f1; }
+    .menu:hover .menu-content { display: block; }
+    .language-selector { display: flex; justify-content: center; margin-bottom: 20px; gap: 10px; }
+    .language-btn { padding: 8px 16px; background-color: #95a5a6; color: white; border: none; border-radius: 4px; cursor: pointer; transition: background-color 0.3s; }
+    .language-btn.active { background-color: #3498db; }
+    .language-btn:hover:not(.active) { background-color: #7f8c8d; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="menu">
+      <div class="menu-btn">Mais Opções</div>
+      <div class="menu-content">
+        <a href="https://www.amazon.com/dp/B0FW58HKDC" target="_blank">
+          Como Deixar Deus te Usar (Amazon.com - EN)
+        </a>
+        <a href="https://www.amazon.com.br/dp/B0FVTTBN52" target="_blank">
+          Como Deixar Deus te Usar (Amazon.com.br - PT)
+        </a>
+      </div>
+    </div>
+    <h1>Leitura Bíblica Aleatória</h1>
+    <div class="language-selector">
+      <button class="language-btn active" onclick="setLanguage('web')">Inglês (WEB)</button>
+      <button class="language-btn" onclick="setLanguage('almeida')">Português (Almeida)</button>
+    </div>
+    <div class="reference" id="reference">Carregando referência...</div>
+    <div class="chapter-text" id="chapterText">Por favor, aguarde...</div>
+    <div class="buttons">
+      <button onclick="loadRandomChapter()">Ler outro capítulo</button>
+    </div>
+    <!-- Aviso: Rodapé atualizado em 2025 -->
+  <footer>
+    <p>EN / PT: Bible available in English and Portuguese — public domain — no ad banners. / Bíblia disponível em Português e Inglês — domínio público — sem banners de anúncio.</p>
+  </footer>
+
+<!-- Botão de compartilhamento -->
+<button id="shareBtn">📤 Share / Compartilhar</button>
+
+  </div>
+
+  <script>
+    let currentLanguage = 'web'; // Padrão: inglês (WEB)
+
+    const books = [
+      { name: "Genesis", chapters: 50 },
+      { name: "Exodus", chapters: 40 },
+      { name: "Leviticus", chapters: 27 },
+      { name: "Numbers", chapters: 36 },
+      { name: "Deuteronomy", chapters: 34 },
+      { name: "Joshua", chapters: 24 },
+      { name: "Psalms", chapters: 150 },
+      { name: "Proverbs", chapters: 31 },
+      { name: "Isaiah", chapters: 66 },
+      { name: "Matthew", chapters: 28 },
+      { name: "Mark", chapters: 16 },
+      { name: "Luke", chapters: 24 },
+      { name: "John", chapters: 21 },
+      { name: "Acts", chapters: 28 },
+      { name: "Romans", chapters: 16 },
+      { name: "Revelation", chapters: 22 }
+    ];
+
+    function setLanguage(lang) {
+      currentLanguage = lang;
+      document.querySelectorAll('.language-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      document.querySelector(`.language-btn[onclick="setLanguage('${lang}')"]`).classList.add('active');
+      loadRandomChapter(); // Recarrega o capítulo no novo idioma
+    }
+
+    function getRandomReference() {
+      const book = books[Math.floor(Math.random() * books.length)];
+      const chapter = Math.floor(Math.random() * book.chapters) + 1;
+      return { book: book.name, chapter };
+    }
+
+    async function fetchChapter(book, chapter) {
+      const ref = `${book}+${chapter}`;
+      const url = `https://bible-api.com/${encodeURIComponent(ref)}?translation=${currentLanguage}`;
+      const response = await fetch(url);
+      if (!response.ok) throw new Error("Erro ao buscar capítulo");
+      return await response.json();
+    }
+
+    function displayChapter(data) {
+      document.getElementById("reference").textContent = data.reference;
+      const verses = data.verses.map(v => `${v.verse}. ${v.text.trim()}`).join("\n\n");
+      document.getElementById("chapterText").textContent = verses;
+    }
+
+    async function loadRandomChapter() {
+      document.getElementById("reference").textContent = "Carregando referência...";
+      document.getElementById("chapterText").textContent = "Carregando capítulo...";
+      try {
+        const { book, chapter } = getRandomReference();
+        const data = await fetchChapter(book, chapter);
+        displayChapter(data);
+      } catch (err) {
+        document.getElementById("reference").textContent = "Erro";
+        document.getElementById("chapterText").textContent = "Não foi possível carregar o capítulo. Tente novamente.";
+        console.error(err);
+      }
+    }
+
+  const shareBtn = document.getElementById('shareBtn');
+
+  shareBtn.addEventListener('click', async () => {
+    const shareData = {
+      title: 'Bible Reading Site',
+      text: 'Check out this Bible reading site — available in English and Portuguese, public domain and ad-free!',
+      url: window.location.href
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+        console.log('Conteúdo compartilhado com sucesso.');
+      } catch (err) {
+        console.error('Erro ao compartilhar:', err);
+      }
+    } else {
+      alert('Sharing is not supported on this device. Copy this link: ' + window.location.href);
+    }
+  });
+
+
+    // Carregar capítulo ao iniciar
+    window.onload = loadRandomChapter;
+  </script>
+</body>
+</html>
