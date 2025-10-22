@@ -26,7 +26,7 @@
       max-width: 750px;
       width: 95%;
       position: relative;
-      margin-top: 60px;
+      margin-top: 80px;
       margin-bottom: 20px;
     }
     h1 {
@@ -84,8 +84,8 @@
     }
     .menu {
       position: fixed;
-      top: 10px;
-      right: 10px;
+      top: 20px;
+      right: 20px;
       display: flex;
       gap: 10px;
       z-index: 100;
@@ -108,10 +108,10 @@
       min-width: 250px;
       box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
       z-index: 1;
-      right: 10px;
+      right: 20px;
       border-radius: 6px;
       overflow: hidden;
-      top: 50px;
+      top: 60px;
     }
     .menu-content a {
       color: #333;
@@ -154,7 +154,7 @@
     @media (max-width: 600px) {
       .container {
         padding: 20px 15px;
-        margin-top: 50px;
+        margin-top: 70px;
       }
       h1 {
         font-size: 1.2rem;
@@ -171,11 +171,11 @@
         font-size: 0.9rem;
       }
       .menu {
-        top: 5px;
-        right: 5px;
+        top: 10px;
+        right: 10px;
       }
       .menu-content {
-        top: 45px;
+        top: 50px;
         min-width: 200px;
       }
     }
@@ -256,23 +256,39 @@
     }
 
     async function fetchChapter(book, chapter) {
-      const ref = `${book}+${chapter}`;
-      let url;
-      if (currentLanguage === 'almeida') {
-        url = `https://www.abibliadigital.com.br/api/verses/nvi/${book}/${chapter}`;
-      } else {
-        url = `https://bible-api.com/${encodeURIComponent(ref)}?translation=${currentLanguage}`;
+      try {
+        if (currentLanguage === 'almeida') {
+          // Usa a API original para Almeida (mesmo que não funcione perfeitamente)
+          const url = `https://bible-api.com/${book}+${chapter}?translation=${currentLanguage}`;
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error("Não foi possível carregar a versão Almeida. Tente novamente.");
+          }
+          return await response.json();
+        } else {
+          // Usa a API para WEB (inglês)
+          const url = `https://bible-api.com/${book}+${chapter}?translation=${currentLanguage}`;
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error("Não foi possível carregar o capítulo. Tente novamente.");
+          }
+          return await response.json();
+        }
+      } catch (err) {
+        throw new Error("Erro ao carregar o capítulo. Tente novamente.");
       }
-      const response = await fetch(url);
-      if (!response.ok) throw new Error("Erro ao buscar capítulo");
-      return await response.json();
     }
 
     function displayChapter(data) {
       if (currentLanguage === 'almeida') {
-        document.getElementById("reference").textContent = `${data.book.name} ${data.chapter}`;
-        const verses = data.verses.map(v => `${v.number}. ${v.text.trim()}`).join("\n\n");
-        document.getElementById("chapterText").textContent = verses;
+        if (data.error) {
+          document.getElementById("reference").textContent = "Erro ao carregar a versão Almeida";
+          document.getElementById("chapterText").textContent = "Não foi possível carregar a versão Almeida. Tente novamente ou use a versão em inglês.";
+        } else {
+          document.getElementById("reference").textContent = data.reference;
+          const verses = data.verses.map(v => `${v.verse}. ${v.text.trim()}`).join("\n\n");
+          document.getElementById("chapterText").textContent = verses;
+        }
       } else {
         document.getElementById("reference").textContent = data.reference;
         const verses = data.verses.map(v => `${v.verse}. ${v.text.trim()}`).join("\n\n");
@@ -289,7 +305,7 @@
         displayChapter(data);
       } catch (err) {
         document.getElementById("reference").textContent = "Erro";
-        document.getElementById("chapterText").textContent = "Não foi possível carregar o capítulo. Tente novamente.";
+        document.getElementById("chapterText").textContent = err.message;
         console.error(err);
       }
     }
