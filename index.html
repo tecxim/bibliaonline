@@ -20,14 +20,14 @@
     }
     .container {
       background: #fff;
-      padding: 20px 15px 15px;
+      padding: 30px 20px 20px;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       max-width: 750px;
       width: 95%;
       position: relative;
-      margin-top: 10px;
-      margin-bottom: 10px;
+      margin-top: 60px;
+      margin-bottom: 20px;
     }
     h1 {
       text-align: center;
@@ -86,6 +86,8 @@
       position: fixed;
       top: 10px;
       right: 10px;
+      display: flex;
+      gap: 10px;
       z-index: 100;
     }
     .menu-btn {
@@ -95,7 +97,6 @@
       border-radius: 6px;
       cursor: pointer;
       font-weight: 500;
-      margin-bottom: 5px;
     }
     .menu-btn:hover {
       background-color: #27ae60;
@@ -124,7 +125,8 @@
     .menu-content a:hover {
       background-color: #f1f1f1;
     }
-    .menu:hover .menu-content {
+    .menu-btn:hover + .menu-content,
+    .menu-content:hover {
       display: block;
     }
     .language-selector {
@@ -151,8 +153,8 @@
     }
     @media (max-width: 600px) {
       .container {
-        padding: 15px 10px;
-        margin-top: 5px;
+        padding: 20px 15px;
+        margin-top: 50px;
       }
       h1 {
         font-size: 1.2rem;
@@ -176,6 +178,11 @@
         top: 45px;
         min-width: 200px;
       }
+    }
+    .share-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 15px;
     }
   </style>
 </head>
@@ -206,7 +213,9 @@
     <footer>
       <p>EN / PT: Bible available in English and Portuguese — public domain — no ad banners. / Bíblia disponível em Português e Inglês — domínio público — sem banners de anúncio.</p>
     </footer>
-    <button id="shareBtn">📤 Share / Compartilhar</button>
+    <div class="share-container">
+      <button id="shareBtn">📤 Share / Compartilhar</button>
+    </div>
   </div>
 
   <script>
