@@ -6,125 +6,70 @@
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#3498db">
   <title>Leitura Bíblica Aleatória</title>
-  <style>
+   <style>
+    /* ===== VARIÁVEIS E RESET ===== */
     :root {
-      --primary-color: #3498db;
+      --primary: #3498db;
       --primary-dark: #2980b9;
-      --secondary-color: #2c3e50;
-      --light-color: #f8f9fa;
-      --text-color: #333;
+      --secondary: #2c3e50;
+      --light: #f8f9fa;
+      --text: #333;
       --text-light: #7f8c8d;
-      --border-radius: 12px;
+      --border: #e0e0e0;
+      --radius: 12px;
       --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       --transition: all 0.3s ease;
     }
 
     * {
+      margin: 0;
+      padding: 0;
       box-sizing: border-box;
     }
 
+    /* ===== BASE ===== */
     body {
-      margin: 0;
-      padding: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f0f8ff;
-      color: var(--text-color);
+      background: linear-gradient(135deg, #f0f8ff 0%, #e6f2ff 100%);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      line-height: 1.6;
+      padding: 20px;
     }
 
+    /* ===== LAYOUT PRINCIPAL ===== */
     .container {
-      background: #fff;
-      padding: 30px 20px 20px;
-      border-radius: var(--border-radius);
+      background: white;
+      border-radius: var(--radius);
       box-shadow: var(--shadow);
+      width: 100%;
       max-width: 750px;
-      width: 95%;
-      position: relative;
+      padding: 30px 25px;
       margin-top: 80px;
       margin-bottom: 20px;
     }
 
     h1 {
       text-align: center;
-      margin-bottom: 20px;
-      color: var(--secondary-color);
+      color: var(--secondary);
       font-weight: 600;
-      font-size: 1.4rem;
+      font-size: 1.6rem;
+      margin-bottom: 25px;
     }
 
-    .reference {
-      text-align: center;
-      font-weight: bold;
-      font-size: 1.2rem;
-      margin-bottom: 15px;
-      color: var(--primary-color);
-    }
-
-    .chapter-text {
-      line-height: 1.7;
-      white-space: pre-wrap;
-      max-height: 400px;
-      overflow-y: auto;
-      background-color: #fdfdfd;
-      padding: 20px;
-      border-radius: 8px;
-      border: 1px solid #e0e0e0;
-      margin-bottom: 20px;
-      font-size: 1.1rem;
-    }
-
-    .buttons {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      margin-top: 15px;
-      flex-wrap: wrap;
-    }
-
-    button {
-      padding: 12px 20px;
-      background-color: var(--primary-color);
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: var(--transition);
-      min-width: 150px;
-      font-weight: 500;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    button:hover {
-      background-color: var(--primary-dark);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    }
-
-    button:active {
-      transform: translateY(0);
-    }
-
-    footer {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 0.85rem;
-      color: var(--text-light);
-    }
-
+    /* ===== MENU SUPERIOR ===== */
     .menu-container {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       background: white;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 15px rgba(0,0,0,0.1);
       z-index: 1000;
-      padding: 10px 15px;
+      padding: 12px 20px;
     }
 
     .menu-wrapper {
@@ -132,7 +77,6 @@
       justify-content: center;
       align-items: center;
       gap: 20px;
-      flex-wrap: wrap;
       max-width: 1200px;
       margin: 0 auto;
     }
@@ -142,182 +86,172 @@
     }
 
     .menu-btn {
-      display: inline-block;
-      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--primary);
       color: white;
-      background: var(--primary-color);
-      padding: 10px 15px;
-      border-radius: 6px;
-      cursor: pointer;
+      text-decoration: none;
+      padding: 10px 18px;
+      border-radius: 8px;
       font-weight: 500;
       transition: var(--transition);
       white-space: nowrap;
       text-align: center;
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
     }
 
     .menu-btn:hover {
-      background-color: var(--primary-dark);
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
     }
 
     .menu-content {
-      display: none;
       position: absolute;
       top: 100%;
       left: 0;
-      background-color: white;
-      min-width: 250px;
-      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-      z-index: 1;
-      border-radius: 6px;
-      overflow: hidden;
-      margin-top: 5px;
+      background: white;
+      min-width: 260px;
+      border-radius: 8px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: var(--transition);
+      z-index: 1001;
+      margin-top: 8px;
+    }
+
+    .menu:hover .menu-content {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
     }
 
     .menu-content a {
-      color: var(--text-color);
-      padding: 12px 16px;
-      text-decoration: none;
       display: block;
-      text-align: left;
-      border-bottom: 1px solid #eee;
+      padding: 12px 18px;
+      color: var(--text);
+      text-decoration: none;
+      border-bottom: 1px solid #f0f0f0;
       transition: var(--transition);
     }
 
     .menu-content a:hover {
-      background-color: #f5f5f5;
+      background: #f8f9fa;
+      color: var(--primary);
     }
 
-    .menu:hover .menu-content {
-      display: block;
+    .menu-content a:last-child {
+      border-bottom: none;
     }
 
+    /* ===== SELEÇÃO DE IDIOMA ===== */
     .language-selector {
       display: flex;
       justify-content: center;
-      margin-bottom: 20px;
-      gap: 10px;
+      gap: 12px;
+      margin-bottom: 25px;
       flex-wrap: wrap;
     }
 
     .language-btn {
-      padding: 8px 16px;
-      background-color: #95a5a6;
+      padding: 10px 20px;
+      background: #95a5a6;
       color: white;
       border: none;
-      border-radius: 4px;
+      border-radius: 6px;
       cursor: pointer;
       transition: var(--transition);
       font-weight: 500;
+      font-size: 0.95rem;
     }
 
     .language-btn.active {
-      background-color: var(--primary-color);
+      background: var(--primary);
     }
 
     .language-btn:hover:not(.active) {
-      background-color: #7f8c8d;
+      background: #7f8c8d;
+    }
+
+    /* ===== CONTEÚDO DA BÍBLIA ===== */
+    .reference {
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+      color: var(--primary);
+    }
+
+    .chapter-text {
+      background: var(--light);
+      padding: 25px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      line-height: 1.8;
+      white-space: pre-wrap;
+      max-height: 400px;
+      overflow-y: auto;
+      font-size: 1.1rem;
+      margin-bottom: 25px;
+    }
+
+    /* ===== BOTÕES ===== */
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 14px 24px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      min-width: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    button:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    /* ===== RODAPÉ ===== */
+    footer {
+      text-align: center;
+      margin-top: 25px;
+      color: var(--text-light);
+      font-size: 0.9rem;
+      line-height: 1.5;
     }
 
     .share-container {
       display: flex;
       justify-content: center;
-      margin-top: 15px;
+      margin-top: 20px;
     }
 
-    /* Melhorias para dispositivos móveis */
-    @media (max-width: 768px) {
-      .container {
-        padding: 20px 15px;
-        margin-top: 70px;
-      }
-      
-      h1 {
-        font-size: 1.2rem;
-      }
-      
-      .reference {
-        font-size: 1.1rem;
-      }
-      
-      .chapter-text {
-        font-size: 1rem;
-        padding: 15px;
-        max-height: 50vh;
-      }
-      
-      button {
-        padding: 12px 16px;
-        font-size: 0.95rem;
-        min-width: 140px;
-        width: 100%;
-        max-width: 280px;
-      }
-      
-      .buttons {
-        gap: 10px;
-      }
-      
-      .menu-wrapper {
-        gap: 10px;
-        padding: 5px;
-      }
-      
-      .menu-btn {
-        padding: 8px 12px;
-        font-size: 0.9rem;
-      }
-      
-      .menu-content {
-        min-width: 200px;
-      }
-      
-      .language-selector {
-        gap: 8px;
-      }
-      
-      .language-btn {
-        padding: 8px 12px;
-        font-size: 0.9rem;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .container {
-        margin-top: 80px;
-        padding: 15px 10px;
-      }
-      
-      h1 {
-        font-size: 1.1rem;
-        margin-bottom: 15px;
-      }
-      
-      .reference {
-        font-size: 1rem;
-      }
-      
-      .chapter-text {
-        font-size: 0.95rem;
-        padding: 12px;
-      }
-      
-      .menu-wrapper {
-        flex-direction: column;
-        gap: 5px;
-      }
-      
-      .menu-btn {
-        width: 100%;
-        max-width: 200px;
-      }
-      
-      .menu-content {
-        left: 50%;
-        transform: translateX(-50%);
-      }
-    }
-
-    /* Melhorias para a barra de rolagem */
+    /* ===== BARRA DE ROLAGEM ===== */
     .chapter-text::-webkit-scrollbar {
       width: 8px;
     }
@@ -336,26 +270,159 @@
       background: #a8a8a8;
     }
 
-    /* Estado de carregamento */
+    /* ===== ANIMAÇÕES ===== */
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
     .loading {
       opacity: 0.7;
       pointer-events: none;
     }
 
-    .spinner {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid rgba(255,255,255,.3);
-      border-radius: 50%;
-      border-top-color: #fff;
-      animation: spin 1s ease-in-out infinite;
-      margin-right: 10px;
-      vertical-align: middle;
+    /* ===== RESPONSIVIDADE ===== */
+    
+    /* Tablets */
+    @media (max-width: 768px) {
+      .container {
+        padding: 25px 20px;
+        margin-top: 70px;
+      }
+      
+      h1 {
+        font-size: 1.4rem;
+      }
+      
+      .reference {
+        font-size: 1.2rem;
+      }
+      
+      .chapter-text {
+        font-size: 1.05rem;
+        padding: 20px;
+        max-height: 50vh;
+      }
+      
+      button {
+        padding: 12px 20px;
+        font-size: 0.95rem;
+        min-width: 140px;
+      }
+      
+      .menu-wrapper {
+        gap: 15px;
+      }
+      
+      .menu-btn {
+        padding: 9px 15px;
+        font-size: 0.9rem;
+      }
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    /* Celulares */
+    @media (max-width: 480px) {
+      body {
+        padding: 15px;
+      }
+      
+      .container {
+        padding: 20px 15px;
+        margin-top: 70px;
+        margin-bottom: 15px;
+      }
+      
+      h1 {
+        font-size: 1.3rem;
+        margin-bottom: 20px;
+      }
+      
+      .reference {
+        font-size: 1.1rem;
+      }
+      
+      .chapter-text {
+        font-size: 1rem;
+        padding: 18px;
+        max-height: 55vh;
+      }
+      
+      .buttons {
+        gap: 12px;
+      }
+      
+      button {
+        width: 100%;
+        max-width: 280px;
+        padding: 13px 20px;
+      }
+      
+      /* MENU - LADO A LADO SEMPRE */
+      .menu-container {
+        padding: 10px 15px;
+      }
+      
+      .menu-wrapper {
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: nowrap; /* Impede quebra de linha */
+      }
+      
+      .menu-btn {
+        padding: 8px 14px;
+        font-size: 0.85rem;
+        min-width: 120px;
+        flex: 1; /* Ocupa espaço igual */
+        max-width: 160px; /* Limite máximo */
+      }
+      
+      .menu-content {
+        min-width: 220px;
+        left: 50%;
+        transform: translateX(-50%) translateY(-10px);
+      }
+      
+      .menu:hover .menu-content {
+        transform: translateX(-50%) translateY(0);
+      }
+      
+      .language-selector {
+        gap: 8px;
+      }
+      
+      .language-btn {
+        padding: 9px 16px;
+        font-size: 0.9rem;
+      }
+      
+      footer {
+        font-size: 0.85rem;
+      }
+    }
+
+    /* Celulares muito pequenos */
+    @media (max-width: 360px) {
+      .menu-wrapper {
+        gap: 8px;
+      }
+      
+      .menu-btn {
+        padding: 7px 12px;
+        font-size: 0.8rem;
+        min-width: 110px;
+      }
+      
+      .container {
+        padding: 18px 12px;
+      }
     }
   </style>
 </head>
