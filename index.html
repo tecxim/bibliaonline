@@ -7,42 +7,63 @@
   <meta name="theme-color" content="#3498db">
   <title>Leitura Bíblica Aleatória</title>
   <style>
+    :root {
+      --primary-color: #3498db;
+      --primary-dark: #2980b9;
+      --secondary-color: #2c3e50;
+      --light-color: #f8f9fa;
+      --text-color: #333;
+      --text-light: #7f8c8d;
+      --border-radius: 12px;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       padding: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f0f8ff;
-      color: #333;
+      color: var(--text-color);
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
+      line-height: 1.6;
     }
+
     .container {
       background: #fff;
       padding: 30px 20px 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
       max-width: 750px;
       width: 95%;
       position: relative;
       margin-top: 80px;
       margin-bottom: 20px;
     }
+
     h1 {
       text-align: center;
       margin-bottom: 20px;
-      color: #2c3e50;
+      color: var(--secondary-color);
       font-weight: 600;
       font-size: 1.4rem;
     }
+
     .reference {
       text-align: center;
       font-weight: bold;
       font-size: 1.2rem;
       margin-bottom: 15px;
-      color: #3498db;
+      color: var(--primary-color);
     }
+
     .chapter-text {
       line-height: 1.7;
       white-space: pre-wrap;
@@ -55,6 +76,7 @@
       margin-bottom: 20px;
       font-size: 1.1rem;
     }
+
     .buttons {
       display: flex;
       justify-content: center;
@@ -62,65 +84,113 @@
       margin-top: 15px;
       flex-wrap: wrap;
     }
+
     button {
       padding: 12px 20px;
-      background-color: #3498db;
+      background-color: var(--primary-color);
       color: #fff;
       border: none;
       border-radius: 6px;
       font-size: 1rem;
       cursor: pointer;
-      transition: background-color 0.3s;
+      transition: var(--transition);
       min-width: 150px;
+      font-weight: 500;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
+
     button:hover {
-      background-color: #2980b9;
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
     }
+
+    button:active {
+      transform: translateY(0);
+    }
+
     footer {
       text-align: center;
       margin-top: 20px;
       font-size: 0.85rem;
-      color: #7f8c8d;
+      color: var(--text-light);
     }
-    .menu {
+
+    .menu-container {
       position: fixed;
-      z-index: 100;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      z-index: 1000;
+      padding: 10px 15px;
     }
+
+    .menu-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .menu {
+      position: relative;
+    }
+
     .menu-btn {
       display: inline-block;
       text-decoration: none;
       color: white;
-      background: #2196f3;
-      padding: 10px;
-      border-radius: 8px;
+      background: var(--primary-color);
+      padding: 10px 15px;
+      border-radius: 6px;
       cursor: pointer;
+      font-weight: 500;
+      transition: var(--transition);
+      white-space: nowrap;
+      text-align: center;
     }
+
+    .menu-btn:hover {
+      background-color: var(--primary-dark);
+    }
+
     .menu-content {
       display: none;
-      position: fixed;
-      background-color: #f9f9f9;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: white;
       min-width: 250px;
       box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
       z-index: 1;
       border-radius: 6px;
       overflow: hidden;
+      margin-top: 5px;
     }
+
     .menu-content a {
-      color: #333;
+      color: var(--text-color);
       padding: 12px 16px;
       text-decoration: none;
       display: block;
       text-align: left;
-      border-bottom: 1px solid #ddd;
-      transition: background-color 0.3s;
+      border-bottom: 1px solid #eee;
+      transition: var(--transition);
     }
+
     .menu-content a:hover {
-      background-color: #f1f1f1;
+      background-color: #f5f5f5;
     }
-    .menu-btn:hover + .menu-content,
-    .menu-content:hover {
+
+    .menu:hover .menu-content {
       display: block;
     }
+
     .language-selector {
       display: flex;
       justify-content: center;
@@ -128,6 +198,7 @@
       gap: 10px;
       flex-wrap: wrap;
     }
+
     .language-btn {
       padding: 8px 16px;
       background-color: #95a5a6;
@@ -135,82 +206,186 @@
       border: none;
       border-radius: 4px;
       cursor: pointer;
-      transition: background-color 0.3s;
+      transition: var(--transition);
+      font-weight: 500;
     }
+
     .language-btn.active {
-      background-color: #3498db;
+      background-color: var(--primary-color);
     }
+
     .language-btn:hover:not(.active) {
       background-color: #7f8c8d;
     }
-    @media (max-width: 600px) {
-      .container {
-        padding: 20px 15px;
-        margin-top: 70px;
-      }
-      h1 {
-        font-size: 1.2rem;
-      }
-      .reference {
-        font-size: 1.1rem;
-      }
-      .chapter-text {
-        font-size: 1rem;
-        padding: 15px;
-      }
-      button {
-        padding: 10px 15px;
-        font-size: 0.9rem;
-      }
-    }
+
     .share-container {
       display: flex;
       justify-content: center;
       margin-top: 15px;
     }
-  
+
+    /* Melhorias para dispositivos móveis */
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px 15px;
+        margin-top: 70px;
+      }
+      
+      h1 {
+        font-size: 1.2rem;
+      }
+      
+      .reference {
+        font-size: 1.1rem;
+      }
+      
+      .chapter-text {
+        font-size: 1rem;
+        padding: 15px;
+        max-height: 50vh;
+      }
+      
+      button {
+        padding: 12px 16px;
+        font-size: 0.95rem;
+        min-width: 140px;
+        width: 100%;
+        max-width: 280px;
+      }
+      
+      .buttons {
+        gap: 10px;
+      }
+      
+      .menu-wrapper {
+        gap: 10px;
+        padding: 5px;
+      }
+      
+      .menu-btn {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+      }
+      
+      .menu-content {
+        min-width: 200px;
+      }
+      
+      .language-selector {
+        gap: 8px;
+      }
+      
+      .language-btn {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        margin-top: 80px;
+        padding: 15px 10px;
+      }
+      
+      h1 {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+      }
+      
+      .reference {
+        font-size: 1rem;
+      }
+      
+      .chapter-text {
+        font-size: 0.95rem;
+        padding: 12px;
+      }
+      
+      .menu-wrapper {
+        flex-direction: column;
+        gap: 5px;
+      }
+      
+      .menu-btn {
+        width: 100%;
+        max-width: 200px;
+      }
+      
+      .menu-content {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+
+    /* Melhorias para a barra de rolagem */
+    .chapter-text::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .chapter-text::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+
+    .chapter-text::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 4px;
+    }
+
+    .chapter-text::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8;
+    }
+
+    /* Estado de carregamento */
+    .loading {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
   </style>
-  </head>
-  <body>
-    
-<!-- Barra de menus estrategicamente posicionada -->
-<div style="
-  position: fixed;
-  top: 15px;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 50px;
-  box-sizing: border-box;
-  z-index: 1000;
-">
+</head>
+<body>
+  <!-- Barra de menus responsiva centralizada no topo -->
+  <div class="menu-container">
+    <div class="menu-wrapper">
+      <!-- Menu Books and eBooks -->
+      <div class="menu">
+        <div class="menu-btn">Books and eBooks</div>
+        <div class="menu-content">
+          <a href="https://www.amazon.com/dp/B0FW58HKDC" target="_blank">
+            How to Let God Use You (Amazon.com - EN)
+          </a>
+          <a href="https://www.amazon.com.br/dp/B0FVTTBN52" target="_blank">
+            Como Deixar Deus te Usar (Amazon.com.br - PT)
+          </a>
+        </div>
+      </div>
 
-  <!-- Menu Aprender a usar o app - alinhado à esquerda -->
-  <div class="menu">
-    <a href="https://youtu.be/dtuhJdC578U?si=OsNZeUiuPgVfBSrQ"
-       target="_blank" class="menu-btn">
-      Aprender a usar o app
-    </a>
-  </div>
-
-  <!-- Menu Books and eBooks - alinhado à direita -->
-  <div class="menu">
-    <div class="menu-btn">Books and eBooks</div>
-    <div class="menu-content" style="top: 60px;">
-      <a href="https://www.amazon.com/dp/B0FW58HKDC" target="_blank">
-        How to Let God Use You (Amazon.com - EN)
-      </a>
-      <a href="https://www.amazon.com.br/dp/B0FVTTBN52" target="_blank">
-        Como Deixar Deus te Usar (Amazon.com.br - PT)
-      </a>
+      <!-- Menu Aprender a usar o app -->
+      <div class="menu">
+        <a href="https://youtu.be/dtuhJdC578U?si=OsNZeUiuPgVfBSrQ"
+           target="_blank" class="menu-btn">
+          Aprender a usar o app
+        </a>
+      </div>
     </div>
   </div>
 
-</div>
-
-  
   <div class="container">
     <h1>Leitura Bíblica Aleatória</h1>
     <div class="language-selector">
@@ -220,7 +395,10 @@
     <div class="reference" id="reference">Carregando referência...</div>
     <div class="chapter-text" id="chapterText">Por favor, aguarde...</div>
     <div class="buttons">
-      <button onclick="loadRandomChapter()">Ler outro capítulo</button>
+      <button onclick="loadRandomChapter()" id="loadButton">
+        <span class="spinner" id="spinner" style="display: none;"></span>
+        Ler outro capítulo
+      </button>
     </div>
     <footer>
       <p>EN / PT: Bible available in English and Portuguese — public domain — no ad banners. / Bíblia disponível em Português e Inglês — domínio público — sem banners de anúncio.</p>
@@ -229,6 +407,7 @@
       <button id="shareBtn">📤 Share / Compartilhar</button>
     </div>
   </div>
+
   <script>
     let currentLanguage = 'web';
     const books = [
@@ -249,6 +428,7 @@
       { name: "Romans", chapters: 16 },
       { name: "Revelation", chapters: 22 }
     ];
+
     function setLanguage(lang) {
       currentLanguage = lang;
       document.querySelectorAll('.language-btn').forEach(btn => {
@@ -257,11 +437,13 @@
       document.querySelector(`.language-btn[onclick="setLanguage('${lang}')"]`).classList.add('active');
       loadRandomChapter();
     }
+
     function getRandomReference() {
       const book = books[Math.floor(Math.random() * books.length)];
       const chapter = Math.floor(Math.random() * book.chapters) + 1;
       return { book: book.name, chapter };
     }
+
     async function fetchChapter(book, chapter) {
       try {
         if (currentLanguage === 'almeida') {
@@ -283,6 +465,7 @@
         throw new Error("Erro ao carregar o capítulo. Tente novamente.");
       }
     }
+
     function displayChapter(data) {
       if (currentLanguage === 'almeida') {
         if (data.error) {
@@ -299,9 +482,17 @@
         document.getElementById("chapterText").textContent = verses;
       }
     }
+
     async function loadRandomChapter() {
       document.getElementById("reference").textContent = "Carregando referência...";
       document.getElementById("chapterText").textContent = "Carregando capítulo...";
+      
+      // Mostrar spinner e desativar botão
+      const loadButton = document.getElementById('loadButton');
+      const spinner = document.getElementById('spinner');
+      loadButton.classList.add('loading');
+      spinner.style.display = 'inline-block';
+      
       try {
         const { book, chapter } = getRandomReference();
         const data = await fetchChapter(book, chapter);
@@ -310,6 +501,10 @@
         document.getElementById("reference").textContent = "Erro";
         document.getElementById("chapterText").textContent = err.message;
         console.error(err);
+      } finally {
+        // Esconder spinner e reativar botão
+        loadButton.classList.remove('loading');
+        spinner.style.display = 'none';
       }
     }
 
@@ -328,12 +523,20 @@
           console.error('Erro ao compartilhar:', err);
         }
       } else {
-        alert('Compartilhamento não é suportado neste dispositivo. Copie este link: ' + window.location.href);
+        // Fallback para navegadores que não suportam a API de compartilhamento
+        navigator.clipboard.writeText(window.location.href)
+          .then(() => {
+            alert('Link copiado para a área de transferência: ' + window.location.href);
+          })
+          .catch(() => {
+            alert('Copie este link: ' + window.location.href);
+          });
       }
     });
+
     window.onload = loadRandomChapter;
-  </script>
-  <script>
+
+    // Service Worker
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js')
         .then(() => console.log('Service Worker registrado com sucesso.'))
