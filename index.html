@@ -6,7 +6,7 @@
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#3498db">
   <title>Leitura Bíblica Aleatória</title>
-   <style>
+  <style>
     /* ===== VARIÁVEIS E RESET ===== */
     :root {
       --primary: #3498db;
@@ -149,33 +149,40 @@
       border-bottom: none;
     }
 
-    /* ===== SELEÇÃO DE IDIOMA ===== */
+    /* ===== SELEÇÃO DE IDIOMA - MELHORADO ===== */
     .language-selector {
       display: flex;
       justify-content: center;
+      align-items: center;
       gap: 12px;
       margin-bottom: 25px;
-      flex-wrap: wrap;
+      width: 100%;
     }
 
     .language-btn {
-      padding: 10px 20px;
+      padding: 12px 24px;
       background: #95a5a6;
       color: white;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
       transition: var(--transition);
       font-weight: 500;
-      font-size: 0.95rem;
+      font-size: 1rem;
+      flex: 1;
+      max-width: 200px;
+      min-width: 120px;
+      text-align: center;
     }
 
     .language-btn.active {
       background: var(--primary);
+      box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
     }
 
     .language-btn:hover:not(.active) {
       background: #7f8c8d;
+      transform: translateY(-1px);
     }
 
     /* ===== CONTEÚDO DA BÍBLIA ===== */
@@ -326,6 +333,12 @@
         padding: 9px 15px;
         font-size: 0.9rem;
       }
+      
+      .language-btn {
+        padding: 11px 20px;
+        font-size: 0.95rem;
+        max-width: 180px;
+      }
     }
 
     /* Celulares */
@@ -373,15 +386,15 @@
       .menu-wrapper {
         gap: 12px;
         justify-content: center;
-        flex-wrap: nowrap; /* Impede quebra de linha */
+        flex-wrap: nowrap;
       }
       
       .menu-btn {
         padding: 8px 14px;
         font-size: 0.85rem;
         min-width: 120px;
-        flex: 1; /* Ocupa espaço igual */
-        max-width: 160px; /* Limite máximo */
+        flex: 1;
+        max-width: 160px;
       }
       
       .menu-content {
@@ -394,13 +407,18 @@
         transform: translateX(-50%) translateY(0);
       }
       
+      /* BOTÕES DE IDIOMA - SEMPRE NA HORIZONTAL */
       .language-selector {
-        gap: 8px;
+        gap: 10px;
+        padding: 0 5px;
       }
       
       .language-btn {
-        padding: 9px 16px;
+        padding: 10px 16px;
         font-size: 0.9rem;
+        max-width: none;
+        flex: 1;
+        min-width: 100px;
       }
       
       footer {
@@ -423,11 +441,26 @@
       .container {
         padding: 18px 12px;
       }
+      
+      .language-selector {
+        gap: 8px;
+      }
+      
+      .language-btn {
+        padding: 9px 12px;
+        font-size: 0.85rem;
+        min-width: 90px;
+      }
+    }
+
+    /* Garantir que os botões de idioma nunca quebrem linha */
+    .language-selector {
+      flex-wrap: nowrap;
     }
   </style>
 </head>
 <body>
-  <!-- Barra de menus responsiva centralizada no topo -->
+  <!-- Menu Superior -->
   <div class="menu-container">
     <div class="menu-wrapper">
       <!-- Menu Books and eBooks -->
@@ -453,23 +486,29 @@
     </div>
   </div>
 
+  <!-- Conteúdo Principal -->
   <div class="container">
     <h1>Leitura Bíblica Aleatória</h1>
+    
     <div class="language-selector">
       <button class="language-btn active" onclick="setLanguage('web')">Inglês (WEB)</button>
       <button class="language-btn" onclick="setLanguage('almeida')">Português (Almeida)</button>
     </div>
+    
     <div class="reference" id="reference">Carregando referência...</div>
     <div class="chapter-text" id="chapterText">Por favor, aguarde...</div>
+    
     <div class="buttons">
       <button onclick="loadRandomChapter()" id="loadButton">
         <span class="spinner" id="spinner" style="display: none;"></span>
         Ler outro capítulo
       </button>
     </div>
+    
     <footer>
       <p>EN / PT: Bible available in English and Portuguese — public domain — no ad banners. / Bíblia disponível em Português e Inglês — domínio público — sem banners de anúncio.</p>
     </footer>
+    
     <div class="share-container">
       <button id="shareBtn">📤 Share / Compartilhar</button>
     </div>
