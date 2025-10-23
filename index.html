@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#3498db">
-  <title>Random Bible Reading</title>
+  <title>Leitura Bíblica Aleatória</title>
   <style>
     body {
       margin: 0;
@@ -197,30 +197,30 @@
         Como Deixar Deus te Usar (Amazon.com.br - PT)
       </a>
     </div>
-    <div class="menu-btn" onclick="showHelp()">Learn how to use the app</div>
+    <div class="menu-btn" onclick="showHelp()">Aprender a usar o app</div>
   </div>
   <div class="container">
-    <h1>Random Bible Reading</h1>
+    <h1>Leitura Bíblica Aleatória</h1>
     <div class="language-selector">
-      <button class="language-btn active" onclick="setLanguage('kjv')">English (KJV)</button>
+      <button class="language-btn active" onclick="setLanguage('web')">Inglês (WEB)</button>
+      <button class="language-btn" onclick="setLanguage('almeida')">Português (Almeida)</button>
     </div>
-    <div class="reference" id="reference">Loading reference...</div>
-    <div class="chapter-text" id="chapterText">Please wait...</div>
+    <div class="reference" id="reference">Carregando referência...</div>
+    <div class="chapter-text" id="chapterText">Por favor, aguarde...</div>
     <div class="buttons">
-      <button onclick="loadRandomChapter()">Read another chapter</button>
+      <button onclick="loadRandomChapter()">Ler outro capítulo</button>
     </div>
     <footer>
-      <p>EN: Bible available in English (KJV) — public domain — no ad banners.</p>
+      <p>EN / PT: Bible available in English and Portuguese — public domain — no ad banners. / Bíblia disponível em Português e Inglês — domínio público — sem banners de anúncio.</p>
     </footer>
     <div class="share-container">
-      <button id="shareBtn">📤 Share</button>
+      <button id="shareBtn">📤 Share / Compartilhar</button>
     </div>
   </div>
-  <script>
-    let currentLanguage = 'kjv';
-    let bibleData = {};
 
-    // Lista de livros e capítulos da Bíblia KJV
+  <script>
+    let currentLanguage = 'web';
+
     const books = [
       { name: "Genesis", chapters: 50 },
       { name: "Exodus", chapters: 40 },
@@ -228,81 +228,17 @@
       { name: "Numbers", chapters: 36 },
       { name: "Deuteronomy", chapters: 34 },
       { name: "Joshua", chapters: 24 },
-      { name: "Judges", chapters: 21 },
-      { name: "Ruth", chapters: 4 },
-      { name: "1 Samuel", chapters: 31 },
-      { name: "2 Samuel", chapters: 24 },
-      { name: "1 Kings", chapters: 22 },
-      { name: "2 Kings", chapters: 25 },
-      { name: "1 Chronicles", chapters: 29 },
-      { name: "2 Chronicles", chapters: 36 },
-      { name: "Ezra", chapters: 10 },
-      { name: "Nehemiah", chapters: 13 },
-      { name: "Esther", chapters: 10 },
-      { name: "Job", chapters: 42 },
       { name: "Psalms", chapters: 150 },
       { name: "Proverbs", chapters: 31 },
-      { name: "Ecclesiastes", chapters: 12 },
-      { name: "Song of Solomon", chapters: 8 },
       { name: "Isaiah", chapters: 66 },
-      { name: "Jeremiah", chapters: 52 },
-      { name: "Lamentations", chapters: 5 },
-      { name: "Ezekiel", chapters: 48 },
-      { name: "Daniel", chapters: 12 },
-      { name: "Hosea", chapters: 14 },
-      { name: "Joel", chapters: 3 },
-      { name: "Amos", chapters: 9 },
-      { name: "Obadiah", chapters: 1 },
-      { name: "Jonah", chapters: 4 },
-      { name: "Micah", chapters: 7 },
-      { name: "Nahum", chapters: 3 },
-      { name: "Habakkuk", chapters: 3 },
-      { name: "Zephaniah", chapters: 3 },
-      { name: "Haggai", chapters: 2 },
-      { name: "Zechariah", chapters: 14 },
-      { name: "Malachi", chapters: 4 },
       { name: "Matthew", chapters: 28 },
       { name: "Mark", chapters: 16 },
       { name: "Luke", chapters: 24 },
       { name: "John", chapters: 21 },
       { name: "Acts", chapters: 28 },
       { name: "Romans", chapters: 16 },
-      { name: "1 Corinthians", chapters: 16 },
-      { name: "2 Corinthians", chapters: 13 },
-      { name: "Galatians", chapters: 6 },
-      { name: "Ephesians", chapters: 6 },
-      { name: "Philippians", chapters: 4 },
-      { name: "Colossians", chapters: 4 },
-      { name: "1 Thessalonians", chapters: 5 },
-      { name: "2 Thessalonians", chapters: 3 },
-      { name: "1 Timothy", chapters: 6 },
-      { name: "2 Timothy", chapters: 4 },
-      { name: "Titus", chapters: 3 },
-      { name: "Philemon", chapters: 1 },
-      { name: "Hebrews", chapters: 13 },
-      { name: "James", chapters: 5 },
-      { name: "1 Peter", chapters: 5 },
-      { name: "2 Peter", chapters: 3 },
-      { name: "1 John", chapters: 5 },
-      { name: "2 John", chapters: 1 },
-      { name: "3 John", chapters: 1 },
-      { name: "Jude", chapters: 1 },
       { name: "Revelation", chapters: 22 }
     ];
-
-    // Carrega o arquivo JSON da Bíblia KJV
-    async function loadBibleData() {
-      try {
-        const response = await fetch('bible_kjv.json');
-        if (!response.ok) {
-          throw new Error("Failed to load KJV Bible data.");
-        }
-        bibleData = await response.json();
-      } catch (err) {
-        console.error("Error loading Bible data:", err);
-        alert("Error loading Bible data. Please check the console for details.");
-      }
-    }
 
     function setLanguage(lang) {
       currentLanguage = lang;
@@ -319,70 +255,91 @@
       return { book: book.name, chapter };
     }
 
-    function getChapter(book, chapter) {
-      const bookKey = book.replace(/\s+/g, '_').toLowerCase();
-      if (!bibleData[bookKey]) {
-        throw new Error(`Book "${book}" not found in the Bible data.`);
+    async function fetchChapter(book, chapter) {
+      try {
+        if (currentLanguage === 'almeida') {
+          // Usa a API original para Almeida (mesmo que não funcione perfeitamente)
+          const url = `https://bible-api.com/${book}+${chapter}?translation=${currentLanguage}`;
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error("Não foi possível carregar a versão Almeida. Tente novamente.");
+          }
+          return await response.json();
+        } else {
+          // Usa a API para WEB (inglês)
+          const url = `https://bible-api.com/${book}+${chapter}?translation=${currentLanguage}`;
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error("Não foi possível carregar o capítulo. Tente novamente.");
+          }
+          return await response.json();
+        }
+      } catch (err) {
+        throw new Error("Erro ao carregar o capítulo. Tente novamente.");
       }
-      if (!bibleData[bookKey][chapter]) {
-        throw new Error(`Chapter ${chapter} not found in ${book}.`);
-      }
-      return bibleData[bookKey][chapter];
     }
 
-    function displayChapter(book, chapter, verses) {
-      document.getElementById("reference").textContent = `${book} ${chapter}`;
-      const versesText = verses.map(v => `${v.verse}. ${v.text.trim()}`).join("\n\n");
-      document.getElementById("chapterText").textContent = versesText;
+    function displayChapter(data) {
+      if (currentLanguage === 'almeida') {
+        if (data.error) {
+          document.getElementById("reference").textContent = "Erro ao carregar a versão Almeida";
+          document.getElementById("chapterText").textContent = "Não foi possível carregar a versão Almeida. Tente novamente ou use a versão em inglês.";
+        } else {
+          document.getElementById("reference").textContent = data.reference;
+          const verses = data.verses.map(v => `${v.verse}. ${v.text.trim()}`).join("\n\n");
+          document.getElementById("chapterText").textContent = verses;
+        }
+      } else {
+        document.getElementById("reference").textContent = data.reference;
+        const verses = data.verses.map(v => `${v.verse}. ${v.text.trim()}`).join("\n\n");
+        document.getElementById("chapterText").textContent = verses;
+      }
     }
 
     async function loadRandomChapter() {
-      document.getElementById("reference").textContent = "Loading reference...";
-      document.getElementById("chapterText").textContent = "Loading chapter...";
+      document.getElementById("reference").textContent = "Carregando referência...";
+      document.getElementById("chapterText").textContent = "Carregando capítulo...";
       try {
         const { book, chapter } = getRandomReference();
-        const verses = getChapter(book, chapter);
-        displayChapter(book, chapter, verses);
+        const data = await fetchChapter(book, chapter);
+        displayChapter(data);
       } catch (err) {
-        document.getElementById("reference").textContent = "Error";
+        document.getElementById("reference").textContent = "Erro";
         document.getElementById("chapterText").textContent = err.message;
         console.error(err);
       }
     }
 
     function showHelp() {
-      alert("To use the app:\n1. Click 'Read another chapter' to load a random chapter.\n2. The app will display the chapter in English (KJV).\n3. Use the menu to access related books and eBooks.");
+      alert("Para usar o app:\n1. Clique em 'Ler outro capítulo' para carregar um capítulo aleatório.\n2. Escolha o idioma (Inglês ou Português).\n3. Use o menu para acessar livros e eBooks relacionados.");
     }
 
     const shareBtn = document.getElementById('shareBtn');
     shareBtn.addEventListener('click', async () => {
       const shareData = {
         title: 'Bible Reading Site',
-        text: 'Check out this Bible reading site — available in English (KJV), public domain, and no ad banners!',
+        text: 'Confira este site de leitura bíblica — disponível em inglês e português, domínio público e sem anúncios!',
         url: window.location.href
       };
       if (navigator.share) {
         try {
           await navigator.share(shareData);
-          console.log('Content shared successfully.');
+          console.log('Conteúdo compartilhado com sucesso.');
         } catch (err) {
-          console.error('Error sharing:', err);
+          console.error('Erro ao compartilhar:', err);
         }
       } else {
-        alert('Sharing is not supported on this device. Copy this link: ' + window.location.href);
+        alert('Compartilhamento não é suportado neste dispositivo. Copie este link: ' + window.location.href);
       }
     });
 
-    window.onload = function() {
-      loadBibleData();
-      loadRandomChapter();
-    };
+    window.onload = loadRandomChapter;
   </script>
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js')
-        .then(() => console.log('Service Worker registered successfully.'))
-        .catch(err => console.log('Error registering Service Worker:', err));
+        .then(() => console.log('Service Worker registrado com sucesso.'))
+        .catch(err => console.log('Erro ao registrar o Service Worker:', err));
     }
   </script>
 </body>
