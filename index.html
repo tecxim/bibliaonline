@@ -91,18 +91,13 @@
       z-index: 100;
     }
     .menu-btn {
-      display: inline-block; /* ou block */
+      display: inline-block;
       text-decoration: none;
       color: white;
       background: #2196f3;
       padding: 10px;
       border-radius: 8px;
-    }
-
-       
-     }
-    .menu-btn:hover {
-      background-color: #27ae60;
+      cursor: pointer;
     }
     .menu-content {
       display: none;
@@ -199,13 +194,11 @@
       <a href="https://www.amazon.com.br/dp/B0FVTTBN52" target="_blank">
         Como Deixar Deus te Usar (Amazon.com.br - PT)
       </a>
-    <div class="menu">
-  <a href="https://youtu.be/dtuhJdC578U?si=OsNZeUiuPgVfBSrQ" target="_blank" class="menu-btn">
-    Aprender a usar o app
-    </a>
+      <a href="https://youtu.be/dtuhJdC578U?si=OsNZeUiuPgVfBSrQ" target="_blank">
+        Aprender a usar o app
+      </a>
+    </div>
   </div>
-
-
   <div class="container">
     <h1>Leitura Bíblica Aleatória</h1>
     <div class="language-selector">
@@ -224,10 +217,8 @@
       <button id="shareBtn">📤 Share / Compartilhar</button>
     </div>
   </div>
-
   <script>
     let currentLanguage = 'web';
-
     const books = [
       { name: "Genesis", chapters: 50 },
       { name: "Exodus", chapters: 40 },
@@ -246,7 +237,6 @@
       { name: "Romans", chapters: 16 },
       { name: "Revelation", chapters: 22 }
     ];
-
     function setLanguage(lang) {
       currentLanguage = lang;
       document.querySelectorAll('.language-btn').forEach(btn => {
@@ -255,17 +245,14 @@
       document.querySelector(`.language-btn[onclick="setLanguage('${lang}')"]`).classList.add('active');
       loadRandomChapter();
     }
-
     function getRandomReference() {
       const book = books[Math.floor(Math.random() * books.length)];
       const chapter = Math.floor(Math.random() * book.chapters) + 1;
       return { book: book.name, chapter };
     }
-
     async function fetchChapter(book, chapter) {
       try {
         if (currentLanguage === 'almeida') {
-          // Usa a API original para Almeida (mesmo que não funcione perfeitamente)
           const url = `https://bible-api.com/${book}+${chapter}?translation=${currentLanguage}`;
           const response = await fetch(url);
           if (!response.ok) {
@@ -273,7 +260,6 @@
           }
           return await response.json();
         } else {
-          // Usa a API para WEB (inglês)
           const url = `https://bible-api.com/${book}+${chapter}?translation=${currentLanguage}`;
           const response = await fetch(url);
           if (!response.ok) {
@@ -285,7 +271,6 @@
         throw new Error("Erro ao carregar o capítulo. Tente novamente.");
       }
     }
-
     function displayChapter(data) {
       if (currentLanguage === 'almeida') {
         if (data.error) {
@@ -302,7 +287,6 @@
         document.getElementById("chapterText").textContent = verses;
       }
     }
-
     async function loadRandomChapter() {
       document.getElementById("reference").textContent = "Carregando referência...";
       document.getElementById("chapterText").textContent = "Carregando capítulo...";
@@ -317,7 +301,6 @@
       }
     }
 
-   
     const shareBtn = document.getElementById('shareBtn');
     shareBtn.addEventListener('click', async () => {
       const shareData = {
@@ -336,7 +319,6 @@
         alert('Compartilhamento não é suportado neste dispositivo. Copie este link: ' + window.location.href);
       }
     });
-
     window.onload = loadRandomChapter;
   </script>
   <script>
