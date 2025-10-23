@@ -649,5 +649,18 @@
         .catch(err => console.log('Erro ao registrar o Service Worker:', err));
     }
   </script>
+  
+<script>
+fetch('https://script.google.com/macros/s/AKfycbyJQ1vNA9yEMODiyIhNlpjBSfX3D1bxvRv0MRYh-FrcxP00yKHd765as1__XwW1at9J/exec', {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: JSON.stringify({
+    page: location.pathname,
+    referrer: document.referrer,
+    userAgent: navigator.userAgent
+  })
+});
+</script>
+
 </body>
 </html>
