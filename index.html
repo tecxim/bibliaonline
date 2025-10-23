@@ -173,21 +173,29 @@
   </head>
   <body>
     
-<!-- Barra de menus responsiva centralizada no topo -->
+<!-- Barra de menus estrategicamente posicionada -->
 <div style="
-  position: fixed;         /* Fica sempre no topo, mesmo rolando */
-  top: 15px;               /* Distância do topo */
+  position: fixed;
+  top: 15px;
   left: 0;
-  width: 100%;             /* Ocupa toda a largura da tela */
+  width: 100%;
   display: flex;
-  justify-content: center; /* Centraliza horizontalmente */
+  justify-content: space-between;
   align-items: center;
-  gap: 25px;               /* Espaçamento entre os menus */
-  flex-wrap: wrap;         /* Faz quebrar linha em telas pequenas */
-  z-index: 1000;           /* Garante que fique sobre outros elementos */
+  padding: 0 50px;
+  box-sizing: border-box;
+  z-index: 1000;
 ">
 
-  <!-- Menu Books and eBooks -->
+  <!-- Menu Aprender a usar o app - alinhado à esquerda -->
+  <div class="menu">
+    <a href="https://youtu.be/dtuhJdC578U?si=OsNZeUiuPgVfBSrQ"
+       target="_blank" class="menu-btn">
+      Aprender a usar o app
+    </a>
+  </div>
+
+  <!-- Menu Books and eBooks - alinhado à direita -->
   <div class="menu">
     <div class="menu-btn">Books and eBooks</div>
     <div class="menu-content" style="top: 60px;">
@@ -200,16 +208,7 @@
     </div>
   </div>
 
-  <!-- Menu Aprender a usar o app -->
-  <div class="menu">
-    <a href="https://youtu.be/dtuhJdC578U?si=OsNZeUiuPgVfBSrQ"
-       target="_blank" class="menu-btn">
-      Aprender a usar o app
-    </a>
-  </div>
-
 </div>
-
 
   
   <div class="container">
