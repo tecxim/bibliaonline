@@ -168,13 +168,29 @@
       justify-content: center;
       margin-top: 15px;
     }
+
+    .menu-container {
+      position: fixed;
+      top: 20px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      z-index: 100;
+    }
+    
+    .menu {
+      position: relative;
+    }
+
   </style>
 </head>
 <body>
-  <div class="menu-container">
-  <div class="menu">
+  <!-- Menu Books and eBooks -->
+  <div class="menu" style="top: 20px; right: 20px;">
     <div class="menu-btn">Books and eBooks</div>
-    <div class="menu-content">
+    <div class="menu-content" style="top: 60px; right: 20px;">
       <a href="https://www.amazon.com/dp/B0FW58HKDC" target="_blank">
         How to Let God Use You (Amazon.com - EN)
       </a>
@@ -184,13 +200,12 @@
     </div>
   </div>
 
-  <div class="menu">
+  <!-- Menu Aprender a usar o app -->
+  <div class="menu" style="top: 20px; right: 170px;">
     <a href="https://youtu.be/dtuhJdC578U?si=OsNZeUiuPgVfBSrQ" target="_blank" class="menu-btn">
       Aprender a usar o app
     </a>
   </div>
-</div>
-
 
   <div class="container">
     <h1>Leitura Bíblica Aleatória</h1>
