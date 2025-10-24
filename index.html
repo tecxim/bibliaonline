@@ -652,28 +652,57 @@
   
 <script>
 (function() {
-  // URL do seu Web App (copie exatamente do Apps Script)
   const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzqwy44OE7peeKb0-_EgJ_F1FV03qB6g3hg0DxkU5IaAxvRfHINrZdCZTOFuB7DmdeD2g/exec";
 
-  // Dados que queremos enviar
-  const dados = {
-    page: location.pathname,      // página visitada
-    referrer: document.referrer,  // de onde o visitante veio
-    userAgent: navigator.userAgent // navegador do visitante
-  };
+  // Função para pegar a localização
+  function getLocation() {
+    return new Promise((resolve, reject) => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            resolve({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude
+            });
+          },
+          (error) => {
+            console.error("Erro ao pegar localização:", error);
+            resolve(null); // Se o usuário negar ou houver erro
+          }
+        );
+      } else {
+        console.error("Geolocalização não é suportada pelo navegador.");
+        resolve(null);
+      }
+    });
+  }
 
-  // Enviar dados via POST para o Web App
-  fetch(WEB_APP_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(dados)
-  })
-  .then(response => response.json())
-  .then(result => console.log("Dados enviados:", result))
-  .catch(error => console.error("Erro ao enviar dados:", error));
+  // Função para enviar os dados
+  async function sendData() {
+    const location = await getLocation();
+
+    const dados = {
+      page: location.pathname,
+      referrer: document.referrer || "Direto", // Se não houver referrer, grava "Direto"
+      userAgent: navigator.userAgent,
+      latitude: location ? location.latitude : "N/A",
+      longitude: location ? location.longitude : "N/A"
+    };
+
+    fetch(WEB_APP_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(dados)
+    })
+    .then(() => console.log("Dados enviados com sucesso!"))
+    .catch(error => console.error("Erro ao enviar dados:", error));
+  }
+
+  sendData();
 })();
 </script>
+
 
 </body>
 </html>
