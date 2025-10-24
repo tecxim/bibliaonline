@@ -651,15 +651,27 @@
   </script>
   
 <script>
-fetch('https://script.google.com/macros/s/AKfycbyJQ1vNA9yEMODiyIhNlpjBSfX3D1bxvRv0MRYh-FrcxP00yKHd765as1__XwW1at9J/exec', {
-  method: 'POST',
-  headers: {'Content-Type': 'application/json'},
-  body: JSON.stringify({
-    page: location.pathname,
-    referrer: document.referrer,
-    userAgent: navigator.userAgent
+(function() {
+  // URL do seu Web App (copie exatamente do Apps Script)
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyJQ1vNA9yEMODiyIhNlpjBSfX3D1bxvRv0MRYh-FrcxP00yKHd765as1__XwW1at9J/exec";
+
+  // Dados que queremos enviar
+  const dados = {
+    page: location.pathname,      // página visitada
+    referrer: document.referrer,  // de onde o visitante veio
+    userAgent: navigator.userAgent // navegador do visitante
+  };
+
+  // Enviar dados via POST para o Web App
+  fetch(WEB_APP_URL, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(dados)
   })
-});
+  .then(response => response.json())
+  .then(result => console.log("Dados enviados:", result))
+  .catch(error => console.error("Erro ao enviar dados:", error));
+})();
 </script>
 
 </body>
