@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -170,6 +171,31 @@
             from { opacity: 0; transform: scale(0.9); }
             to { opacity: 1; transform: scale(1); }
         }
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .nav-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: clamp(0.8em, 3vw, 1em);
+        }
+        .nav-btn.prev {
+            background: #ffea00;
+            color: #000;
+        }
+        .nav-btn.next {
+            background: #ffea00;
+            color: #000;
+        }
+        .nav-btn:hover {
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
@@ -195,16 +221,17 @@
             </div>
         </div>
     </div>
-
     <!-- Página do Estudo -->
     <div class="container" id="studyPage">
         <div class="module" id="moduleInfo">Tópico 1 de 6</div>
         <h1>Mulheres: Pastoras ou Não?</h1>
         <div class="question" id="questionText"></div>
         <div class="answer" id="answerText"></div>
-        <button class="next-btn" id="nextBtn">Próximo Tópico</button>
+        <div class="nav-buttons">
+            <button class="nav-btn prev" id="prevBtn" onclick="prevTopic()">Voltar</button>
+            <button class="nav-btn next" id="nextBtn" onclick="nextTopic()">Próximo Tópico</button>
+        </div>
     </div>
-
     <!-- Popup de Boas-vindas -->
     <div id="welcomePopup">
         <div>
@@ -226,226 +253,158 @@
             ">Iniciar Estudo</button>
         </div>
     </div>
-
     <!-- Scripts -->
     <script>
-    let currentTopicIndex = 0;
-    let currentStudy = "mulheres"; // "mulheres" ou "cristo"
+        let currentTopicIndex = 0;
+        let currentStudy = "mulheres"; // "mulheres" ou "cristo"
 
-    function closePopup() {
-        document.getElementById('welcomePopup').style.display = 'none';
-        loadStudyTopic(0);
-    }
-
-    function loadStudyTopic(index) {
-        currentTopicIndex = index;
-        const topic = studyTopics[currentStudy][index];
-        document.getElementById('studyQuestion').innerHTML = topic.question;
-        document.getElementById('studyAnswer').innerHTML = topic.answer;
-        document.getElementById('studyContent').style.display = 'block';
-
-        // Atualiza a visibilidade dos botões de navegação
-        document.getElementById('prevButton').style.display = index === 0 ? 'none' : 'inline-block';
-        document.getElementById('nextButton').style.display = 'inline-block';
-
-        // Se estiver no último tópico do estudo das mulheres, mostra o aviso
-        if (currentStudy === "mulheres" && index === studyTopics[currentStudy].length - 1) {
-            document.getElementById('nextButton').innerText = "Próximo Estudo";
-        } else {
-            document.getElementById('nextButton').innerText = "Próximo Tópico";
+        function closePopup() {
+            document.getElementById('welcomePopup').style.display = 'none';
+            loadStudyTopic(0);
         }
-    }
-
-    function nextTopic() {
-        if (currentStudy === "mulheres" && currentTopicIndex === studyTopics[currentStudy].length - 1) {
-            // Se estiver no último tópico do estudo das mulheres, pergunta se deseja prosseguir
-            if (confirm("Você concluiu o estudo sobre o ministério feminino. Deseja prosseguir para o estudo sobre a divindade de Cristo?")) {
-                currentStudy = "cristo";
-                currentTopicIndex = 0;
-                loadStudyTopic(0);
-            }
-        } else if (currentTopicIndex < studyTopics[currentStudy].length - 1) {
-            loadStudyTopic(currentTopicIndex + 1);
-        }
-    }
-
-    function prevTopic() {
-        if (currentTopicIndex > 0) {
-            loadStudyTopic(currentTopicIndex - 1);
-        }
-    }
-
-    const studyTopics = {
-        mulheres: [
-            {
-                question: "A capacidade divina faz distinção de gênero?",
-                answer: `
-                    <p>Quando Paulo afirma que "nossa capacidade vem de Deus" (2 Coríntios 3:5), ele não está se referindo a um grupo específico, mas à igreja como um todo — homens e mulheres.</p>
-                    <p class="verse">"Não que sejamos capazes, por nós mesmos, de pensar alguma coisa como vinda de nós mesmos; pelo contrário, nossa capacidade vem de Deus." (2 Coríntios 3:5)</p>
-                    <p>A história bíblica e a realidade atual confirmam que Deus capacita mulheres para o ministério pastoral, para ensinar, liderar e operar milagres.</p>
-                    <p><strong>Exemplos:</strong> Débora (Juízes 4-5), Hulda (2 Reis 22:14-20) e Priscila (Atos 18:26).</p>
-                `
-            },
-            {
-                question: "Qual o contexto de 1 Timóteo 2:12?",
-                answer: `
-                    <p>Paulo escreve: "Não permito que a mulher ensine ou domine o homem" (1 Timóteo 2:12). É fundamental entender o contexto: em Éfeso, algumas mulheres, recém-convertidas e sem instrução formal, poderiam estar interrompendo os cultos.</p>
-                    <p class="verse">"Tudo, porém, seja feito com decência e ordem." (1 Coríntios 14:40)</p>
-                    <p>Paulo não está proibindo o ministério feminino, mas pedindo que tudo seja feito com ordem. Ele reconheceu e apoiou o ministério de mulheres como Febe (diaconisa) e Junia (apóstola).</p>
-                `
-            },
-            {
-                question: "Mulheres maduras e capacitadas: um contraste com a negligência masculina?",
-                answer: `
-                    <p>A Bíblia e a história mostram que Deus usa quem está disponível, independentemente de gênero. Enquanto alguns homens se omitem, mulheres têm se destacado no ministério.</p>
-                    <p class="verse">"Porque não há diferença entre judeu e grego; pois o mesmo Senhor é Senhor de todos e abençoa ricamente todos os que o invocam." (Romanos 10:12)</p>
-                    <p>Uma mulher que cria filhos, administra um lar e opera milagres já provou sua capacidade de liderança e amor sacrificial.</p>
-                `
-            },
-            {
-                question: "A graça de Deus conhece limites humanos?",
-                answer: `
-                    <p>Jesus quebrou barreiras culturais ao dialogar com a samaritana (João 4), defender a mulher adúltera (João 8) e ser ungido por Maria (João 12).</p>
-                    <p class="verse">"Mas, vindo a plenitude do tempo, Deus enviou seu Filho, nascido de mulher, nascido sob a lei." (Gálatas 4:4)</p>
-                    <p>Se Deus está usando mulheres no ministério pastoral hoje, não é por falta de homens, mas porque Ele escolhe quem quer.</p>
-                `
-            },
-            {
-                question: "Junia: uma apóstola reconhecida pela história?",
-                answer: `
-                    <p>Romanos 16:7 diz: "Saúdem Andrônico e Júnia, meus parentes e companheiros de prisão. Eles são notáveis entre os apóstolos e se tornaram cristãos antes de mim."</p>
-                    <p class="verse">"Saúdem Andrônico e Júnia, meus parentes e companheiros de prisão. Eles são notáveis entre os apóstolos e se tornaram cristãos antes de mim." (Romanos 16:7)</p>
-                    <p>O nome "Junia" é feminino e não há base histórica para a versão masculina "Junias". Estudiosos como Linda Belleville confirmam que Junia era uma apóstola.</p>
-                `
-            },
-            {
-                question: "Conclusão: O que a Bíblia realmente ensina?",
-                answer: `
-                    <p>O ministério pastoral feminino não é uma questão de permissão humana, mas de reconhecimento do que Deus já está fazendo.</p>
-                    <p class="verse">"Quem pode resistir à sua vontade?" (Romanos 9:19)</p>
-                    <p>Se mulheres são capacitadas, maduras e usadas pelo Espírito para realizar obras poderosas, a igreja deve apoiar, não resistir.</p>
-                `
-            }
-        ],
-        cristo: [
-            {
-                question: "Jesus Cristo é Deus?",
-                answer: `
-                    <p>Caro leitor, ao mergulharmos nas páginas das Escrituras, somos convidados a contemplar uma verdade que transcende a lógica humana: a divindade de Jesus Cristo como Filho de Deus. Não se trata de uma afirmação vazia ou de um título honorífico, mas de uma realidade tecida nos fios da própria revelação divina. Vamos percorrer, juntos, os caminhos traçados pelas passagens bíblicas que falam sobre isso, desvendando como elas apontam para a natureza única de Cristo.</p>
-
-                    <h3>A Pluralidade na Criação: "Façamos o Homem"</h3>
-                    <p>No livro de Gênesis, Deus declara: "Façamos o homem à nossa imagem" (Gênesis 1:26). Essa pluralidade no verbo — "façamos" — não é um mero capricho linguístico. No hebraico, a palavra usada para Deus aqui é Elohim, um substantivo plural que, no entanto, é acompanhado por verbos no singular, indicando uma unidade dentro da diversidade. Isso não é um convite aos anjos, pois anjos não criam; eles obedecem. A criação é um ato exclusivo da divindade. Esse "nós" já aponta para uma comunhão interna no ser de Deus, que o Novo Testamento revelará como Pai, Filho e Espírito Santo.</p>
-
-                    <h3>O Diálogo Divino em Babel: "Vinde, Desçamos"</h3>
-                    <p>Em Gênesis 11:7, Deus diz: "Vinde, desçamos e confundamos a língua deles". Novamente, há um convite implícito na palavra "vinde", que sugere uma deliberação dentro da Triunidade. Não é uma ordem dada a criaturas inferiores, mas um diálogo entre as pessoas divinas. Se Cristo é o Verbo (João 1:1), a Palavra eterna de Deus, Cristo está presente nesse "vinde", participando ativamente da história da humanidade desde o princípio.</p>
-
-                    <h3>Isaías e o Messias Divino: "Deus Forte" e "Emanuel"</h3>
-                    <p>O profeta Isaías, em sua visão messiânica, descreve o Messias com termos que só podem ser aplicados à divindade: "Porque um menino nos nasceu, um filho se nos deu; e o principado está sobre os seus ombros; e o seu nome será: Maravilhoso Conselheiro, Deus Forte, Pai da Eternidade, Príncipe da Paz" (Isaías 9:6). A expressão "Deus Forte" (em hebraico, El Gibbor) não deixa margem para dúvidas: é um título divino. Como um mero ser humano poderia carregar tal nome? Além disso, o contexto de Isaías 7:14 fala do "Emanuel", que significa "Deus conosco". Se Deus está "conosco" em Jesus, como negar a divindade de Cristo?</p>
-
-                    <p>Isaías 48:16 apresenta uma cena fascinante: o Senhor Deus fala, e ao lado de Deus estão o Espírito e o "Enviado" (em hebraico, shelach). Essa passagem é uma janela para a Triunidade, onde as três pessoas divinas são mencionadas em um único versículo.</p>
-
-                    <h3>A Declaração de Jesus: "EU SOU"</h3>
-                    <p>Em João 8:58, Jesus diz aos judeus: "Em verdade, em verdade vos digo: antes que Abraão existisse, EU SOU." A reação foi imediata: pegaram pedras para apedrejá-lo (João 8:59). Por quê? Porque Jesus estava se apropriando do nome sagrado de Deus, revelado a Moisés na sarça ardente: "EU SOU O QUE SOU" (Êxodo 3:14). Os judeus entenderam que Cristo estava se declarando Deus, e isso era blasfêmia — a menos que fosse verdade.</p>
-
-                    <h3>Jesus como a Fonte da Vida Eterna</h3>
-                    <p>Cristo afirma: "Eu sou o pão da vida" (João 6:35) e "Eu sou a ressurreição e a vida" (João 11:25). A vida é um atributo exclusivo de Deus. Só Deus possui a vida em si mesmo (João 5:26) e só Deus pode concedê-la. Se Jesus dá vida — e não apenas vida biológica, mas vida eterna —, Cristo está operando no nível da divindade.</p>
-
-                    <h3>O Batismo com o Espírito Santo: Um Poder Exclusivo de Deus</h3>
-                    <p>João Batista, ao apresentar Jesus, diz: "Ele vos batizará com o Espírito Santo" (Mateus 3:11). Quem, senão Deus, pode conceder o Espírito Santo? Se Jesus concede o Espírito, é porque Cristo compartilha da mesma natureza divina.</p>
-
-                    <p>Paulo, em Romanos 8:9, vai além: "Se alguém não tem o Espírito de Cristo, esse tal não é dele". Isso implica que o Espírito de Cristo — que é o Espírito Santo — habita nos crentes. Como um ser humano comum poderia ter seu espírito presente em milhões de corações ao mesmo tempo, em todas as épocas e lugares? Só a onipresença divina explica isso.</p>
-
-                    <h3>A Glória Compartilhada: Adoração ao Pai e ao Cordeiro</h3>
-                    <p>Deus declara em Isaías 42:8: "Não darei a minha glória a outrem". No entanto, em Apocalipse 5:13, ouvimos: "Ao que está assentado no trono e ao Cordeiro [Jesus] sejam dadas ação de graças, honra, glória e poder para todo o sempre". Anjos, criaturas e toda a criação adoram juntos ao Pai e ao Cordeiro. Se a glória é exclusiva de Deus, e Jesus a recebe, a conclusão é inevitável: Jesus é Deus.</p>
-
-                    <h3>O Espírito Santo e a Glorificação de Jesus</h3>
-                    <p>Em João 16:14, Jesus afirma: "Ele [o Espírito Santo] me glorificará, porque há de receber do que é meu e vo-lo há de anunciar." À primeira vista, pode parecer contraditório: como o Espírito Santo glorifica a Jesus se Deus declara que não divide a glória com ninguém? A resposta está na natureza única da Triunidade.</p>
-
-                    <p>O Espírito Santo não glorifica a Jesus como se Cristo fosse uma criatura ou um ser inferior. Pelo contrário, o Espírito glorifica a Jesus porque Cristo é Deus. A glória que o Espírito revela não é uma glória emprestada ou usurpada, mas a glória intrínseca de Cristo como Filho eterno de Deus. O Espírito não está dando a Jesus algo que não lhe pertence; o Espírito está revelando ao mundo a glória que Jesus já possui desde toda a eternidade (João 17:5).</p>
-
-                    <p>Quando o Espírito Santo age nos corações dos crentes, o Espírito não aponta para si mesmo, mas para Cristo. O Espírito testifica de Jesus (João 15:26), convence o mundo do pecado, da justiça e do juízo (João 16:8-11), e nos faz compreender quem Jesus realmente é: o Filho de Deus encarnado, o Salvador do mundo. Essa glorificação não é uma transferência de glória, mas uma manifestação da glória que Jesus compartilha com o Pai e o Espírito desde sempre.</p>
-
-                    <h3>O Espírito de Deus sobre Jesus e sobre os Crentes</h3>
-                    <p>Em Isaías 61:1, lemos: "O Espírito do Senhor Deus está sobre mim, porque o Senhor me ungiu...". Este texto é aplicado a Jesus em Lucas 4:18-19, quando Cristo lê a passagem na sinagoga e declara: "Hoje se cumpriu esta Escritura aos vossos ouvidos." O Espírito que repousou sobre Jesus — o mesmo Espírito que Isaías profetizou — é agora derramado sobre todos os que creem (Atos 2:17-18).</p>
-
-                    <p>Se o Espírito Santo, que é Deus, agora habita em cada crente (1 Coríntios 3:16) e glorifica a Jesus em nós, isso só faz sentido se Jesus for Deus. Um ser humano comum não poderia ser o objeto eterno da adoração e da revelação do Espírito Santo. Só Deus pode ser glorificado de maneira tão absoluta e universal.</p>
-
-                    <h3>A Glória de Cristo como a Glória de Deus</h3>
-                    <p>Aqui está o ponto central: a glória que o Espírito Santo revela em Jesus não é uma glória estranha a Deus, mas a própria glória de Deus. Jesus não recebe a glória do Espírito como um presente externo; Cristo é a glória de Deus encarnada. Em João 1:14, lemos que "o Verbo se fez carne e habitou entre nós, cheio de graça e de verdade, e vimos a sua glória, glória como do unigênito do Pai".</p>
-
-                    <p>Quando o Espírito glorifica a Jesus, o Espírito está revelando a glória do Pai, porque Jesus é "a imagem do Deus invisível" (Colossenses 1:15). Não há competição ou divisão na Triunidade. O Pai, o Filho e o Espírito Santo são um só Deus, e a glória que compartilham é uma só. O Espírito não glorifica a Jesus em detrimento da glória do Pai, mas como parte dela. É como se o Espírito dissesse: "Olhem para Jesus, porque nele vocês veem o Pai" (João 14:9).</p>
-
-                    <h3>A Comunhão Eterna de Amor e Glória</h3>
-                    <p>Isso nos leva a um mistério maravilhoso: a Triunidade é uma comunhão de amor e glória eterna. O Pai glorifica o Filho (João 17:1), o Filho glorifica o Pai (João 17:4), e o Espírito glorifica o Filho. Essa glorificação mútua não é um círculo vicioso, mas um fluxo de amor e adoração que existe desde a eternidade e que agora nos inclui.</p>
-
-                    <p>Se o Espírito Santo, que é Deus, glorifica a Jesus, é porque Jesus é digno dessa glória. Cristo não é um mero profeta ou um ser criado, mas o Filho eterno, "resplendor da glória e expressão exata do seu Ser" (Hebreus 1:3). A glorificação de Jesus pelo Espírito é, na verdade, a revelação da glória de Deus ao mundo.</p>
-
-                    <h3>A Adoração que Só a Deus Pertence</h3>
-                    <p>Quando o Espírito Santo habita em nós, o Espírito não nos leva a adorar a si mesmo, mas a adorar a Jesus. O Espírito nos convence de que Jesus é Senhor (1 Coríntios 12:3) e nos enche de amor por Cristo. Isso só é possível porque Jesus é Deus. Se Cristo fosse menos do que Deus, o Espírito não o glorificaria dessa maneira, e nós não poderíamos adorá-lo como adoramos ao Pai.</p>
-
-                    <p>Portanto, caro leitor, a ação do Espírito Santo em glorificar a Jesus não contradiz a declaração de Isaías 42:8. Pelo contrário, a ação do Espírito a confirma. O Espírito glorifica a Jesus porque Cristo é Deus, e a glória que o Espírito revela é a glória do único Deus verdadeiro: Pai, Filho e Espírito Santo.</p>
-
-                    <h3>O Primeiro e o Último: Uma Declaração de Divindade</h3>
-                    <p>Deus diz em Isaías 44:6: "Eu sou o primeiro e eu sou o último; e fora de mim não há Deus". Em Apocalipse 22:13, Jesus afirma: "Eu sou o Alfa e o Ômega, o primeiro e o último, o princípio e o fim". Não é uma questão de contexto imediato ou remoto das passagens bíblicas. É uma questão de ser. Deus não "assume" títulos; Deus é o que Deus é. Se Jesus se declara o primeiro e o último, Cristo está se igualando a Deus — e, como vimos, os judeus entenderam isso muito bem.</p>
-
-                    <h3>O Envio do Consolador: Autoridade Divina</h3>
-                    <p>Jesus promete aos discípulos: "Eu rogarei ao Pai, e o Pai vos dará outro Consolador [o Espírito Santo], para que fique convosco para sempre" (João 14:16). Só Deus pode enviar o Espírito Santo. Se Jesus envia o Espírito, é porque Cristo opera com a mesma autoridade divina (João 15:26).</p>
-
-                    <h3>Toda a Autoridade no Céu e na Terra</h3>
-                    <p>Por fim, em Mateus 28:18, Jesus declara: "Toda a autoridade me foi dada no céu e na terra". Nenhum profeta, nenhum rei, nenhum ser humano comum recebeu tal poder. Só Deus reina sobre todas as coisas. Se Jesus possui essa autoridade, é porque Cristo é, de fato, o Filho de Deus, igual ao Pai em natureza e majestade.</p>
-
-                    <p>As palavras de Pedro a Jesus, registradas em Lucas 5:8, são surpreendentes e profundas. Ao presenciar o milagre da pesca milagrosa, Pedro não apenas reconhece o poder sobrenatural de Jesus, mas também sua própria indignidade diante da santidade de Cristo. Sua reação é de humildade extrema: ele pede que Jesus se afaste, como se não fosse digno de estar na presença daquele que é santo. Se Cristo não fosse santo, Pedro que estava sempre com ele poderia acusá-lo e até rejeitá-lo. Mas deu testemunho perfeito do filho de Deus aqui e em sua carta:</p>
-
-                    <p class="verse">“Para isto vocês foram chamados, pois também Cristo sofreu no lugar de vocês, deixando-lhes exemplo, para que sigam os seus passos. Ele não cometeu pecado algum, e nenhum engano foi encontrado em sua boca. Quando insultado, não revidava; quando maltratado, não fazia ameaças, mas entregava-se àquele que julga com justiça." (1 Pedro 2:21-23, NVI)</p>
-
-                    <p>Não é fantástico isso? Após conviver três anos ao lado do mestre — dia após dia, em cada palavra, gesto e atitude —, o próprio Pedro não encontrou nenhum engano, nenhuma sombra de pecado em Jesus. Isso não nos leva a uma conclusão inevitável? Estamos falando do próprio Filho de Deus!</p>
-
-                    <h3>Conclusão: O Mistério que Nos Transcende</h3>
-                    <p>Caro leitor, as Escrituras não apresentam um Jesus meramente humano, nem um deus distante. Elas revelam o Deus que se fez homem, que entrou na história para nos resgatar. A divindade de Cristo não é uma invenção teológica, mas a conclusão inevitável de quem lê as Escrituras com olhos abertos para a verdade.</p>
-                `
-            }
-        ]
-    };
-</script>
-
-<div id="welcomePopup" style="display: block; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); z-index: 1000; display: flex; justify-content: center; align-items: center;">
-    <div style="background-color: white; padding: 20px; border-radius: 10px; max-width: 600px; text-align: center;">
-        <h2>Bem-vindo ao Estudo Bíblico</h2>
-        <p>Clique em "Fechar" para começar o estudo.</p>
-        <button onclick="closePopup()" style="margin: 10px;">Fechar</button>
-    </div>
-</div>
-
-<div id="studyContent" style="display: none; max-width: 800px; margin: 0 auto; padding: 20px;">
-    <h2 id="studyQuestion"></h2>
-    <div id="studyAnswer"></div>
-    <div style="margin-top: 20px;">
-        <button id="prevButton" onclick="prevTopic()" style="display: none; margin-right: 15px; padding: 8px 16px;">Voltar</button>
-        <button id="nextButton" onclick="nextTopic()" style="padding: 8px 16px;">Próximo Tópico</button>
-    </div>
-</div>
-
-
-        let currentTopic = 0;
 
         function loadStudyTopic(index) {
-            const topic = studyTopics[index];
-            document.getElementById('moduleInfo').textContent = `Tópico ${index + 1} de ${studyTopics.length}`;
+            currentTopicIndex = index;
+            const topic = studyTopics[currentStudy][index];
+            document.getElementById('moduleInfo').textContent = `Tópico ${index + 1} de ${studyTopics[currentStudy].length}`;
             document.getElementById('questionText').innerHTML = topic.question;
             document.getElementById('answerText').innerHTML = topic.answer;
-            currentTopic = index;
-            if (index === studyTopics.length - 1) {
-                document.getElementById('nextBtn').textContent = 'Finalizar Estudo';
+
+            // Atualiza a visibilidade dos botões de navegação
+            document.getElementById('prevBtn').style.display = index === 0 ? 'none' : 'inline-block';
+            document.getElementById('nextBtn').style.display = 'inline-block';
+
+            // Se estiver no último tópico do estudo das mulheres, mostra o aviso
+            if (currentStudy === "mulheres" && index === studyTopics[currentStudy].length - 1) {
+                document.getElementById('nextBtn').textContent = "Próximo Estudo";
+            } else {
+                document.getElementById('nextBtn').textContent = "Próximo Tópico";
             }
         }
 
-        document.getElementById('nextBtn').addEventListener('click', () => {
-            if (currentTopic < studyTopics.length - 1) {
-                loadStudyTopic(currentTopic + 1);
-            } else {
-                alert("Estudo concluído! Que Deus abençoe sua reflexão.");
+        function nextTopic() {
+            if (currentStudy === "mulheres" && currentTopicIndex === studyTopics[currentStudy].length - 1) {
+                // Se estiver no último tópico do estudo das mulheres, pergunta se deseja prosseguir
+                if (confirm("Você concluiu o estudo sobre o ministério feminino. Deseja prosseguir para o estudo sobre a divindade de Cristo?")) {
+                    currentStudy = "cristo";
+                    currentTopicIndex = 0;
+                    loadStudyTopic(0);
+                }
+            } else if (currentTopicIndex < studyTopics[currentStudy].length - 1) {
+                loadStudyTopic(currentTopicIndex + 1);
             }
-        });
+        }
+
+        function prevTopic() {
+            if (currentTopicIndex > 0) {
+                loadStudyTopic(currentTopicIndex - 1);
+            }
+        }
+
+        const studyTopics = {
+            mulheres: [
+                {
+                    question: "A capacidade divina faz distinção de gênero?",
+                    answer: `
+                        <p>Quando Paulo afirma que "nossa capacidade vem de Deus" (2 Coríntios 3:5), ele não está se referindo a um grupo específico, mas à igreja como um todo — homens e mulheres.</p>
+                        <p class="verse">"Não que sejamos capazes, por nós mesmos, de pensar alguma coisa como vinda de nós mesmos; pelo contrário, nossa capacidade vem de Deus." (2 Coríntios 3:5)</p>
+                        <p>A história bíblica e a realidade atual confirmam que Deus capacita mulheres para o ministério pastoral, para ensinar, liderar e operar milagres.</p>
+                        <p><strong>Exemplos:</strong> Débora (Juízes 4-5), Hulda (2 Reis 22:14-20) e Priscila (Atos 18:26).</p>
+                    `
+                },
+                {
+                    question: "Qual o contexto de 1 Timóteo 2:12?",
+                    answer: `
+                        <p>Paulo escreve: "Não permito que a mulher ensine ou domine o homem" (1 Timóteo 2:12). É fundamental entender o contexto: em Éfeso, algumas mulheres, recém-convertidas e sem instrução formal, poderiam estar interrompendo os cultos.</p>
+                        <p class="verse">"Tudo, porém, seja feito com decência e ordem." (1 Coríntios 14:40)</p>
+                        <p>Paulo não está proibindo o ministério feminino, mas pedindo que tudo seja feito com ordem. Ele reconheceu e apoiou o ministério de mulheres como Febe (diaconisa) e Junia (apóstola).</p>
+                    `
+                },
+                {
+                    question: "Mulheres maduras e capacitadas: um contraste com a negligência masculina?",
+                    answer: `
+                        <p>A Bíblia e a história mostram que Deus usa quem está disponível, independentemente de gênero. Enquanto alguns homens se omitem, mulheres têm se destacado no ministério.</p>
+                        <p class="verse">"Porque não há diferença entre judeu e grego; pois o mesmo Senhor é Senhor de todos e abençoa ricamente todos os que o invocam." (Romanos 10:12)</p>
+                        <p>Uma mulher que cria filhos, administra um lar e opera milagres já provou sua capacidade de liderança e amor sacrificial.</p>
+                    `
+                },
+                {
+                    question: "A graça de Deus conhece limites humanos?",
+                    answer: `
+                        <p>Jesus quebrou barreiras culturais ao dialogar com a samaritana (João 4), defender a mulher adúltera (João 8) e ser ungido por Maria (João 12).</p>
+                        <p class="verse">"Mas, vindo a plenitude do tempo, Deus enviou seu Filho, nascido de mulher, nascido sob a lei." (Gálatas 4:4)</p>
+                        <p>Se Deus está usando mulheres no ministério pastoral hoje, não é por falta de homens, mas porque Ele escolhe quem quer.</p>
+                    `
+                },
+                {
+                    question: "Junia: uma apóstola reconhecida pela história?",
+                    answer: `
+                        <p>Romanos 16:7 diz: "Saúdem Andrônico e Júnia, meus parentes e companheiros de prisão. Eles são notáveis entre os apóstolos e se tornaram cristãos antes de mim."</p>
+                        <p class="verse">"Saúdem Andrônico e Júnia, meus parentes e companheiros de prisão. Eles são notáveis entre os apóstolos e se tornaram cristãos antes de mim." (Romanos 16:7)</p>
+                        <p>O nome "Junia" é feminino e não há base histórica para a versão masculina "Junias". Estudiosos como Linda Belleville confirmam que Junia era uma apóstola.</p>
+                    `
+                },
+                {
+                    question: "Conclusão: O que a Bíblia realmente ensina?",
+                    answer: `
+                        <p>O ministério pastoral feminino não é uma questão de permissão humana, mas de reconhecimento do que Deus já está fazendo.</p>
+                        <p class="verse">"Quem pode resistir à sua vontade?" (Romanos 9:19)</p>
+                        <p>Se mulheres são capacitadas, maduras e usadas pelo Espírito para realizar obras poderosas, a igreja deve apoiar, não resistir.</p>
+                    `
+                }
+            ],
+            cristo: [
+                {
+                    question: "Jesus Cristo é Deus?",
+                    answer: `
+                        <p>Caro leitor, ao mergulharmos nas páginas das Escrituras, somos convidados a contemplar uma verdade que transcende a lógica humana: a divindade de Jesus Cristo como Filho de Deus. Não se trata de uma afirmação vazia ou de um título honorífico, mas de uma realidade tecida nos fios da própria revelação divina. Vamos percorrer, juntos, os caminhos traçados pelas passagens bíblicas que falam sobre isso, desvendando como elas apontam para a natureza única de Cristo.</p>
+                        <h3>A Pluralidade na Criação: "Façamos o Homem"</h3>
+                        <p>No livro de Gênesis, Deus declara: "Façamos o homem à nossa imagem" (Gênesis 1:26). Essa pluralidade no verbo — "façamos" — não é um mero capricho linguístico. No hebraico, a palavra usada para Deus aqui é Elohim, um substantivo plural que, no entanto, é acompanhado por verbos no singular, indicando uma unidade dentro da diversidade. Isso não é um convite aos anjos, pois anjos não criam; eles obedecem. A criação é um ato exclusivo da divindade. Esse "nós" já aponta para uma comunhão interna no ser de Deus, que o Novo Testamento revelará como Pai, Filho e Espírito Santo.</p>
+                        <h3>O Diálogo Divino em Babel: "Vinde, Desçamos"</h3>
+                        <p>Em Gênesis 11:7, Deus diz: "Vinde, desçamos e confundamos a língua deles". Novamente, há um convite implícito na palavra "vinde", que sugere uma deliberação dentro da Triunidade. Não é uma ordem dada a criaturas inferiores, mas um diálogo entre as pessoas divinas. Se Cristo é o Verbo (João 1:1), a Palavra eterna de Deus, Cristo está presente nesse "vinde", participando ativamente da história da humanidade desde o princípio.</p>
+                        <h3>Isaías e o Messias Divino: "Deus Forte" e "Emanuel"</h3>
+                        <p>O profeta Isaías, em sua visão messiânica, descreve o Messias com termos que só podem ser aplicados à divindade: "Porque um menino nos nasceu, um filho se nos deu; e o principado está sobre os seus ombros; e o seu nome será: Maravilhoso Conselheiro, Deus Forte, Pai da Eternidade, Príncipe da Paz" (Isaías 9:6). A expressão "Deus Forte" (em hebraico, El Gibbor) não deixa margem para dúvidas: é um título divino. Como um mero ser humano poderia carregar tal nome? Além disso, o contexto de Isaías 7:14 fala do "Emanuel", que significa "Deus conosco". Se Deus está "conosco" em Jesus, como negar a divindade de Cristo?</p>
+                        <p>Isaías 48:16 apresenta uma cena fascinante: o Senhor Deus fala, e ao lado de Deus estão o Espírito e o "Enviado" (em hebraico, shelach). Essa passagem é uma janela para a Triunidade, onde as três pessoas divinas são mencionadas em um único versículo.</p>
+                        <h3>A Declaração de Jesus: "EU SOU"</h3>
+                        <p>Em João 8:58, Jesus diz aos judeus: "Em verdade, em verdade vos digo: antes que Abraão existisse, EU SOU." A reação foi imediata: pegaram pedras para apedrejá-lo (João 8:59). Por quê? Porque Jesus estava se apropriando do nome sagrado de Deus, revelado a Moisés na sarça ardente: "EU SOU O QUE SOU" (Êxodo 3:14). Os judeus entenderam que Cristo estava se declarando Deus, e isso era blasfêmia — a menos que fosse verdade.</p>
+                        <h3>Jesus como a Fonte da Vida Eterna</h3>
+                        <p>Cristo afirma: "Eu sou o pão da vida" (João 6:35) e "Eu sou a ressurreição e a vida" (João 11:25). A vida é um atributo exclusivo de Deus. Só Deus possui a vida em si mesmo (João 5:26) e só Deus pode concedê-la. Se Jesus dá vida — e não apenas vida biológica, mas vida eterna —, Cristo está operando no nível da divindade.</p>
+                        <h3>O Batismo com o Espírito Santo: Um Poder Exclusivo de Deus</h3>
+                        <p>João Batista, ao apresentar Jesus, diz: "Ele vos batizará com o Espírito Santo" (Mateus 3:11). Quem, senão Deus, pode conceder o Espírito Santo? Se Jesus concede o Espírito, é porque Cristo compartilha da mesma natureza divina.</p>
+                        <p>Paulo, em Romanos 8:9, vai além: "Se alguém não tem o Espírito de Cristo, esse tal não é dele". Isso implica que o Espírito de Cristo — que é o Espírito Santo — habita nos crentes. Como um ser humano comum poderia ter seu espírito presente em milhões de corações ao mesmo tempo, em todas as épocas e lugares? Só a onipresença divina explica isso.</p>
+                        <h3>A Glória Compartilhada: Adoração ao Pai e ao Cordeiro</h3>
+                        <p>Deus declara em Isaías 42:8: "Não darei a minha glória a outrem". No entanto, em Apocalipse 5:13, ouvimos: "Ao que está assentado no trono e ao Cordeiro [Jesus] sejam dadas ação de graças, honra, glória e poder para todo o sempre". Anjos, criaturas e toda a criação adoram juntos ao Pai e ao Cordeiro. Se a glória é exclusiva de Deus, e Jesus a recebe, a conclusão é inevitável: Jesus é Deus.</p>
+                        <h3>O Espírito Santo e a Glorificação de Jesus</h3>
+                        <p>Em João 16:14, Jesus afirma: "Ele [o Espírito Santo] me glorificará, porque há de receber do que é meu e vo-lo há de anunciar." À primeira vista, pode parecer contraditório: como o Espírito Santo glorifica a Jesus se Deus declara que não divide a glória com ninguém? A resposta está na natureza única da Triunidade.</p>
+                        <p>O Espírito Santo não glorifica a Jesus como se Cristo fosse uma criatura ou um ser inferior. Pelo contrário, o Espírito glorifica a Jesus porque Cristo é Deus. A glória que o Espírito revela não é uma glória emprestada ou usurpada, mas a glória intrínseca de Cristo como Filho eterno de Deus. O Espírito não está dando a Jesus algo que não lhe pertence; o Espírito está revelando ao mundo a glória que Jesus já possui desde toda a eternidade (João 17:5).</p>
+                        <p>Quando o Espírito Santo age nos corações dos crentes, o Espírito não aponta para si mesmo, mas para Cristo. O Espírito testifica de Jesus (João 15:26), convence o mundo do pecado, da justiça e do juízo (João 16:8-11), e nos faz compreender quem Jesus realmente é: o Filho de Deus encarnado, o Salvador do mundo. Essa glorificação não é uma transferência de glória, mas uma manifestação da glória de Deus ao mundo.</p>
+                        <h3>O Espírito de Deus sobre Jesus e sobre os Crentes</h3>
+                        <p>Em Isaías 61:1, lemos: "O Espírito do Senhor Deus está sobre mim, porque o Senhor me ungiu...". Este texto é aplicado a Jesus em Lucas 4:18-19, quando Cristo lê a passagem na sinagoga e declara: "Hoje se cumpriu esta Escritura aos vossos ouvidos." O Espírito que repousou sobre Jesus — o mesmo Espírito que Isaías profetizou — é agora derramado sobre todos os que creem (Atos 2:17-18).</p>
+                        <p>Se o Espírito Santo, que é Deus, agora habita em cada crente (1 Coríntios 3:16) e glorifica a Jesus em nós, isso só faz sentido se Jesus for Deus. Um ser humano comum não poderia ser o objeto eterno da adoração e da revelação do Espírito Santo. Só Deus pode ser glorificado de maneira tão absoluta e universal.</p>
+                        <h3>A Glória de Cristo como a Glória de Deus</h3>
+                        <p>Aqui está o ponto central: a glória que o Espírito Santo revela em Jesus não é uma glória estranha a Deus, mas a própria glória de Deus. Jesus não recebe a glória do Espírito como um presente externo; Cristo é a glória de Deus encarnada. Em João 1:14, lemos que "o Verbo se fez carne e habitou entre nós, cheio de graça e de verdade, e vimos a sua glória, glória como do unigênito do Pai".</p>
+                        <p>Quando o Espírito glorifica a Jesus, o Espírito está revelando a glória do Pai, porque Jesus é "a imagem do Deus invisível" (Colossenses 1:15). Não há competição ou divisão na Triunidade. O Pai, o Filho e o Espírito Santo são um só Deus, e a glória que compartilham é uma só. O Espírito não glorifica a Jesus em detrimento da glória do Pai, mas como parte dela. É como se o Espírito dissesse: "Olhem para Jesus, porque nele vocês veem o Pai" (João 14:9).</p>
+                        <h3>A Comunhão Eterna de Amor e Glória</h3>
+                        <p>Isso nos leva a um mistério maravilhoso: a Triunidade é uma comunhão de amor e glória eterna. O Pai glorifica o Filho (João 17:1), o Filho glorifica o Pai (João 17:4), e o Espírito glorifica o Filho. Essa glorificação mútua não é um círculo vicioso, mas um fluxo de amor e adoração que existe desde a eternidade e que agora nos inclui.</p>
+                        <p>Se o Espírito Santo, que é Deus, glorifica a Jesus, é porque Jesus é digno dessa glória. Cristo não é um mero profeta ou um ser criado, mas o Filho eterno, "resplendor da glória e expressão exata do seu Ser" (Hebreus 1:3). A glorificação de Jesus pelo Espírito é, na verdade, a revelação da glória de Deus ao mundo.</p>
+                        <h3>A Adoração que Só a Deus Pertence</h3>
+                        <p>Quando o Espírito Santo habita em nós, o Espírito não nos leva a adorar a si mesmo, mas a adorar a Jesus. O Espírito nos convence de que Jesus é Senhor (1 Coríntios 12:3) e nos enche de amor por Cristo. Isso só é possível porque Jesus é Deus. Se Cristo fosse menos do que Deus, o Espírito não o glorificaria dessa maneira, e nós não poderíamos adorá-lo como adoramos ao Pai.</p>
+                        <p>Portanto, caro leitor, a ação do Espírito Santo em glorificar a Jesus não contradiz a declaração de Isaías 42:8. Pelo contrário, a ação do Espírito a confirma. O Espírito glorifica a Jesus porque Cristo é Deus, e a glória que o Espírito revela é a glória do único Deus verdadeiro: Pai, Filho e Espírito Santo.</p>
+                        <h3>O Primeiro e o Último: Uma Declaração de Divindade</h3>
+                        <p>Deus diz em Isaías 44:6: "Eu sou o primeiro e eu sou o último; e fora de mim não há Deus". Em Apocalipse 22:13, Jesus afirma: "Eu sou o Alfa e o Ômega, o primeiro e o último, o princípio e o fim". Não é uma questão de contexto imediato ou remoto das passagens bíblicas. É uma questão de ser. Deus não "assume" títulos; Deus é o que Deus é. Se Jesus se declara o primeiro e o último, Cristo está se igualando a Deus — e, como vimos, os judeus entenderam isso muito bem.</p>
+                        <h3>O Envio do Consolador: Autoridade Divina</h3>
+                        <p>Jesus promete aos discípulos: "Eu rogarei ao Pai, e o Pai vos dará outro Consolador [o Espírito Santo], para que fique convosco para sempre" (João 14:16). Só Deus pode enviar o Espírito Santo. Se Jesus envia o Espírito, é porque Cristo opera com a mesma autoridade divina (João 15:26).</p>
+                        <h3>Toda a Autoridade no Céu e na Terra</h3>
+                        <p>Por fim, em Mateus 28:18, Jesus declara: "Toda a autoridade me foi dada no céu e na terra". Nenhum profeta, nenhum rei, nenhum ser humano comum recebeu tal poder. Só Deus reina sobre todas as coisas. Se Jesus possui essa autoridade, é porque Cristo é, de fato, o Filho de Deus, igual ao Pai em natureza e majestade.</p>
+                        <p>As palavras de Pedro a Jesus, registradas em Lucas 5:8, são surpreendentes e profundas. Ao presenciar o milagre da pesca milagrosa, Pedro não apenas reconhece o poder sobrenatural de Jesus, mas também sua própria indignidade diante da santidade de Cristo. Sua reação é de humildade extrema: ele pede que Jesus se afaste, como se não fosse digno de estar na presença daquele que é santo. Se Cristo não fosse santo, Pedro que estava sempre com ele poderia acusá-lo e até rejeitá-lo. Mas deu testemunho perfeito do filho de Deus aqui e em sua carta:</p>
+                        <p class="verse">“Para isto vocês foram chamados, pois também Cristo sofreu no lugar de vocês, deixando-lhes exemplo, para que sigam os seus passos. Ele não cometeu pecado algum, e nenhum engano foi encontrado em sua boca. Quando insultado, não revidava; quando maltratado, não fazia ameaças, mas entregava-se àquele que julga com justiça." (1 Pedro 2:21-23, NVI)</p>
+                        <p>Não é fantástico isso? Após conviver três anos ao lado do mestre — dia após dia, em cada palavra, gesto e atitude —, o próprio Pedro não encontrou nenhum engano, nenhuma sombra de pecado em Jesus. Isso não nos leva a uma conclusão inevitável? Estamos falando do próprio Filho de Deus!</p>
+                        <h3>Conclusão: O Mistério que Nos Transcende</h3>
+                        <p>Caro leitor, as Escrituras não apresentam um Jesus meramente humano, nem um deus distante. Elas revelam o Deus que se fez homem, que entrou na história para nos resgatar. A divindade de Cristo não é uma invenção teológica, mas a conclusão inevitável de quem lê as Escrituras com olhos abertos para a verdade.</p>
+                    `
+                }
+            ]
+        };
     </script>
 </body>
 </html>
