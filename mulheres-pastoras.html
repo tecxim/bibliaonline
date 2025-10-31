@@ -229,62 +229,109 @@
 
     <!-- Scripts -->
     <script>
-        function closePopup() {
-            document.getElementById('welcomePopup').style.display = 'none';
-            loadStudyTopic(0);
-        }
+    let currentTopicIndex = 0;
 
-        const studyTopics = [
-            {
-                question: "A capacidade divina faz distinção de gênero?",
-                answer: `
-                    <p>Quando Paulo afirma que "nossa capacidade vem de Deus" (2 Coríntios 3:5), ele não está se referindo a um grupo específico, mas à igreja como um todo — homens e mulheres.</p>
-                    <p class="verse">"Não que sejamos capazes, por nós mesmos, de pensar alguma coisa como vinda de nós mesmos; pelo contrário, nossa capacidade vem de Deus." (2 Coríntios 3:5)</p>
-                    <p>A história bíblica e a realidade atual confirmam que Deus capacita mulheres para o ministério pastoral, para ensinar, liderar e operar milagres.</p>
-                    <p><strong>Exemplos:</strong> Débora (Juízes 4-5), Hulda (2 Reis 22:14-20) e Priscila (Atos 18:26).</p>
-                `
-            },
-            {
-                question: "Qual o contexto de 1 Timóteo 2:12?",
-                answer: `
-                    <p>Paulo escreve: "Não permito que a mulher ensine ou domine o homem" (1 Timóteo 2:12). É fundamental entender o contexto: em Éfeso, algumas mulheres, recém-convertidas e sem instrução formal, poderiam estar interrompendo os cultos.</p>
-                    <p class="verse">"Tudo, porém, seja feito com decência e ordem." (1 Coríntios 14:40)</p>
-                    <p>Paulo não está proibindo o ministério feminino, mas pedindo que tudo seja feito com ordem. Ele reconheceu e apoiou o ministério de mulheres como Febe (diaconisa) e Junia (apóstola).</p>
-                `
-            },
-            {
-                question: "Mulheres maduras e capacitadas: um contraste com a negligência masculina?",
-                answer: `
-                    <p>A Bíblia e a história mostram que Deus usa quem está disponível, independentemente de gênero. Enquanto alguns homens se omitem, mulheres têm se destacado no ministério.</p>
-                    <p class="verse">"Porque não há diferença entre judeu e grego; pois o mesmo Senhor é Senhor de todos e abençoa ricamente todos os que o invocam." (Romanos 10:12)</p>
-                    <p>Uma mulher que cria filhos, administra um lar e opera milagres já provou sua capacidade de liderança e amor sacrificial.</p>
-                `
-            },
-            {
-                question: "A graça de Deus conhece limites humanos?",
-                answer: `
-                    <p>Jesus quebrou barreiras culturais ao dialogar com a samaritana (João 4), defender a mulher adúltera (João 8) e ser ungido por Maria (João 12).</p>
-                    <p class="verse">"Mas, vindo a plenitude do tempo, Deus enviou seu Filho, nascido de mulher, nascido sob a lei." (Gálatas 4:4)</p>
-                    <p>Se Deus está usando mulheres no ministério pastoral hoje, não é por falta de homens, mas porque Ele escolhe quem quer.</p>
-                `
-            },
-            {
-                question: "Junia: uma apóstola reconhecida pela história?",
-                answer: `
-                    <p>Romanos 16:7 diz: "Saúdem Andrônico e Júnia, meus parentes e companheiros de prisão. Eles são notáveis entre os apóstolos e se tornaram cristãos antes de mim."</p>
-                    <p class="verse">"Saúdem Andrônico e Júnia, meus parentes e companheiros de prisão. Eles são notáveis entre os apóstolos e se tornaram cristãos antes de mim." (Romanos 16:7)</p>
-                    <p>O nome "Junia" é feminino e não há base histórica para a versão masculina "Junias". Estudiosos como Linda Belleville confirmam que Junia era uma apóstola.</p>
-                `
-            },
-            {
-                question: "Conclusão: O que a Bíblia realmente ensina?",
-                answer: `
-                    <p>O ministério pastoral feminino não é uma questão de permissão humana, mas de reconhecimento do que Deus já está fazendo.</p>
-                    <p class="verse">"Quem pode resistir à sua vontade?" (Romanos 9:19)</p>
-                    <p>Se mulheres são capacitadas, maduras e usadas pelo Espírito para realizar obras poderosas, a igreja deve apoiar, não resistir.</p>
-                `
-            }
-        ];
+    function closePopup() {
+        document.getElementById('welcomePopup').style.display = 'none';
+        loadStudyTopic(0);
+    }
+
+    function loadStudyTopic(index) {
+        currentTopicIndex = index;
+        const topic = studyTopics[index];
+        document.getElementById('studyQuestion').innerHTML = topic.question;
+        document.getElementById('studyAnswer').innerHTML = topic.answer;
+        document.getElementById('studyContent').style.display = 'block';
+
+        // Atualiza a visibilidade dos botões de navegação
+        document.getElementById('prevButton').style.display = index === 0 ? 'none' : 'inline-block';
+        document.getElementById('nextButton').style.display = index === studyTopics.length - 1 ? 'none' : 'inline-block';
+    }
+
+    function nextTopic() {
+        if (currentTopicIndex < studyTopics.length - 1) {
+            loadStudyTopic(currentTopicIndex + 1);
+        }
+    }
+
+    function prevTopic() {
+        if (currentTopicIndex > 0) {
+            loadStudyTopic(currentTopicIndex - 1);
+        }
+    }
+
+    const studyTopics = [
+        {
+            question: "A capacidade divina faz distinção de gênero?",
+            answer: `
+                <p>Quando Paulo afirma que "nossa capacidade vem de Deus" (2 Coríntios 3:5), ele não está se referindo a um grupo específico, mas à igreja como um todo — homens e mulheres.</p>
+                <p class="verse">"Não que sejamos capazes, por nós mesmos, de pensar alguma coisa como vinda de nós mesmos; pelo contrário, nossa capacidade vem de Deus." (2 Coríntios 3:5)</p>
+                <p>A história bíblica e a realidade atual confirmam que Deus capacita mulheres para o ministério pastoral, para ensinar, liderar e operar milagres.</p>
+                <p><strong>Exemplos:</strong> Débora (Juízes 4-5), Hulda (2 Reis 22:14-20) e Priscila (Atos 18:26).</p>
+            `
+        },
+        {
+            question: "Qual o contexto de 1 Timóteo 2:12?",
+            answer: `
+                <p>Paulo escreve: "Não permito que a mulher ensine ou domine o homem" (1 Timóteo 2:12). É fundamental entender o contexto: em Éfeso, algumas mulheres, recém-convertidas e sem instrução formal, poderiam estar interrompendo os cultos.</p>
+                <p class="verse">"Tudo, porém, seja feito com decência e ordem." (1 Coríntios 14:40)</p>
+                <p>Paulo não está proibindo o ministério feminino, mas pedindo que tudo seja feito com ordem. Ele reconheceu e apoiou o ministério de mulheres como Febe (diaconisa) e Junia (apóstola).</p>
+            `
+        },
+        {
+            question: "Mulheres maduras e capacitadas: um contraste com a negligência masculina?",
+            answer: `
+                <p>A Bíblia e a história mostram que Deus usa quem está disponível, independentemente de gênero. Enquanto alguns homens se omitem, mulheres têm se destacado no ministério.</p>
+                <p class="verse">"Porque não há diferença entre judeu e grego; pois o mesmo Senhor é Senhor de todos e abençoa ricamente todos os que o invocam." (Romanos 10:12)</p>
+                <p>Uma mulher que cria filhos, administra um lar e opera milagres já provou sua capacidade de liderança e amor sacrificial.</p>
+            `
+        },
+        {
+            question: "A graça de Deus conhece limites humanos?",
+            answer: `
+                <p>Jesus quebrou barreiras culturais ao dialogar com a samaritana (João 4), defender a mulher adúltera (João 8) e ser ungido por Maria (João 12).</p>
+                <p class="verse">"Mas, vindo a plenitude do tempo, Deus enviou seu Filho, nascido de mulher, nascido sob a lei." (Gálatas 4:4)</p>
+                <p>Se Deus está usando mulheres no ministério pastoral hoje, não é por falta de homens, mas porque Ele escolhe quem quer.</p>
+            `
+        },
+        {
+            question: "Junia: uma apóstola reconhecida pela história?",
+            answer: `
+                <p>Romanos 16:7 diz: "Saúdem Andrônico e Júnia, meus parentes e companheiros de prisão. Eles são notáveis entre os apóstolos e se tornaram cristãos antes de mim."</p>
+                <p class="verse">"Saúdem Andrônico e Júnia, meus parentes e companheiros de prisão. Eles são notáveis entre os apóstolos e se tornaram cristãos antes de mim." (Romanos 16:7)</p>
+                <p>O nome "Junia" é feminino e não há base histórica para a versão masculina "Junias". Estudiosos como Linda Belleville confirmam que Junia era uma apóstola.</p>
+            `
+        },
+        {
+            question: "Conclusão: O que a Bíblia realmente ensina?",
+            answer: `
+                <p>O ministério pastoral feminino não é uma questão de permissão humana, mas de reconhecimento do que Deus já está fazendo.</p>
+                <p class="verse">"Quem pode resistir à sua vontade?" (Romanos 9:19)</p>
+                <p>Se mulheres são capacitadas, maduras e usadas pelo Espírito para realizar obras poderosas, a igreja deve apoiar, não resistir.</p>
+            `
+        },
+        {
+            question: "Jesus Cristo é Deus?",
+            answer: `
+                <p>Caro leitor, ao mergulharmos nas páginas das Escrituras, somos convidados a contemplar uma verdade que transcende a lógica humana: a divindade de Jesus Cristo como Filho de Deus. Não se trata de uma afirmação vazia ou de um título honorífico, mas de uma realidade tecida nos fios da própria revelação divina. Vamos percorrer, juntos, os caminhos traçados pelas passagens bíblicas que falam sobre isso, desvendando como elas apontam para a natureza única de Cristo.</p>
+
+                <h3>A Pluralidade na Criação: "Façamos o Homem"</h3>
+                <p>No livro de Gênesis, Deus declara: "Façamos o homem à nossa imagem" (Gênesis 1:26). Essa pluralidade no verbo — "façamos" — não é um mero capricho linguístico. No hebraico, a palavra usada para Deus aqui é Elohim, um substantivo plural que, no entanto, é acompanhado por verbos no singular, indicando uma unidade dentro da diversidade. Isso não é um convite aos anjos, pois anjos não criam; eles obedecem. A criação é um ato exclusivo da divindade. Esse "nós" já aponta para uma comunhão interna no ser de Deus, que o Novo Testamento revelará como Pai, Filho e Espírito Santo.</p>
+
+                <h3>O Diálogo Divino em Babel: "Vinde, Desçamos"</h3>
+                <p>Em Gênesis 11:7, Deus diz: "Vinde, desçamos e confundamos a língua deles". Novamente, há um convite implícito na palavra "vinde", que sugere uma deliberação dentro da Triunidade. Não é uma ordem dada a criaturas inferiores, mas um diálogo entre as pessoas divinas. Se Cristo é o Verbo (João 1:1), a Palavra eterna de Deus, Cristo está presente nesse "vinde", participando ativamente da história da humanidade desde o princípio.</p>
+
+                <h3>Isaías e o Messias Divino: "Deus Forte" e "Emanuel"</h3>
+                <p>O profeta Isaías, em sua visão messiânica, descreve o Messias com termos que só podem ser aplicados à divindade: "Porque um menino nos nasceu, um filho se nos deu; e o principado está sobre os seus ombros; e o seu nome será: Maravilhoso Conselheiro, Deus Forte, Pai da Eternidade, Príncipe da Paz" (Isaías 9:6). A expressão "Deus Forte" (em hebraico, El Gibbor) não deixa margem para dúvidas: é um título divino. Como um mero ser humano poderia carregar tal nome? Além disso, o contexto de Isaías 7:14 fala do "Emanuel", que significa "Deus conosco". Se Deus está "conosco" em Jesus, como negar a divindade de Cristo?</p>
+
+                <h3>A Declaração de Jesus: "EU SOU"</h3>
+                <p>Em João 8:58, Jesus diz aos judeus: "Em verdade, em verdade vos digo: antes que Abraão existisse, EU SOU." A reação foi imediata: pegaram pedras para apedrejá-lo (João 8:59). Por quê? Porque Jesus estava se apropriando do nome sagrado de Deus, revelado a Moisés na sarça ardente: "EU SOU O QUE SOU" (Êxodo 3:14). Os judeus entenderam que Cristo estava se declarando Deus, e isso era blasfêmia — a menos que fosse verdade.</p>
+
+                <h3>Conclusão: O Mistério que Nos Transcende</h3>
+                <p>Caro leitor, as Escrituras não apresentam um Jesus meramente humano, nem um deus distante. Elas revelam o Deus que se fez homem, que entrou na história para nos resgatar. A divindade de Cristo não é uma invenção teológica, mas a conclusão inevitável de quem lê as Escrituras com olhos abertos para a verdade.</p>
+            `
+        }
+    ];
 
         let currentTopic = 0;
 
