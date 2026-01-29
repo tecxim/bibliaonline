@@ -457,6 +457,44 @@
     .language-selector {
       flex-wrap: nowrap;
     }
+
+   .search-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .select-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    select {
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 1rem;
+      background: white;
+      transition: var(--transition);
+    }
+
+    select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    }
+
+    .search-button {
+      background: var(--secondary);
+      margin-top: 10px;
+    }
+
+    .search-button:hover {
+      background: #1a252f;
+    }
+
   </style>
 </head>
 <body>
@@ -495,26 +533,47 @@
   <!-- Conteúdo Principal -->
   <div class="container">
     <h1>Leitura Bíblica Aleatória</h1>
-    
+
     <div class="language-selector">
       <button class="language-btn active" onclick="setLanguage('web')">Inglês (WEB)</button>
       <button class="language-btn" onclick="setLanguage('almeida')">Português (Almeida)</button>
     </div>
-    
+
+    <!-- Novo container de busca -->
+    <div class="search-container">
+      <div class="select-group">
+        <label for="bookSelect">Livro:</label>
+        <select id="bookSelect" onchange="updateChapters()">
+          <option value="">Selecione um livro</option>
+        </select>
+      </div>
+
+      <div class="select-group">
+        <label for="chapterSelect">Capítulo:</label>
+        <select id="chapterSelect" disabled>
+          <option value="">Selecione um capítulo</option>
+        </select>
+      </div>
+
+      <button class="search-button" onclick="loadSelectedChapter()" id="searchButton">
+        Buscar Capítulo
+      </button>
+    </div>
+
     <div class="reference" id="reference">Carregando referência...</div>
     <div class="chapter-text" id="chapterText">Por favor, aguarde...</div>
-    
+
     <div class="buttons">
       <button onclick="loadRandomChapter()" id="loadButton">
         <span class="spinner" id="spinner" style="display: none;"></span>
         Ler outro capítulo
       </button>
     </div>
-    
+
     <footer>
       <p>EN / PT: Bible available in English and Portuguese — public domain — no ad banners. / Bíblia disponível em Português e Inglês — domínio público — sem banners de anúncio.</p>
     </footer>
-    
+
     <div class="share-container">
       <button id="shareBtn">📤 Share / Compartilhar</button>
     </div>
@@ -522,23 +581,75 @@
 
   <script>
     let currentLanguage = 'web';
-    const books = [
-      { name: "Genesis", chapters: 50 },
-      { name: "Exodus", chapters: 40 },
-      { name: "Leviticus", chapters: 27 },
-      { name: "Numbers", chapters: 36 },
-      { name: "Deuteronomy", chapters: 34 },
-      { name: "Joshua", chapters: 24 },
-      { name: "Psalms", chapters: 150 },
-      { name: "Proverbs", chapters: 31 },
-      { name: "Isaiah", chapters: 66 },
-      { name: "Matthew", chapters: 28 },
-      { name: "Mark", chapters: 16 },
-      { name: "Luke", chapters: 24 },
-      { name: "John", chapters: 21 },
-      { name: "Acts", chapters: 28 },
-      { name: "Romans", chapters: 16 },
-      { name: "Revelation", chapters: 22 }
+
+    // Lista completa de livros bíblicos
+    const allBooks = [
+      { name: "Genesis", chapters: 50, pt: "Gênesis" },
+      { name: "Exodus", chapters: 40, pt: "Êxodo" },
+      { name: "Leviticus", chapters: 27, pt: "Levítico" },
+      { name: "Numbers", chapters: 36, pt: "Números" },
+      { name: "Deuteronomy", chapters: 34, pt: "Deuteronômio" },
+      { name: "Joshua", chapters: 24, pt: "Josué" },
+      { name: "Judges", chapters: 21, pt: "Juízes" },
+      { name: "Ruth", chapters: 4, pt: "Rute" },
+      { name: "1 Samuel", chapters: 31, pt: "1 Samuel" },
+      { name: "2 Samuel", chapters: 24, pt: "2 Samuel" },
+      { name: "1 Kings", chapters: 22, pt: "1 Reis" },
+      { name: "2 Kings", chapters: 25, pt: "2 Reis" },
+      { name: "1 Chronicles", chapters: 29, pt: "1 Crônicas" },
+      { name: "2 Chronicles", chapters: 36, pt: "2 Crônicas" },
+      { name: "Ezra", chapters: 10, pt: "Esdras" },
+      { name: "Nehemiah", chapters: 13, pt: "Neemias" },
+      { name: "Esther", chapters: 10, pt: "Ester" },
+      { name: "Job", chapters: 42, pt: "Jó" },
+      { name: "Psalms", chapters: 150, pt: "Salmos" },
+      { name: "Proverbs", chapters: 31, pt: "Provérbios" },
+      { name: "Ecclesiastes", chapters: 12, pt: "Eclesiastes" },
+      { name: "Song of Solomon", chapters: 8, pt: "Cânticos" },
+      { name: "Isaiah", chapters: 66, pt: "Isaías" },
+      { name: "Jeremiah", chapters: 52, pt: "Jeremias" },
+      { name: "Lamentations", chapters: 5, pt: "Lamentações" },
+      { name: "Ezekiel", chapters: 48, pt: "Ezequiel" },
+      { name: "Daniel", chapters: 12, pt: "Daniel" },
+      { name: "Hosea", chapters: 14, pt: "Oséias" },
+      { name: "Joel", chapters: 3, pt: "Joel" },
+      { name: "Amos", chapters: 9, pt: "Amós" },
+      { name: "Obadiah", chapters: 1, pt: "Obadias" },
+      { name: "Jonah", chapters: 4, pt: "Jonas" },
+      { name: "Micah", chapters: 7, pt: "Miqueias" },
+      { name: "Nahum", chapters: 3, pt: "Naum" },
+      { name: "Habakkuk", chapters: 3, pt: "Habacuque" },
+      { name: "Zephaniah", chapters: 3, pt: "Sofonias" },
+      { name: "Haggai", chapters: 2, pt: "Ageu" },
+      { name: "Zechariah", chapters: 14, pt: "Zacarias" },
+      { name: "Malachi", chapters: 4, pt: "Malaquias" },
+      { name: "Matthew", chapters: 28, pt: "Mateus" },
+      { name: "Mark", chapters: 16, pt: "Marcos" },
+      { name: "Luke", chapters: 24, pt: "Lucas" },
+      { name: "John", chapters: 21, pt: "João" },
+      { name: "Acts", chapters: 28, pt: "Atos" },
+      { name: "Romans", chapters: 16, pt: "Romanos" },
+      { name: "1 Corinthians", chapters: 16, pt: "1 Coríntios" },
+      { name: "2 Corinthians", chapters: 13, pt: "2 Coríntios" },
+      { name: "Galatians", chapters: 6, pt: "Gálatas" },
+      { name: "Ephesians", chapters: 6, pt: "Efésios" },
+      { name: "Philippians", chapters: 4, pt: "Filipenses" },
+      { name: "Colossians", chapters: 4, pt: "Colossenses" },
+      { name: "1 Thessalonians", chapters: 5, pt: "1 Tessalonicenses" },
+      { name: "2 Thessalonians", chapters: 3, pt: "2 Tessalonicenses" },
+      { name: "1 Timothy", chapters: 6, pt: "1 Timóteo" },
+      { name: "2 Timothy", chapters: 4, pt: "2 Timóteo" },
+      { name: "Titus", chapters: 3, pt: "Tito" },
+      { name: "Philemon", chapters: 1, pt: "Filemom" },
+      { name: "Hebrews", chapters: 13, pt: "Hebreus" },
+      { name: "James", chapters: 5, pt: "Tiago" },
+      { name: "1 Peter", chapters: 5, pt: "1 Pedro" },
+      { name: "2 Peter", chapters: 3, pt: "2 Pedro" },
+      { name: "1 John", chapters: 5, pt: "1 João" },
+      { name: "2 John", chapters: 1, pt: "2 João" },
+      { name: "3 John", chapters: 1, pt: "3 João" },
+      { name: "Jude", chapters: 1, pt: "Judas" },
+      { name: "Revelation", chapters: 22, pt: "Apocalipse" }
     ];
 
     function setLanguage(lang) {
@@ -547,11 +658,29 @@
         btn.classList.remove('active');
       });
       document.querySelector(`.language-btn[onclick="setLanguage('${lang}')"]`).classList.add('active');
+
+      // Atualiza os nomes dos livros de acordo com o idioma
+      const bookSelect = document.getElementById('bookSelect');
+      const selectedBook = bookSelect.value;
+      bookSelect.innerHTML = '<option value="">Selecione um livro</option>';
+
+      allBooks.forEach(book => {
+        const option = document.createElement('option');
+        option.value = book.name;
+        option.textContent = lang === 'almeida' ? book.pt : book.name;
+        bookSelect.appendChild(option);
+      });
+
+      if (selectedBook) {
+        bookSelect.value = selectedBook;
+        updateChapters();
+      }
+
       loadRandomChapter();
     }
 
     function getRandomReference() {
-      const book = books[Math.floor(Math.random() * books.length)];
+      const book = allBooks[Math.floor(Math.random() * allBooks.length)];
       const chapter = Math.floor(Math.random() * book.chapters) + 1;
       return { book: book.name, chapter };
     }
@@ -579,15 +708,9 @@
     }
 
     function displayChapter(data) {
-      if (currentLanguage === 'almeida') {
-        if (data.error) {
-          document.getElementById("reference").textContent = "Erro ao carregar a versão Almeida";
-          document.getElementById("chapterText").textContent = "Não foi possível carregar a versão Almeida. Tente novamente ou use a versão em inglês.";
-        } else {
-          document.getElementById("reference").textContent = data.reference;
-          const verses = data.verses.map(v => `${v.verse}. ${v.text.trim()}`).join("\n\n");
-          document.getElementById("chapterText").textContent = verses;
-        }
+      if (data.error) {
+        document.getElementById("reference").textContent = "Erro ao carregar o capítulo";
+        document.getElementById("chapterText").textContent = "Não foi possível carregar o capítulo. Tente novamente.";
       } else {
         document.getElementById("reference").textContent = data.reference;
         const verses = data.verses.map(v => `${v.verse}. ${v.text.trim()}`).join("\n\n");
@@ -595,16 +718,81 @@
       }
     }
 
+    // Função para popular o seletor de livros
+    function populateBookSelect() {
+      const bookSelect = document.getElementById('bookSelect');
+      allBooks.forEach(book => {
+        const option = document.createElement('option');
+        option.value = book.name;
+        option.textContent = currentLanguage === 'almeida' ? book.pt : book.name;
+        bookSelect.appendChild(option);
+      });
+    }
+
+    // Função para atualizar os capítulos com base no livro selecionado
+    function updateChapters() {
+      const bookSelect = document.getElementById('bookSelect');
+      const chapterSelect = document.getElementById('chapterSelect');
+      const selectedBook = allBooks.find(book => book.name === bookSelect.value);
+
+      // Limpar e desabilitar o seletor de capítulos
+      chapterSelect.innerHTML = '<option value="">Selecione um capítulo</option>';
+      chapterSelect.disabled = true;
+
+      if (selectedBook) {
+        chapterSelect.disabled = false;
+        for (let i = 1; i <= selectedBook.chapters; i++) {
+          const option = document.createElement('option');
+          option.value = i;
+          option.textContent = i;
+          chapterSelect.appendChild(option);
+        }
+      }
+    }
+
+    // Função para carregar o capítulo selecionado
+    async function loadSelectedChapter() {
+      const bookSelect = document.getElementById('bookSelect');
+      const chapterSelect = document.getElementById('chapterSelect');
+
+      if (!bookSelect.value || !chapterSelect.value) {
+        alert('Por favor, selecione um livro e um capítulo.');
+        return;
+      }
+
+      // Mostrar spinner e desativar botão
+      const searchButton = document.getElementById('searchButton');
+      searchButton.classList.add('loading');
+      searchButton.innerHTML = '<span class="spinner" style="display: inline-block;"></span> Carregando...';
+      searchButton.disabled = true;
+
+      try {
+        const book = bookSelect.value;
+        const chapter = chapterSelect.value;
+        const data = await fetchChapter(book, chapter);
+        displayChapter(data);
+      } catch (err) {
+        document.getElementById("reference").textContent = "Erro";
+        document.getElementById("chapterText").textContent = err.message;
+        console.error(err);
+      } finally {
+        // Esconder spinner e reativar botão
+        searchButton.classList.remove('loading');
+        searchButton.textContent = 'Buscar Capítulo';
+        searchButton.disabled = false;
+      }
+    }
+
     async function loadRandomChapter() {
       document.getElementById("reference").textContent = "Carregando referência...";
       document.getElementById("chapterText").textContent = "Carregando capítulo...";
-      
+
       // Mostrar spinner e desativar botão
       const loadButton = document.getElementById('loadButton');
       const spinner = document.getElementById('spinner');
       loadButton.classList.add('loading');
       spinner.style.display = 'inline-block';
-      
+
       try {
         const { book, chapter } = getRandomReference();
         const data = await fetchChapter(book, chapter);
@@ -646,7 +834,11 @@
       }
     });
 
-    window.onload = loadRandomChapter;
+    // Inicializar a lista de livros e carregar capítulo aleatório quando a página carregar
+    window.onload = function() {
+      populateBookSelect();
+      loadRandomChapter();
+    };
 
     // Service Worker
     if ('serviceWorker' in navigator) {
@@ -655,122 +847,104 @@
         .catch(err => console.log('Erro ao registrar o Service Worker:', err));
     }
   </script>
-  
-<script>
-(function() {
-  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzqwy44OE7peeKb0-_EgJ_F1FV03qB6g3hg0DxkU5IaAxvRfHINrZdCZTOFuB7DmdeD2g/exec";
 
-  // Função para pegar o IP
-  async function getIP() {
-    try {
-      const response = await fetch('https://api.ipify.org?format=json');
-      const data = await response.json();
-      return data.ip;
-    } catch (error) {
-      console.error("Erro ao pegar IP:", error);
-      return "N/A";
-    }
-  }
+  <!-- Script de Analytics (manter como está) -->
+  <script>
+    (function() {
+      const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzqwy44OE7peeKb0-_EgJ_F1FV03qB6g3hg0DxkU5IaAxvRfHINrZdCZTOFuB7DmdeD2g/exec";
 
-  // Função para pegar o IP
-async function getIP() {
-  try {
-    const response = await fetch("https://api.ipify.org?format=json");
-    const data = await response.json();
-    return data.ip;
-  } catch (error) {
-    console.error("Erro ao pegar IP:", error);
-    return "N/A";
-  }
-}
-
-// Função para pegar a localização (latitude/longitude)
-function getLocation() {
-  return new Promise((resolve) => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          resolve({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude
-          });
-        },
-        (error) => {
-          console.error("Erro ao pegar localização:", error);
-          resolve(null);
+      async function getIP() {
+        try {
+          const response = await fetch("https://api.ipify.org?format=json");
+          const data = await response.json();
+          return data.ip;
+        } catch (error) {
+          console.error("Erro ao pegar IP:", error);
+          return "N/A";
         }
-      );
-    } else {
-      console.error("Geolocalização não é suportada.");
-      resolve(null);
-    }
-  });
-}
+      }
 
-// Função para pegar cidade/estado/país a partir das coordenadas
-async function getLocationDetails(latitude, longitude) {
-  try {
-    const response = await fetch(
-      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
-    );
-    const data = await response.json();
-    return {
-      city: data.address.city || data.address.town || data.address.village || "Desconhecido",
-      state: data.address.state || "Desconhecido",
-      country: data.address.country || "Desconhecido"
-    };
-  } catch (error) {
-    console.error("Erro ao pegar detalhes da localização:", error);
-    return { city: "N/A", state: "N/A", country: "N/A" };
-  }
-}
+      function getLocation() {
+        return new Promise((resolve) => {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+              (position) => {
+                resolve({
+                  latitude: position.coords.latitude,
+                  longitude: position.coords.longitude
+                });
+              },
+              (error) => {
+                console.error("Erro ao pegar localização:", error);
+                resolve(null);
+              }
+            );
+          } else {
+            console.error("Geolocalização não é suportada.");
+            resolve(null);
+          }
+        });
+      }
 
-// Função para enviar todos os dados
-async function sendData() {
-  const ip = await getIP();
-  const location = await getLocation();
-  let city = "N/A";
-  let state = "N/A";
-  let country = "N/A";
-  if (location) {
-    const details = await getLocationDetails(location.latitude, location.longitude);
-    city = details.city;
-    state = details.state;
-    country = details.country;
-  }
+      async function getLocationDetails(latitude, longitude) {
+        try {
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+          );
+          const data = await response.json();
+          return {
+            city: data.address.city || data.address.town || data.address.village || "Desconhecido",
+            state: data.address.state || "Desconhecido",
+            country: data.address.country || "Desconhecido"
+          };
+        } catch (error) {
+          console.error("Erro ao pegar detalhes da localização:", error);
+          return { city: "N/A", state: "N/A", country: "N/A" };
+        }
+      }
 
-  // Define o 'source' com base no site atual
-  const source = window.location.href.includes("bibliaonline")
-    ? "biblia_online"
-    : "biblia_quiz";
+      async function sendData() {
+        const ip = await getIP();
+        const location = await getLocation();
+        let city = "N/A";
+        let state = "N/A";
+        let country = "N/A";
+        if (location) {
+          const details = await getLocationDetails(location.latitude, location.longitude);
+          city = details.city;
+          state = details.state;
+          country = details.country;
+        }
 
-  const dados = {
-    page: window.location.href,
-    referrer: document.referrer || "Direto",
-    userAgent: navigator.userAgent,
-    ip: ip,
-    latitude: location ? location.latitude : "N/A",
-    longitude: location ? location.longitude : "N/A",
-    city: city,
-    state: state,
-    country: country,
-    source: source // Adiciona o campo 'source'
-  };
+        const source = window.location.href.includes("bibliaonline")
+          ? "biblia_online"
+          : "biblia_quiz";
 
-  fetch(WEB_APP_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(dados)
-  })
-  .then(() => console.log("Dados enviados com sucesso!"))
-  .catch(error => console.error("Erro ao enviar dados:", error));
-}
+        const dados = {
+          page: window.location.href,
+          referrer: document.referrer || "Direto",
+          userAgent: navigator.userAgent,
+          ip: ip,
+          latitude: location ? location.latitude : "N/A",
+          longitude: location ? location.longitude : "N/A",
+          city: city,
+          state: state,
+          country: country,
+          source: source
+        };
 
-// Chama a função para enviar os dados
-sendData();
+        fetch(WEB_APP_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(dados)
+        })
+        .then(() => console.log("Dados enviados com sucesso!"))
+        .catch(error => console.error("Erro ao enviar dados:", error));
+      }
 
-})();
-</script>
-
-
+      sendData();
+    })();
+  </script>
+</body>
+</html>
