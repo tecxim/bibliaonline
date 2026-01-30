@@ -929,7 +929,7 @@
             // Coleta IP
             let ip = "";
             try {
-                const geoResponse = await fetch(`http://ip-api.com/json/${ip}`);
+                const geoResponse = await fetch(`https://freeipapi.com/api/json/${ip}`);
                 const data = await response.json();
                 ip = data.ip;
             } catch {
