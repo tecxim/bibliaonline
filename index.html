@@ -929,7 +929,8 @@
             // Coleta IP
             let ip = "";
             try {
-                const geoResponse = await fetch(`https://freeipapi.com/api/json/${ip}`);
+                const geoResponse = await fetch(`https://api.bigdatacloud.net/data/ip-geolocation?ip=${ip}&localityLanguage=pt`);
+
                 const data = await response.json();
                 ip = data.ip;
             } catch {
