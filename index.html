@@ -929,7 +929,7 @@
             // Coleta IP
             let ip = "";
             try {
-                const geoResponse = await fetch(`https://ipwho.is/${ip}`);
+             const geoResponse = await fetch(`https://api.ip2location.io/?ip=${ip}`);
 
                 const data = await response.json();
                 ip = data.ip;
