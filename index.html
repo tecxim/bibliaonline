@@ -650,15 +650,6 @@
   </a>
 </div>
 
-
-    <footer>
-      <p>
-    📖 Leitura Bíblica Gratuita / Free Bible Reading — 
-    Disponível em Português e Inglês — 
-    Sem anúncios / No ads
- </p>
-    </footer>
-
     <div class="share-container">
       <button id="shareBtn">📤 Share / Compartilhar</button>
     </div>
@@ -1122,20 +1113,35 @@
     </script>
 
 
-  <footer style="
+    <footer style="
     text-align: center;
     padding: 15px;
-    margin-top: auto; /* Adicionado para garantir que fique no final */
+    margin-top: auto;
     color: #555;
     font-size: 14px;
     background-color: #f5f5f5;
-    width: 100%; /* Garante que o rodapé ocupe 100% da largura */
+    width: 100%;
+    border-top: 1px solid #ddd;
 ">
-    <p style="margin: 0;">
-        Desenvolvedor: Wellington A R Cardoso |
-        © <span id="currentYear"></span> Todos os direitos reservados
-    </p>
+    <div style="margin-bottom: 10px;">
+        <p style="margin: 0; font-size: 13px; color: #444;">
+            📖 <strong>Leitura Bíblica Gratuita / Free Bible Reading</strong> — 
+            Disponível em Português e Inglês — 
+            Sem anúncios / No ads
+        </p>
+    </div>
+    
+    <div style="border-top: 1px solid #eee; padding-top: 10px;">
+        <p style="margin: 0; font-size: 12px; color: #666;">
+            Desenvolvedor: Wellington A R Cardoso | 
+            © <span id="currentYear"></span> Todos os direitos reservados
+        </p>
+    </div>
 </footer>
+
+<script>
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+</script>
 
 
   
