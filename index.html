@@ -678,149 +678,138 @@
     </div>
   </footer>
 
- <script>
-    let currentLanguage = 'web';
+<script>
+  let currentLanguage = 'web';
 
-    // Lista completa de livros bíblicos
-    const allBooks = [
-      { name: "Genesis", chapters: 50, pt: "Gênesis", code: "gn" },
-      { name: "Exodus", chapters: 40, pt: "Êxodo", code: "ex" },
-      { name: "Leviticus", chapters: 27, pt: "Levítico", code: "lv" },
-      { name: "Numbers", chapters: 36, pt: "Números", code: "nm" },
-      { name: "Deuteronomy", chapters: 34, pt: "Deuteronômio", code: "dt" },
-      { name: "Joshua", chapters: 24, pt: "Josué", code: "js" },
-      { name: "Judges", chapters: 21, pt: "Juízes", code: "jz" },
-      { name: "Ruth", chapters: 4, pt: "Rute", code: "rt" },
-      { name: "1 Samuel", chapters: 31, pt: "1 Samuel", code: "1sm" },
-      { name: "2 Samuel", chapters: 24, pt: "2 Samuel", code: "2sm" },
-      { name: "1 Kings", chapters: 22, pt: "1 Reis", code: "1rs" },
-      { name: "2 Kings", chapters: 25, pt: "2 Reis", code: "2rs" },
-      { name: "1 Chronicles", chapters: 29, pt: "1 Crônicas", code: "1cr" },
-      { name: "2 Chronicles", chapters: 36, pt: "2 Crônicas", code: "2cr" },
-      { name: "Ezra", chapters: 10, pt: "Esdras", code: "ed" },
-      { name: "Nehemiah", chapters: 13, pt: "Neemias", code: "ne" },
-      { name: "Esther", chapters: 10, pt: "Ester", code: "et" },
-      { name: "Job", chapters: 42, pt: "Jó", code: "jó" },
-      { name: "Psalms", chapters: 150, pt: "Salmos", code: "sl" },
-      { name: "Proverbs", chapters: 31, pt: "Provérbios", code: "pv" },
-      { name: "Ecclesiastes", chapters: 12, pt: "Eclesiastes", code: "ec" },
-      { name: "Song of Solomon", chapters: 8, pt: "Cânticos", code: "ct" },
-      { name: "Isaiah", chapters: 66, pt: "Isaías", code: "is" },
-      { name: "Jeremiah", chapters: 52, pt: "Jeremias", code: "jr" },
-      { name: "Lamentations", chapters: 5, pt: "Lamentações", code: "lm" },
-      { name: "Ezekiel", chapters: 48, pt: "Ezequiel", code: "ez" },
-      { name: "Daniel", chapters: 12, pt: "Daniel", code: "dn" },
-      { name: "Hosea", chapters: 14, pt: "Oséias", code: "os" },
-      { name: "Joel", chapters: 3, pt: "Joel", code: "jl" },
-      { name: "Amos", chapters: 9, pt: "Amós", code: "am" },
-      { name: "Obadiah", chapters: 1, pt: "Obadias", code: "ob" },
-      { name: "Jonah", chapters: 4, pt: "Jonas", code: "jn" },
-      { name: "Micah", chapters: 7, pt: "Miqueias", code: "mq" },
-      { name: "Nahum", chapters: 3, pt: "Naum", code: "na" },
-      { name: "Habakkuk", chapters: 3, pt: "Habacuque", code: "hc" },
-      { name: "Zephaniah", chapters: 3, pt: "Sofonias", code: "sf" },
-      { name: "Haggai", chapters: 2, pt: "Ageu", code: "ag" },
-      { name: "Zechariah", chapters: 14, pt: "Zacarias", code: "zc" },
-      { name: "Malachi", chapters: 4, pt: "Malaquias", code: "ml" },
-      { name: "Matthew", chapters: 28, pt: "Mateus", code: "mt" },
-      { name: "Mark", chapters: 16, pt: "Marcos", code: "mc" },
-      { name: "Luke", chapters: 24, pt: "Lucas", code: "lc" },
-      { name: "John", chapters: 21, pt: "João", code: "jo" },
-      { name: "Acts", chapters: 28, pt: "Atos", code: "at" },
-      { name: "Romans", chapters: 16, pt: "Romanos", code: "rm" },
-      { name: "1 Corinthians", chapters: 16, pt: "1 Coríntios", code: "1co" },
-      { name: "2 Corinthians", chapters: 13, pt: "2 Coríntios", code: "2co" },
-      { name: "Galatians", chapters: 6, pt: "Gálatas", code: "gl" },
-      { name: "Ephesians", chapters: 6, pt: "Efésios", code: "ef" },
-      { name: "Philippians", chapters: 4, pt: "Filipenses", code: "fp" },
-      { name: "Colossians", chapters: 4, pt: "Colossenses", code: "cl" },
-      { name: "1 Thessalonians", chapters: 5, pt: "1 Tessalonicenses", code: "1ts" },
-      { name: "2 Thessalonians", chapters: 3, pt: "2 Tessalonicenses", code: "2ts" },
-      { name: "1 Timothy", chapters: 6, pt: "1 Timóteo", code: "1tm" },
-      { name: "2 Timothy", chapters: 4, pt: "2 Timóteo", code: "2tm" },
-      { name: "Titus", chapters: 3, pt: "Tito", code: "tt" },
-      { name: "Philemon", chapters: 1, pt: "Filemom", code: "fm" },
-      { name: "Hebrews", chapters: 13, pt: "Hebreus", code: "hb" },
-      { name: "James", chapters: 5, pt: "Tiago", code: "tg" },
-      { name: "1 Peter", chapters: 5, pt: "1 Pedro", code: "1pe" },
-      { name: "2 Peter", chapters: 3, pt: "2 Pedro", code: "2pe" },
-      { name: "1 John", chapters: 5, pt: "1 João", code: "1jo" },
-      { name: "2 John", chapters: 1, pt: "2 João", code: "2jo" },
-      { name: "3 John", chapters: 1, pt: "3 João", code: "3jo" },
-      { name: "Jude", chapters: 1, pt: "Judas", code: "jd" },
-      { name: "Revelation", chapters: 22, pt: "Apocalipse", code: "ap" }
-    ];
+  // Lista completa de livros bíblicos
+  const allBooks = [
+    { name: "Genesis", chapters: 50, pt: "Gênesis", code: "gn" },
+    { name: "Exodus", chapters: 40, pt: "Êxodo", code: "ex" },
+    { name: "Leviticus", chapters: 27, pt: "Levítico", code: "lv" },
+    { name: "Numbers", chapters: 36, pt: "Números", code: "nm" },
+    { name: "Deuteronomy", chapters: 34, pt: "Deuteronômio", code: "dt" },
+    { name: "Joshua", chapters: 24, pt: "Josué", code: "js" },
+    { name: "Judges", chapters: 21, pt: "Juízes", code: "jz" },
+    { name: "Ruth", chapters: 4, pt: "Rute", code: "rt" },
+    { name: "1 Samuel", chapters: 31, pt: "1 Samuel", code: "1sm" },
+    { name: "2 Samuel", chapters: 24, pt: "2 Samuel", code: "2sm" },
+    { name: "1 Kings", chapters: 22, pt: "1 Reis", code: "1rs" },
+    { name: "2 Kings", chapters: 25, pt: "2 Reis", code: "2rs" },
+    { name: "1 Chronicles", chapters: 29, pt: "1 Crônicas", code: "1cr" },
+    { name: "2 Chronicles", chapters: 36, pt: "2 Crônicas", code: "2cr" },
+    { name: "Ezra", chapters: 10, pt: "Esdras", code: "ed" },
+    { name: "Nehemiah", chapters: 13, pt: "Neemias", code: "ne" },
+    { name: "Esther", chapters: 10, pt: "Ester", code: "et" },
+    { name: "Job", chapters: 42, pt: "Jó", code: "jó" },
+    { name: "Psalms", chapters: 150, pt: "Salmos", code: "sl" },
+    { name: "Proverbs", chapters: 31, pt: "Provérbios", code: "pv" },
+    { name: "Ecclesiastes", chapters: 12, pt: "Eclesiastes", code: "ec" },
+    { name: "Song of Solomon", chapters: 8, pt: "Cânticos", code: "ct" },
+    { name: "Isaiah", chapters: 66, pt: "Isaías", code: "is" },
+    { name: "Jeremiah", chapters: 52, pt: "Jeremias", code: "jr" },
+    { name: "Lamentations", chapters: 5, pt: "Lamentações", code: "lm" },
+    { name: "Ezekiel", chapters: 48, pt: "Ezequiel", code: "ez" },
+    { name: "Daniel", chapters: 12, pt: "Daniel", code: "dn" },
+    { name: "Hosea", chapters: 14, pt: "Oséias", code: "os" },
+    { name: "Joel", chapters: 3, pt: "Joel", code: "jl" },
+    { name: "Amos", chapters: 9, pt: "Amós", code: "am" },
+    { name: "Obadiah", chapters: 1, pt: "Obadias", code: "ob" },
+    { name: "Jonah", chapters: 4, pt: "Jonas", code: "jn" },
+    { name: "Micah", chapters: 7, pt: "Miqueias", code: "mq" },
+    { name: "Nahum", chapters: 3, pt: "Naum", code: "na" },
+    { name: "Habakkuk", chapters: 3, pt: "Habacuque", code: "hc" },
+    { name: "Zephaniah", chapters: 3, pt: "Sofonias", code: "sf" },
+    { name: "Haggai", chapters: 2, pt: "Ageu", code: "ag" },
+    { name: "Zechariah", chapters: 14, pt: "Zacarias", code: "zc" },
+    { name: "Malachi", chapters: 4, pt: "Malaquias", code: "ml" },
+    { name: "Matthew", chapters: 28, pt: "Mateus", code: "mt" },
+    { name: "Mark", chapters: 16, pt: "Marcos", code: "mc" },
+    { name: "Luke", chapters: 24, pt: "Lucas", code: "lc" },
+    { name: "John", chapters: 21, pt: "João", code: "jo" },
+    { name: "Acts", chapters: 28, pt: "Atos", code: "at" },
+    { name: "Romans", chapters: 16, pt: "Romanos", code: "rm" },
+    { name: "1 Corinthians", chapters: 16, pt: "1 Coríntios", code: "1co" },
+    { name: "2 Corinthians", chapters: 13, pt: "2 Coríntios", code: "2co" },
+    { name: "Galatians", chapters: 6, pt: "Gálatas", code: "gl" },
+    { name: "Ephesians", chapters: 6, pt: "Efésios", code: "ef" },
+    { name: "Philippians", chapters: 4, pt: "Filipenses", code: "fp" },
+    { name: "Colossians", chapters: 4, pt: "Colossenses", code: "cl" },
+    { name: "1 Thessalonians", chapters: 5, pt: "1 Tessalonicenses", code: "1ts" },
+    { name: "2 Thessalonians", chapters: 3, pt: "2 Tessalonicenses", code: "2ts" },
+    { name: "1 Timothy", chapters: 6, pt: "1 Timóteo", code: "1tm" },
+    { name: "2 Timothy", chapters: 4, pt: "2 Timóteo", code: "2tm" },
+    { name: "Titus", chapters: 3, pt: "Tito", code: "tt" },
+    { name: "Philemon", chapters: 1, pt: "Filemom", code: "fm" },
+    { name: "Hebrews", chapters: 13, pt: "Hebreus", code: "hb" },
+    { name: "James", chapters: 5, pt: "Tiago", code: "tg" },
+    { name: "1 Peter", chapters: 5, pt: "1 Pedro", code: "1pe" },
+    { name: "2 Peter", chapters: 3, pt: "2 Pedro", code: "2pe" },
+    { name: "1 John", chapters: 5, pt: "1 João", code: "1jo" },
+    { name: "2 John", chapters: 1, pt: "2 João", code: "2jo" },
+    { name: "3 John", chapters: 1, pt: "3 João", code: "3jo" },
+    { name: "Jude", chapters: 1, pt: "Judas", code: "jd" },
+    { name: "Revelation", chapters: 22, pt: "Apocalipse", code: "ap" }
+  ];
 
-    function setLanguage(lang) {
-      currentLanguage = lang;
-      document.querySelectorAll('.language-btn').forEach(btn => {
-        btn.classList.remove('active');
-      });
-      document.querySelector(`.language-btn[onclick="setLanguage('${lang}')"]`).classList.add('active');
+  function setLanguage(lang) {
+    currentLanguage = lang;
+    document.querySelectorAll('.language-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    document.querySelector(`.language-btn[onclick="setLanguage('${lang}')"]`).classList.add('active');
 
-      const bookSelect = document.getElementById('bookSelect');
-      const selectedBook = bookSelect.value;
-      bookSelect.innerHTML = '<option value="">Selecione um livro</option>';
+    const bookSelect = document.getElementById('bookSelect');
+    const selectedBook = bookSelect.value;
+    bookSelect.innerHTML = '<option value="">Selecione um livro</option>';
 
-      allBooks.forEach(book => {
-        const option = document.createElement('option');
-        option.value = book.name;
-        option.textContent = lang === 'almeida' ? book.pt : book.name;
-        bookSelect.appendChild(option);
-      });
+    allBooks.forEach(book => {
+      const option = document.createElement('option');
+      option.value = book.name;
+      option.textContent = lang === 'almeida' ? book.pt : book.name;
+      bookSelect.appendChild(option);
+    });
 
-      if (selectedBook) {
-        bookSelect.value = selectedBook;
-        updateChapters();
-      }
-
-      loadRandomChapter();
+    if (selectedBook) {
+      bookSelect.value = selectedBook;
+      updateChapters();
     }
 
-    function getRandomReference() {
-      const book = allBooks[Math.floor(Math.random() * allBooks.length)];
-      const chapter = Math.floor(Math.random() * book.chapters) + 1;
-      return { book: book.name, chapter };
-    }
+    loadRandomChapter();
+  }
 
-    async function fetchChapter(book, chapter) {
-      try {
-        if (currentLanguage === 'almeida') {
-          const bookData = allBooks.find(b => b.name === book);
-          if (!bookData) throw new Error("Livro não encontrado");
+  function getRandomReference() {
+    const book = allBooks[Math.floor(Math.random() * allBooks.length)];
+    const chapter = Math.floor(Math.random() * book.chapters) + 1;
+    return { book: book.name, chapter };
+  }
 
-          const url = `https://www.abibliadigital.com.br/api/verses/ara/${bookData.code}/${chapter}`;
+  async function fetchChapter(book, chapter) {
+    try {
+      if (currentLanguage === 'almeida') {
+        const bookData = allBooks.find(b => b.name === book);
+        if (!bookData) throw new Error("Livro não encontrado");
 
-          const response = await fetch(url, {
+        const url = `https://www.abibliadigital.com.br/api/verses/ara/${bookData.code}/${chapter}`;
+
+        const response = await fetch(url, {
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          const urlARC = `https://www.abibliadigital.com.br/api/verses/arc/${bookData.code}/${chapter}`;
+          const responseARC = await fetch(urlARC, {
             headers: {
               'Accept': 'application/json'
             }
           });
 
-          if (!response.ok) {
-            const urlARC = `https://www.abibliadigital.com.br/api/verses/arc/${bookData.code}/${chapter}`;
-            const responseARC = await fetch(urlARC, {
-              headers: {
-                'Accept': 'application/json'
-              }
-            });
-
-            if (!responseARC.ok) {
-              throw new Error(`Não foi possível carregar o capítulo (${response.status} ${responseARC.status})`);
-            }
-
-            const data = await responseARC.json();
-            return {
-              book: { name: bookData.pt },
-              chapter: { number: chapter },
-              verses: data.verses.map(v => ({
-                number: v.number,
-                text: v.text
-              }))
-            };
+          if (!responseARC.ok) {
+            throw new Error(`Não foi possível carregar o capítulo (${response.status} ${responseARC.status})`);
           }
 
-          const data = await response.json();
+          const data = await responseARC.json();
           return {
             book: { name: bookData.pt },
             chapter: { number: chapter },
@@ -829,23 +818,45 @@
               text: v.text
             }))
           };
+        }
 
-        } else {
-          // Versão em inglês (usando BibleAPI)
-          const bookData = allBooks.find(b => b.name === book);
-          if (!bookData) throw new Error("Livro não encontrado");
+        const data = await response.json();
+        return {
+          book: { name: bookData.pt },
+          chapter: { number: chapter },
+          verses: data.verses.map(v => ({
+            number: v.number,
+            text: v.text
+          }))
+        };
 
-          const url = `https://bible-api.com/${book}+${chapter}?translation=kjv`;
-          const response = await fetch(url);
+      } else {
+        // API pública para versão em inglês (WEB/KJV)
+        // Usando bible-api.com que é gratuito e público
+        const encodedBook = encodeURIComponent(book);
+        const url = `https://bible-api.com/${encodedBook}+${chapter}?translation=kjv`;
+        
+        console.log('Fetching from:', url); // Para debug
+        
+        const response = await fetch(url, {
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
 
-          if (!response.ok) {
+        if (!response.ok) {
+          // Tentar fallback para outra tradução em inglês
+          const fallbackUrl = `https://bible-api.com/${encodedBook}+${chapter}`;
+          const fallbackResponse = await fetch(fallbackUrl);
+          
+          if (!fallbackResponse.ok) {
             throw new Error(`Não foi possível carregar o capítulo. Tente novamente. (Erro: ${response.status})`);
           }
-
-          const data = await response.json();
-
+          
+          const data = await fallbackResponse.json();
+          
           return {
-            book: { name: bookData.name },
+            book: { name: data.reference.split(' ').slice(0, -1).join(' ') },
             chapter: { number: chapter },
             verses: data.verses.map(v => ({
               number: parseInt(v.verse),
@@ -853,208 +864,242 @@
             }))
           };
         }
-      } catch (err) {
-        console.error('Erro na API:', err);
-        throw new Error(`Erro ao carregar o capítulo: ${err.message}`);
+
+        const data = await response.json();
+        
+        return {
+          book: { name: data.reference.split(' ').slice(0, -1).join(' ') },
+          chapter: { number: chapter },
+          verses: data.verses.map(v => ({
+            number: parseInt(v.verse),
+            text: v.text.trim()
+          }))
+        };
       }
-    }
+    } catch (err) {
+      console.error('Erro na API:', err);
 
-    function correctBibleText(text) {
-      const corrections = [
-        { pattern: /\bë tua\b/gi, replacement: 'À tua' },
-        { pattern: /\bË tua\b/g, replacement: 'À tua' },
-        { pattern: /\bë\b/gi, replacement: 'à' },
-        { pattern: /\bË\b/g, replacement: 'À' },
-        { pattern: /\bdeos\b/gi, replacement: 'deus' },
-        { pattern: /\bcriaçao\b/gi, replacement: 'criação' },
-        { pattern: /\bcoroaçao\b/gi, replacement: 'coroação' },
-        { pattern: /\bpaï¿½\b/gi, replacement: 'pai' },
-        { pattern: /\bmãe\b/gi, replacement: 'mãe' },
-        { pattern: /\bcaï¿½\b/gi, replacement: 'cão' },
-        { pattern: /\bçao\b/gi, replacement: 'ção' },
-        { pattern: /\bçoes\b/gi, replacement: 'ções' },
-        { pattern: /\bsenhor\b/gi, replacement: 'Senhor' },
-        { pattern: /\bcristo\b/gi, replacement: 'Cristo' },
-        { pattern: /\bespirito\s+santo\b/gi, replacement: 'Espírito Santo' },
-        { pattern: /\bdeus\b/gi, replacement: 'Deus' },
-        { pattern: /\bjesuï¿½\b/gi, replacement: 'Jesus' },
-        { pattern: /\bpedro\b/gi, replacement: 'Pedro' },
-        { pattern: /\bpaulo\b/gi, replacement: 'Paulo' },
-        { pattern: /\bjoao\b/gi, replacement: 'João' },
-        { pattern: /\bmateus\b/gi, replacement: 'Mateus' },
-        { pattern: /\bmarcos\b/gi, replacement: 'Marcos' },
-        { pattern: /\blucas\b/gi, replacement: 'Lucas' },
-      ];
-
-      let corrected = text;
-
-      corrections.forEach(correction => {
-        corrected = corrected.replace(correction.pattern, correction.replacement);
-      });
-
-      corrected = corrected
-        .replace(/Ã¡/g, 'á').replace(/Ã©/g, 'é').replace(/Ã­/g, 'í')
-        .replace(/Ã³/g, 'ó').replace(/Ãº/g, 'ú').replace(/Ã£/g, 'ã')
-        .replace(/Ãµ/g, 'õ').replace(/Ã§/g, 'ç').replace(/Ãª/g, 'ê')
-        .replace(/Ã´/g, 'ô').replace(/Ã /g, 'à').replace(/Ã¿/g, 'ÿ')
-        .replace(/Ã€/g, 'À').replace(/Ã‰/g, 'É').replace(/Ã/g, 'Í')
-        .replace(/Ã“/g, 'Ó').replace(/Ãš/g, 'Ú').replace(/Ãƒ/g, 'Ã')
-        .replace(/Ã•/g, 'Õ').replace(/Ã‡/g, 'Ç').replace(/ÃŠ/g, 'Ê')
-        .replace(/Ã”/g, 'Ô');
-
-      return corrected;
-    }
-
-    function displayChapter(data) {
-      try {
-        if (data.book && data.chapter && data.verses && data.verses.length > 0) {
-          document.getElementById("reference").textContent = `${data.book.name} ${data.chapter.number}`;
-
-          const versesText = data.verses.map(v => {
-            const verseNumber = v.number;
-            const verseText = correctBibleText(v.text);
-            return `${verseNumber}. ${verseText}`;
-          }).join("\n\n");
-
-          document.getElementById("chapterText").textContent = versesText;
-        } else {
-          throw new Error("Dados inválidos recebidos");
+      if (currentLanguage === 'almeida') {
+        try {
+          const bookData = allBooks.find(b => b.name === book);
+          const fallbackUrl = `https://bible-api.com/${encodeURIComponent(bookData.pt)}+${chapter}?translation=almeida`;
+          const response = await fetch(fallbackUrl);
+          if (response.ok) {
+            const data = await response.json();
+            return {
+              book: { name: bookData.pt },
+              chapter: { number: chapter },
+              verses: data.verses.map(v => ({
+                number: parseInt(v.verse),
+                text: v.text.trim()
+              }))
+            };
+          }
+        } catch (fallbackErr) {
+          console.error('Fallback também falhou:', fallbackErr);
         }
-      } catch (err) {
-        console.error("Erro ao exibir capítulo:", err);
-        document.getElementById("reference").textContent = "Erro ao carregar";
-        document.getElementById("chapterText").textContent = "Não foi possível carregar o capítulo. Tente novamente ou selecione outra versão.";
       }
-    }
 
-    function populateBookSelect() {
-      const bookSelect = document.getElementById('bookSelect');
-      bookSelect.innerHTML = '<option value="">Selecione um livro</option>';
-      allBooks.forEach(book => {
+      throw new Error(`Erro ao carregar o capítulo: ${err.message}`);
+    }
+  }
+
+  function correctBibleText(text) {
+    const corrections = [
+      { pattern: /\bë tua\b/gi, replacement: 'À tua' },
+      { pattern: /\bË tua\b/g, replacement: 'À tua' },
+      { pattern: /\bë\b/gi, replacement: 'à' },
+      { pattern: /\bË\b/g, replacement: 'À' },
+      { pattern: /\bdeos\b/gi, replacement: 'deus' },
+      { pattern: /\bcriaçao\b/gi, replacement: 'criação' },
+      { pattern: /\bcoroaçao\b/gi, replacement: 'coroação' },
+      { pattern: /\bpaï¿½\b/gi, replacement: 'pai' },
+      { pattern: /\bmãe\b/gi, replacement: 'mãe' },
+      { pattern: /\bcaï¿½\b/gi, replacement: 'cão' },
+      { pattern: /\bçao\b/gi, replacement: 'ção' },
+      { pattern: /\bçoes\b/gi, replacement: 'ções' },
+      { pattern: /\bsenhor\b/gi, replacement: 'Senhor' },
+      { pattern: /\bcristo\b/gi, replacement: 'Cristo' },
+      { pattern: /\bespirito\s+santo\b/gi, replacement: 'Espírito Santo' },
+      { pattern: /\bdeus\b/gi, replacement: 'Deus' },
+      { pattern: /\bjesuï¿½\b/gi, replacement: 'Jesus' },
+      { pattern: /\bpedro\b/gi, replacement: 'Pedro' },
+      { pattern: /\bpaulo\b/gi, replacement: 'Paulo' },
+      { pattern: /\bjoao\b/gi, replacement: 'João' },
+      { pattern: /\bmateus\b/gi, replacement: 'Mateus' },
+      { pattern: /\bmarcos\b/gi, replacement: 'Marcos' },
+      { pattern: /\blucas\b/gi, replacement: 'Lucas' },
+    ];
+
+    let corrected = text;
+
+    corrections.forEach(correction => {
+      corrected = corrected.replace(correction.pattern, correction.replacement);
+    });
+
+    corrected = corrected
+      .replace(/Ã¡/g, 'á').replace(/Ã©/g, 'é').replace(/Ã­/g, 'í')
+      .replace(/Ã³/g, 'ó').replace(/Ãº/g, 'ú').replace(/Ã£/g, 'ã')
+      .replace(/Ãµ/g, 'õ').replace(/Ã§/g, 'ç').replace(/Ãª/g, 'ê')
+      .replace(/Ã´/g, 'ô').replace(/Ã /g, 'à').replace(/Ã¿/g, 'ÿ')
+      .replace(/Ã€/g, 'À').replace(/Ã‰/g, 'É').replace(/Ã/g, 'Í')
+      .replace(/Ã“/g, 'Ó').replace(/Ãš/g, 'Ú').replace(/Ãƒ/g, 'Ã')
+      .replace(/Ã•/g, 'Õ').replace(/Ã‡/g, 'Ç').replace(/ÃŠ/g, 'Ê')
+      .replace(/Ã”/g, 'Ô');
+
+    return corrected;
+  }
+
+  function displayChapter(data) {
+    try {
+      if (data.book && data.chapter && data.verses && data.verses.length > 0) {
+        document.getElementById("reference").textContent = `${data.book.name} ${data.chapter.number}`;
+
+        const versesText = data.verses.map(v => {
+          const verseNumber = v.number;
+          const verseText = currentLanguage === 'almeida' ? correctBibleText(v.text) : v.text;
+          return `${verseNumber}. ${verseText}`;
+        }).join("\n\n");
+
+        document.getElementById("chapterText").textContent = versesText;
+      } else {
+        throw new Error("Dados inválidos recebidos");
+      }
+    } catch (err) {
+      console.error("Erro ao exibir capítulo:", err);
+      document.getElementById("reference").textContent = "Erro ao carregar";
+      document.getElementById("chapterText").textContent = "Não foi possível carregar o capítulo. Tente novamente ou selecione outra versão.";
+    }
+  }
+
+  function populateBookSelect() {
+    const bookSelect = document.getElementById('bookSelect');
+    bookSelect.innerHTML = '<option value="">Selecione um livro</option>';
+    allBooks.forEach(book => {
+      const option = document.createElement('option');
+      option.value = book.name;
+      option.textContent = currentLanguage === 'almeida' ? book.pt : book.name;
+      bookSelect.appendChild(option);
+    });
+  }
+
+  function updateChapters() {
+    const bookSelect = document.getElementById('bookSelect');
+    const chapterSelect = document.getElementById('chapterSelect');
+    const selectedBook = allBooks.find(book => book.name === bookSelect.value);
+
+    chapterSelect.innerHTML = '<option value="">Selecione um capítulo</option>';
+    chapterSelect.disabled = true;
+
+    if (selectedBook) {
+      chapterSelect.disabled = false;
+      for (let i = 1; i <= selectedBook.chapters; i++) {
         const option = document.createElement('option');
-        option.value = book.name;
-        option.textContent = currentLanguage === 'almeida' ? book.pt : book.name;
-        bookSelect.appendChild(option);
-      });
-    }
-
-    function updateChapters() {
-      const bookSelect = document.getElementById('bookSelect');
-      const chapterSelect = document.getElementById('chapterSelect');
-      const selectedBook = allBooks.find(book => book.name === bookSelect.value);
-
-      chapterSelect.innerHTML = '<option value="">Selecione um capítulo</option>';
-      chapterSelect.disabled = true;
-
-      if (selectedBook) {
-        chapterSelect.disabled = false;
-        for (let i = 1; i <= selectedBook.chapters; i++) {
-          const option = document.createElement('option');
-          option.value = i;
-          option.textContent = i;
-          chapterSelect.appendChild(option);
-        }
+        option.value = i;
+        option.textContent = i;
+        chapterSelect.appendChild(option);
       }
     }
+  }
 
-    async function loadSelectedChapter() {
-      const bookSelect = document.getElementById('bookSelect');
-      const chapterSelect = document.getElementById('chapterSelect');
+  async function loadSelectedChapter() {
+    const bookSelect = document.getElementById('bookSelect');
+    const chapterSelect = document.getElementById('chapterSelect');
 
-      if (!bookSelect.value || !chapterSelect.value) {
-        alert('Por favor, selecione um livro e um capítulo.');
-        return;
-      }
-
-      const searchButton = document.getElementById('searchButton');
-      const originalText = searchButton.textContent;
-      searchButton.classList.add('loading');
-      searchButton.innerHTML = '<span class="spinner" style="display: inline-block;"></span> Carregando...';
-      searchButton.disabled = true;
-
-      try {
-        const book = bookSelect.value;
-        const chapter = chapterSelect.value;
-        const data = await fetchChapter(book, chapter);
-        displayChapter(data);
-      } catch (err) {
-        document.getElementById("reference").textContent = "Erro";
-        document.getElementById("chapterText").textContent = err.message;
-        console.error(err);
-      } finally {
-        searchButton.classList.remove('loading');
-        searchButton.textContent = originalText;
-        searchButton.disabled = false;
-      }
+    if (!bookSelect.value || !chapterSelect.value) {
+      alert('Por favor, selecione um livro e um capítulo.');
+      return;
     }
 
-    async function loadRandomChapter() {
-      document.getElementById("reference").textContent = "Carregando...";
-      document.getElementById("chapterText").textContent = "Por favor, aguarde...";
+    const searchButton = document.getElementById('searchButton');
+    const originalText = searchButton.textContent;
+    searchButton.classList.add('loading');
+    searchButton.innerHTML = '<span class="spinner" style="display: inline-block;"></span> Carregando...';
+    searchButton.disabled = true;
 
-      const loadButton = document.getElementById('loadButton');
-      const originalText = loadButton.textContent;
-      loadButton.classList.add('loading');
-      loadButton.innerHTML = '<span class="spinner" style="display: inline-block;"></span> Carregando...';
-      loadButton.disabled = true;
-
-      try {
-        const { book, chapter } = getRandomReference();
-        const data = await fetchChapter(book, chapter);
-        displayChapter(data);
-      } catch (err) {
-        document.getElementById("reference").textContent = "Erro";
-        document.getElementById("chapterText").textContent = err.message;
-        console.error(err);
-      } finally {
-        loadButton.classList.remove('loading');
-        loadButton.textContent = originalText;
-        loadButton.disabled = false;
-      }
+    try {
+      const book = bookSelect.value;
+      const chapter = chapterSelect.value;
+      const data = await fetchChapter(book, chapter);
+      displayChapter(data);
+    } catch (err) {
+      document.getElementById("reference").textContent = "Erro";
+      document.getElementById("chapterText").textContent = err.message;
+      console.error(err);
+    } finally {
+      searchButton.classList.remove('loading');
+      searchButton.textContent = originalText;
+      searchButton.disabled = false;
     }
+  }
 
-    window.onload = function() {
-      populateBookSelect();
-      loadRandomChapter();
-    };
+  async function loadRandomChapter() {
+    document.getElementById("reference").textContent = "Carregando...";
+    document.getElementById("chapterText").textContent = "Por favor, aguarde...";
 
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js')
-        .then(() => console.log('Service Worker registrado com sucesso.'))
-        .catch(err => console.log('Erro ao registrar o Service Worker:', err));
+    const loadButton = document.getElementById('loadButton');
+    const originalText = loadButton.textContent;
+    loadButton.classList.add('loading');
+    loadButton.innerHTML = '<span class="spinner" style="display: inline-block;"></span> Carregando...';
+    loadButton.disabled = true;
+
+    try {
+      const { book, chapter } = getRandomReference();
+      const data = await fetchChapter(book, chapter);
+      displayChapter(data);
+    } catch (err) {
+      document.getElementById("reference").textContent = "Erro";
+      document.getElementById("chapterText").textContent = err.message;
+      console.error(err);
+    } finally {
+      loadButton.classList.remove('loading');
+      loadButton.textContent = originalText;
+      loadButton.disabled = false;
     }
-  </script>
+  }
 
-  <script>
-    document.getElementById('currentYear').textContent = new Date().getFullYear();
-  </script>
+  window.onload = function() {
+    populateBookSelect();
+    loadRandomChapter();
+  };
 
-  <script>
-    document.addEventListener("contextmenu", function(e) {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js')
+      .then(() => console.log('Service Worker registrado com sucesso.'))
+      .catch(err => console.log('Erro ao registrar o Service Worker:', err));
+  }
+</script>
+
+<script>
+  document.getElementById('currentYear').textContent = new Date().getFullYear();
+</script>
+
+<script>
+  document.addEventListener("contextmenu", function(e) {
+    e.preventDefault();
+  });
+
+  document.onkeydown = function(e) {
+    if (
+      e.keyCode === 123 ||
+      (e.ctrlKey && e.shiftKey && e.keyCode === 73) ||
+      (e.ctrlKey && e.shiftKey && e.keyCode === 74) ||
+      (e.ctrlKey && e.keyCode === 85) ||
+      (e.ctrlKey && e.keyCode === 83)
+    ) {
       e.preventDefault();
-    });
+      return false;
+    }
+  };
 
-    document.onkeydown = function(e) {
-      if (
-        e.keyCode === 123 ||
-        (e.ctrlKey && e.shiftKey && e.keyCode === 73) ||
-        (e.ctrlKey && e.shiftKey && e.keyCode === 74) ||
-        (e.ctrlKey && e.keyCode === 85) ||
-        (e.ctrlKey && e.keyCode === 83)
-      ) {
-        e.preventDefault();
-        return false;
-      }
-    };
+  document.addEventListener("copy", (e) => e.preventDefault());
+  document.addEventListener("cut", (e) => e.preventDefault());
+  document.addEventListener("dragstart", (e) => e.preventDefault());
 
-    document.addEventListener("copy", (e) => e.preventDefault());
-    document.addEventListener("cut", (e) => e.preventDefault());
-    document.addEventListener("dragstart", (e) => e.preventDefault());
-
-    document.querySelectorAll("*").forEach(el => {
-      el.style.userSelect = "none";
-    });
-  </script>
+  document.querySelectorAll("*").forEach(el => {
+    el.style.userSelect = "none";
+  });
+</script>
 
 
 
