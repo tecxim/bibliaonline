@@ -856,6 +856,60 @@
       }
     }
 
+   function normalizeText(text) {
+      // Primeiro, normalizar caracteres Unicode
+      let normalized = text
+        .normalize('NFD') // Decompor caracteres acentuados
+        .replace(/[\u0300-\u036f]/g, '') // Remover diacríticos
+        .normalize('NFC'); // Recompor
+      
+      // Agora aplicar correções específicas da Bíblia
+      return normalized
+        // Correção específica: "ë tua semente" -> "À tua semente"
+        .replace(/\bë tua\b/gi, 'À tua')
+        .replace(/\bë\b/gi, 'à')
+        .replace(/\bË\b/g, 'À')
+        // Outras correções comuns na Bíblia
+        .replace(/\bde\b/gi, 'de')
+        .replace(/\bpara\b/gi, 'para')
+        .replace(/\bcom\b/gi, 'com')
+        .replace(/\bsem\b/gi, 'sem')
+        // Garantir que "Senhor" tenha acento quando necessário
+        .replace(/\bsenhor\b/gi, 'Senhor')
+        .replace(/\bcristo\b/gi, 'Cristo')
+        // Correção de pontuação
+        .replace(/\s*\.\s*/g, '. ')
+        .replace(/\s*,\s*/g, ', ')
+        .replace(/\s*;\s*/g, '; ')
+        .replace(/\s*:\s*/g, ': ')
+        // Normalizar espaços
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function displayChapter(data) {
+      try {
+        if (data.book && data.chapter && data.verses && data.verses.length > 0) {
+          document.getElementById("reference").textContent = `${data.book.name} ${data.chapter.number}`;
+          
+          // Processar cada verso para corrigir caracteres
+          const versesText = data.verses.map(v => {
+            const verseNumber = v.number;
+            const verseText = normalizeText(v.text);
+            return `${verseNumber}. ${verseText}`;
+          }).join("\n\n");
+          
+          document.getElementById("chapterText").textContent = versesText;
+        } else {
+          throw new Error("Dados inválidos recebidos");
+        }
+      } catch (err) {
+        console.error("Erro ao exibir capítulo:", err);
+        document.getElementById("reference").textContent = "Erro ao carregar";
+        document.getElementById("chapterText").textContent = "Não foi possível carregar o capítulo. Tente novamente ou selecione outra versão.";
+      }
+    }
+
     function displayChapter(data) {
       try {
         if (data.book && data.chapter && data.verses && data.verses.length > 0) {
