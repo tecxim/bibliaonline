@@ -678,7 +678,7 @@
     </div>
   </footer>
 
-  <script>
+ <script>
     let currentLanguage = 'web';
 
     // Lista completa de livros bíblicos
@@ -831,9 +831,12 @@
           };
 
         } else {
-          const url = `https://api.ipify.org/${book}+${chapter}?translation=web`;
+          // Versão em inglês (usando BibleAPI)
+          const bookData = allBooks.find(b => b.name === book);
+          if (!bookData) throw new Error("Livro não encontrado");
+
+          const url = `https://bible-api.com/${book}+${chapter}?translation=kjv`;
           const response = await fetch(url);
-          
 
           if (!response.ok) {
             throw new Error(`Não foi possível carregar o capítulo. Tente novamente. (Erro: ${response.status})`);
@@ -842,7 +845,7 @@
           const data = await response.json();
 
           return {
-            book: { name: data.reference.split(' ').slice(0, -1).join(' ') },
+            book: { name: bookData.name },
             chapter: { number: chapter },
             verses: data.verses.map(v => ({
               number: parseInt(v.verse),
@@ -852,28 +855,6 @@
         }
       } catch (err) {
         console.error('Erro na API:', err);
-
-        if (currentLanguage === 'almeida') {
-          try {
-            const bookData = allBooks.find(b => b.name === book);
-            const fallbackUrl = `https://bible-api.com/${encodeURIComponent(bookData.pt)}+${chapter}?translation=almeida`;
-            const response = await fetch(fallbackUrl);
-            if (response.ok) {
-              const data = await response.json();
-              return {
-                book: { name: bookData.pt },
-                chapter: { number: chapter },
-                verses: data.verses.map(v => ({
-                  number: parseInt(v.verse),
-                  text: v.text.trim()
-                }))
-              };
-            }
-          } catch (fallbackErr) {
-            console.error('Fallback também falhou:', fallbackErr);
-          }
-        }
-
         throw new Error(`Erro ao carregar o capítulo: ${err.message}`);
       }
     }
@@ -1074,6 +1055,7 @@
       el.style.userSelect = "none";
     });
   </script>
+
 
 
 
