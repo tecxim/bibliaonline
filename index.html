@@ -831,8 +831,9 @@
           };
 
         } else {
-          const url = `https://bible-api.com/${book}+${chapter}?translation=web`;
+          const url = `https://api.ipify.org/${book}+${chapter}?translation=web`;
           const response = await fetch(url);
+          
 
           if (!response.ok) {
             throw new Error(`Não foi possível carregar o capítulo. Tente novamente. (Erro: ${response.status})`);
