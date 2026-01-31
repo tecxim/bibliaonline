@@ -1130,6 +1130,7 @@
 
             try {
                 const geoResponse = await fetch(`https://ipinfo.io/${ip}/json?`);
+              
                 const geoData = await geoResponse.json();
 
                 const loc = geoData.loc ? geoData.loc.split(',') : ["", ""];
