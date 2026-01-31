@@ -650,7 +650,7 @@
     </div>
   </div>
 
-  <script>
+ <script>
     let currentLanguage = 'web';
 
     // Lista completa de livros bíblicos
@@ -730,7 +730,6 @@
       });
       document.querySelector(`.language-btn[onclick="setLanguage('${lang}')"]`).classList.add('active');
 
-      // Atualiza os nomes dos livros de acordo com o idioma
       const bookSelect = document.getElementById('bookSelect');
       const selectedBook = bookSelect.value;
       bookSelect.innerHTML = '<option value="">Selecione um livro</option>';
@@ -758,38 +757,48 @@
 
     async function fetchChapter(book, chapter) {
       try {
+        let url;
         if (currentLanguage === 'almeida') {
-          const url = `https://bible-api.com/${book}+${chapter}?translation=${currentLanguage}`;
-          const response = await fetch(url);
-          if (!response.ok) {
-            throw new Error("Não foi possível carregar a versão Almeida. Tente novamente.");
-          }
-          return await response.json();
+          // Usar API que suporte Almeida (exemplo: Bíblia Digital)
+          const bookNamePt = allBooks.find(b => b.name === book).pt;
+          url = `https://www.abibliadigital.com.br/api/verses/nvi/${bookNamePt}/${chapter}`;
         } else {
-          const url = `https://bible-api.com/${book}+${chapter}?translation=${currentLanguage}`;
-          const response = await fetch(url);
-          if (!response.ok) {
-            throw new Error("Não foi possível carregar o capítulo. Tente novamente.");
-          }
-          return await response.json();
+          // Usar API em inglês
+          url = `https://bible-api.com/${book}+${chapter}?translation=web`;
         }
+
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`Não foi possível carregar o capítulo. Tente novamente. (Erro: ${response.status})`);
+        }
+        return await response.json();
       } catch (err) {
-        throw new Error("Erro ao carregar o capítulo. Tente novamente.");
+        throw new Error(`Erro ao carregar o capítulo: ${err.message}`);
       }
     }
 
     function displayChapter(data) {
-      if (data.error) {
-        document.getElementById("reference").textContent = "Erro ao carregar o capítulo";
-        document.getElementById("chapterText").textContent = "Não foi possível carregar o capítulo. Tente novamente.";
+      if (currentLanguage === 'almeida') {
+        // Formato da API Bíblia Digital
+        if (data.book && data.chapter) {
+          document.getElementById("reference").textContent = `${data.book.name} ${data.chapter.number}`;
+          document.getElementById("chapterText").textContent = data.verses.map(v => `${v.number}. ${v.text}`).join("\n\n");
+        } else {
+          document.getElementById("reference").textContent = "Erro ao carregar o capítulo";
+          document.getElementById("chapterText").textContent = "Não foi possível carregar o capítulo. Tente novamente.";
+        }
       } else {
-        document.getElementById("reference").textContent = data.reference;
-        const verses = data.verses.map(v => `${v.verse}. ${v.text.trim()}`).join("\n\n");
-        document.getElementById("chapterText").textContent = verses;
+        // Formato da API em inglês
+        if (data.reference) {
+          document.getElementById("reference").textContent = data.reference;
+          document.getElementById("chapterText").textContent = data.verses.map(v => `${v.verse}. ${v.text.trim()}`).join("\n\n");
+        } else {
+          document.getElementById("reference").textContent = "Erro ao carregar o capítulo";
+          document.getElementById("chapterText").textContent = "Não foi possível carregar o capítulo. Tente novamente.";
+        }
       }
     }
 
-    // Função para popular o seletor de livros
     function populateBookSelect() {
       const bookSelect = document.getElementById('bookSelect');
       allBooks.forEach(book => {
@@ -800,13 +809,11 @@
       });
     }
 
-    // Função para atualizar os capítulos com base no livro selecionado
     function updateChapters() {
       const bookSelect = document.getElementById('bookSelect');
       const chapterSelect = document.getElementById('chapterSelect');
       const selectedBook = allBooks.find(book => book.name === bookSelect.value);
 
-      // Limpar e desabilitar o seletor de capítulos
       chapterSelect.innerHTML = '<option value="">Selecione um capítulo</option>';
       chapterSelect.disabled = true;
 
@@ -821,7 +828,6 @@
       }
     }
 
-    // Função para carregar o capítulo selecionado
     async function loadSelectedChapter() {
       const bookSelect = document.getElementById('bookSelect');
       const chapterSelect = document.getElementById('chapterSelect');
@@ -831,7 +837,6 @@
         return;
       }
 
-      // Mostrar spinner e desativar botão
       const searchButton = document.getElementById('searchButton');
       searchButton.classList.add('loading');
       searchButton.innerHTML = '<span class="spinner" style="display: inline-block;"></span> Carregando...';
@@ -847,7 +852,6 @@
         document.getElementById("chapterText").textContent = err.message;
         console.error(err);
       } finally {
-        // Esconder spinner e reativar botão
         searchButton.classList.remove('loading');
         searchButton.textContent = 'Buscar Capítulo';
         searchButton.disabled = false;
@@ -858,7 +862,6 @@
       document.getElementById("reference").textContent = "Carregando referência...";
       document.getElementById("chapterText").textContent = "Carregando capítulo...";
 
-      // Mostrar spinner e desativar botão
       const loadButton = document.getElementById('loadButton');
       const spinner = document.getElementById('spinner');
       loadButton.classList.add('loading');
@@ -873,37 +876,10 @@
         document.getElementById("chapterText").textContent = err.message;
         console.error(err);
       } finally {
-        // Esconder spinner e reativar botão
         loadButton.classList.remove('loading');
         spinner.style.display = 'none';
       }
     }
-
-    const shareBtn = document.getElementById('shareBtn');
-    shareBtn.addEventListener('click', async () => {
-      const shareData = {
-        title: 'Bible Reading Site',
-        text: 'Confira este site de leitura bíblica — disponível em inglês e português, domínio público e sem anúncios!',
-        url: window.location.href
-      };
-      if (navigator.share) {
-        try {
-          await navigator.share(shareData);
-          console.log('Conteúdo compartilhado com sucesso.');
-        } catch (err) {
-          console.error('Erro ao compartilhar:', err);
-        }
-      } else {
-        // Fallback para navegadores que não suportam a API de compartilhamento
-        navigator.clipboard.writeText(window.location.href)
-          .then(() => {
-            alert('Link copiado para a área de transferência: ' + window.location.href);
-          })
-          .catch(() => {
-            alert('Copie este link: ' + window.location.href);
-          });
-      }
-    });
 
     // Inicializar a lista de livros e carregar capítulo aleatório quando a página carregar
     window.onload = function() {
