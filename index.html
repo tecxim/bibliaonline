@@ -759,14 +759,16 @@
       try {
         let url;
         if (currentLanguage === 'almeida') {
-          // Usar API que suporte Almeida (exemplo: Bíblia Digital)
+          // Usar a versão ARA (Almeida Revista e Atualizada) ou ARC (Almeida Revista e Corrigida)
           const bookNamePt = allBooks.find(b => b.name === book).pt;
-          url = `https://www.abibliadigital.com.br/api/verses/nvi/${bookNamePt}/${chapter}`;
+          // Mapear nomes em português para o formato esperado pela API (ex: "Gênesis" -> "Genesis")
+          const bookNameEn = allBooks.find(b => b.pt === bookNamePt).name;
+          url = `https://bible-api.com/${bookNameEn}+${chapter}?translation=ara`;
         } else {
           // Usar API em inglês
           url = `https://bible-api.com/${book}+${chapter}?translation=web`;
         }
-
+    
         const response = await fetch(url);
         if (!response.ok) {
           throw new Error(`Não foi possível carregar o capítulo. Tente novamente. (Erro: ${response.status})`);
@@ -776,6 +778,7 @@
         throw new Error(`Erro ao carregar o capítulo: ${err.message}`);
       }
     }
+
 
     function displayChapter(data) {
       if (currentLanguage === 'almeida') {
