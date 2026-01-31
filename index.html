@@ -856,35 +856,83 @@
       }
     }
 
-   function normalizeText(text) {
-      // Primeiro, normalizar caracteres Unicode
-      let normalized = text
-        .normalize('NFD') // Decompor caracteres acentuados
-        .replace(/[\u0300-\u036f]/g, '') // Remover diacríticos
-        .normalize('NFC'); // Recompor
+   function correctBibleText(text) {
+      // Lista de correções específicas da Bíblia
+      const corrections = [
+        // Erro crítico: "ë tua" -> "À tua"
+        { pattern: /\bë tua\b/gi, replacement: 'À tua' },
+        { pattern: /\bË tua\b/g, replacement: 'À tua' },
+        { pattern: /\bë\b/gi, replacement: 'à' },
+        { pattern: /\bË\b/g, replacement: 'À' },
+        
+        // Outras correções comuns
+        { pattern: /\bdeos\b/gi, replacement: 'deus' },
+        { pattern: /\bcriaçao\b/gi, replacement: 'criação' },
+        { pattern: /\bcoroaçao\b/gi, replacement: 'coroação' },
+        { pattern: /\bpaï¿½\b/gi, replacement: 'pai' },
+        { pattern: /\bmãe\b/gi, replacement: 'mãe' },
+        { pattern: /\bcaï¿½\b/gi, replacement: 'cão' },
+        { pattern: /\bçao\b/gi, replacement: 'ção' },
+        { pattern: /\bçoes\b/gi, replacement: 'ções' },
+        
+        // Normalização de nomes divinos
+        { pattern: /\bsenhor\b/gi, replacement: 'Senhor' },
+        { pattern: /\bcristo\b/gi, replacement: 'Cristo' },
+        { pattern: /\bespirito\s+santo\b/gi, replacement: 'Espírito Santo' },
+        { pattern: /\bdeus\b/gi, replacement: 'Deus' },
+        { pattern: /\bjesuï¿½\b/gi, replacement: 'Jesus' },
+        
+        // Correções de apostolos
+        { pattern: /\bpedro\b/gi, replacement: 'Pedro' },
+        { pattern: /\bpaulo\b/gi, replacement: 'Paulo' },
+        { pattern: /\bjoao\b/gi, replacement: 'João' },
+        { pattern: /\bmateus\b/gi, replacement: 'Mateus' },
+        { pattern: /\bmarcos\b/gi, replacement: 'Marcos' },
+        { pattern: /\blucas\b/gi, replacement: 'Lucas' },
+      ];
       
-      // Agora aplicar correções específicas da Bíblia
-      return normalized
-        // Correção específica: "ë tua semente" -> "À tua semente"
-        .replace(/\bë tua\b/gi, 'À tua')
-        .replace(/\bë\b/gi, 'à')
-        .replace(/\bË\b/g, 'À')
-        // Outras correções comuns na Bíblia
-        .replace(/\bde\b/gi, 'de')
-        .replace(/\bpara\b/gi, 'para')
-        .replace(/\bcom\b/gi, 'com')
-        .replace(/\bsem\b/gi, 'sem')
-        // Garantir que "Senhor" tenha acento quando necessário
-        .replace(/\bsenhor\b/gi, 'Senhor')
-        .replace(/\bcristo\b/gi, 'Cristo')
-        // Correção de pontuação
-        .replace(/\s*\.\s*/g, '. ')
-        .replace(/\s*,\s*/g, ', ')
-        .replace(/\s*;\s*/g, '; ')
-        .replace(/\s*:\s*/g, ': ')
-        // Normalizar espaços
-        .replace(/\s+/g, ' ')
-        .trim();
+      let corrected = text;
+      
+      // Aplicar todas as correções
+      corrections.forEach(correction => {
+        corrected = corrected.replace(correction.pattern, correction.replacement);
+      });
+      
+      // Corrigir problemas de codificação Unicode
+      corrected = corrected
+        .replace(/Ã¡/g, 'á').replace(/Ã©/g, 'é').replace(/Ã­/g, 'í')
+        .replace(/Ã³/g, 'ó').replace(/Ãº/g, 'ú').replace(/Ã£/g, 'ã')
+        .replace(/Ãµ/g, 'õ').replace(/Ã§/g, 'ç').replace(/Ãª/g, 'ê')
+        .replace(/Ã´/g, 'ô').replace(/Ã /g, 'à').replace(/Ã¿/g, 'ÿ')
+        .replace(/Ã€/g, 'À').replace(/Ã‰/g, 'É').replace(/Ã/g, 'Í')
+        .replace(/Ã“/g, 'Ó').replace(/Ãš/g, 'Ú').replace(/Ãƒ/g, 'Ã')
+        .replace(/Ã•/g, 'Õ').replace(/Ã‡/g, 'Ç').replace(/ÃŠ/g, 'Ê')
+        .replace(/Ã”/g, 'Ô');
+      
+      return corrected;
+    }
+
+    function displayChapter(data) {
+      try {
+        if (data.book && data.chapter && data.verses && data.verses.length > 0) {
+          document.getElementById("reference").textContent = `${data.book.name} ${data.chapter.number}`;
+          
+          // Processar cada verso para corrigir caracteres
+          const versesText = data.verses.map(v => {
+            const verseNumber = v.number;
+            const verseText = correctBibleText(v.text);
+            return `${verseNumber}. ${verseText}`;
+          }).join("\n\n");
+          
+          document.getElementById("chapterText").textContent = versesText;
+        } else {
+          throw new Error("Dados inválidos recebidos");
+        }
+      } catch (err) {
+        console.error("Erro ao exibir capítulo:", err);
+        document.getElementById("reference").textContent = "Erro ao carregar";
+        document.getElementById("chapterText").textContent = "Não foi possível carregar o capítulo. Tente novamente ou selecione outra versão.";
+      }
     }
 
     function displayChapter(data) {
