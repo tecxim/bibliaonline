@@ -6,7 +6,7 @@
 
   <!-- Meta tags para SEO -->
   <meta name="description" content="Receba uma leitura bíblica aleatória diária para reflexão e crescimento espiritual. Ideal para devocionais e estudos bíblicos." />
-  <meta name="keywords" content="leitura bíblica, bíblia aleatória, versículo do dia, devocional, estudo bíblico, reflexão bíblica" />
+  <meta name="keywords" content="leitura bíblica, bíblia aleatória, versículo do dia, devocional, estudo bíblico, reflexão bíblica, bíblia grátis, bíblia sem anúncios" />
   <meta name="author" content="Wellington A R Cardoso">
   <meta name="robots" content="index, follow" />
 
@@ -27,14 +27,13 @@
   <link rel="canonical" href="https://seusite.com/leitura-biblica-aleatoria" />
 
   <title>Leitura Bíblica Aleatória - Receba um Versículo Diário para Reflexão</title>
-</head>
 
-<style>
+  <style>
     /* ===== VARIÁVEIS E RESET ===== */
     :root {
-      --primary: #3498db;
-      --primary-dark: #2980b9;
-      --secondary: #2c3e50;
+      --primary: #2c3e50;
+      --primary-dark: #1a252f;
+      --secondary: #3498db;
       --light: #f8f9fa;
       --text: #333;
       --text-light: #7f8c8d;
@@ -42,6 +41,9 @@
       --radius: 12px;
       --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       --transition: all 0.3s ease;
+      --dropdown-bg: #ffffff;
+      --dropdown-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      --dropdown-border: 1px solid #e0e0e0;
     }
 
     * {
@@ -58,6 +60,7 @@
       line-height: 1.6;
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       padding: 20px;
@@ -77,13 +80,13 @@
 
     h1 {
       text-align: center;
-      color: var(--secondary);
+      color: var(--primary);
       font-weight: 600;
       font-size: 1.6rem;
       margin-bottom: 25px;
     }
 
-    /* ===== MENU SUPERIOR ===== ALTEREI AQUI*/
+    /* ===== MENU SUPERIOR ===== */
     .menu-container {
       position: fixed;
       top: 0;
@@ -136,10 +139,11 @@
       position: absolute;
       top: 100%;
       left: 0;
-      background: white;
+      background: var(--dropdown-bg);
       min-width: 260px;
       border-radius: 8px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      box-shadow: var(--dropdown-shadow);
+      border: var(--dropdown-border);
       opacity: 0;
       visibility: hidden;
       transform: translateY(-10px);
@@ -165,14 +169,14 @@
 
     .menu-content a:hover {
       background: #f8f9fa;
-      color: var(--primary);
+      color: var(--secondary);
     }
 
     .menu-content a:last-child {
       border-bottom: none;
     }
 
-    /* ===== SELEÇÃO DE IDIOMA - MELHORADO ===== */
+    /* ===== SELEÇÃO DE IDIOMA ===== */
     .language-selector {
       display: flex;
       justify-content: center;
@@ -208,6 +212,65 @@
       transform: translateY(-1px);
     }
 
+    /* ===== SELEÇÃO DE LIVRO E CAPÍTULO ===== */
+    .search-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 20px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .select-group {
+      display: flex;
+      flex-direction: column;
+      min-width: 150px;
+    }
+
+    .select-group label {
+      margin-bottom: 5px;
+      font-weight: 500;
+      color: var(--primary);
+      font-size: 0.9rem;
+    }
+
+    .select-group select {
+      padding: 10px 15px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: white;
+      font-size: 1rem;
+      transition: var(--transition);
+      min-width: 180px;
+      height: 44px;
+    }
+
+    .select-group select:focus {
+      outline: none;
+      border-color: var(--secondary);
+      box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    }
+
+    .search-button {
+      padding: 12px 24px;
+      background: var(--secondary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      height: 44px;
+      min-width: 160px;
+    }
+
+    .search-button:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+
     /* ===== CONTEÚDO DA BÍBLIA ===== */
     .reference {
       text-align: center;
@@ -241,7 +304,7 @@
 
     button {
       padding: 14px 24px;
-      background: var(--primary);
+      background: var(--secondary);
       color: white;
       border: none;
       border-radius: 8px;
@@ -269,10 +332,13 @@
     /* ===== RODAPÉ ===== */
     footer {
       text-align: center;
-      margin-top: 25px;
-      color: var(--text-light);
-      font-size: 0.9rem;
-      line-height: 1.5;
+      padding: 15px;
+      margin-top: auto;
+      color: #555;
+      font-size: 14px;
+      background-color: #f5f5f5;
+      width: 100%;
+      border-top: 1px solid #ddd;
     }
 
     .share-container {
@@ -320,98 +386,98 @@
     }
 
     /* ===== RESPONSIVIDADE ===== */
-    
-    /* Tablets */
     @media (max-width: 768px) {
       .container {
         padding: 25px 20px;
         margin-top: 70px;
       }
-      
+
       h1 {
         font-size: 1.4rem;
       }
-      
+
       .reference {
         font-size: 1.2rem;
       }
-      
+
       .chapter-text {
         font-size: 1.05rem;
         padding: 20px;
         max-height: 50vh;
       }
-      
+
       button {
         padding: 12px 20px;
         font-size: 0.95rem;
         min-width: 140px;
       }
-      
+
       .menu-wrapper {
         gap: 15px;
       }
-      
+
       .menu-btn {
         padding: 9px 15px;
         font-size: 0.9rem;
       }
-      
+
       .language-btn {
         padding: 11px 20px;
         font-size: 0.95rem;
         max-width: 180px;
       }
+
+      .select-group select {
+        min-width: 150px;
+      }
     }
 
-    /* Celulares */
     @media (max-width: 480px) {
       body {
         padding: 15px;
       }
-      
+
       .container {
         padding: 20px 15px;
         margin-top: 70px;
         margin-bottom: 15px;
       }
-      
+
       h1 {
         font-size: 1.3rem;
         margin-bottom: 20px;
       }
-      
+
       .reference {
         font-size: 1.1rem;
       }
-      
+
       .chapter-text {
         font-size: 1rem;
         padding: 18px;
         max-height: 55vh;
       }
-      
+
       .buttons {
         gap: 12px;
       }
-      
+
       button {
         width: 100%;
         max-width: 280px;
         padding: 13px 20px;
       }
-      
-      /* MENU - LADO A LADO SEMPRE */
+
       .menu-container {
         padding: 10px 15px;
       }
-      
+
       .menu-wrapper {
         gap: 12px;
         justify-content: center;
         flex-wrap: nowrap;
       }
-      
+
       .menu-btn {
         padding: 8px 14px;
         font-size: 0.85rem;
@@ -419,23 +485,22 @@
         flex: 1;
         max-width: 160px;
       }
-      
+
       .menu-content {
         min-width: 220px;
         left: 50%;
         transform: translateX(-50%) translateY(-10px);
       }
-      
+
       .menu:hover .menu-content {
         transform: translateX(-50%) translateY(0);
       }
-      
-      /* BOTÕES DE IDIOMA - SEMPRE NA HORIZONTAL */
+
       .language-selector {
         gap: 10px;
         padding: 0 5px;
       }
-      
+
       .language-btn {
         padding: 10px 16px;
         font-size: 0.9rem;
@@ -443,32 +508,31 @@
         flex: 1;
         min-width: 100px;
       }
-      
+
       footer {
         font-size: 0.85rem;
       }
     }
 
-    /* Celulares muito pequenos */
     @media (max-width: 360px) {
       .menu-wrapper {
         gap: 8px;
       }
-      
+
       .menu-btn {
         padding: 7px 12px;
         font-size: 0.8rem;
         min-width: 110px;
       }
-      
+
       .container {
         padding: 18px 12px;
       }
-      
+
       .language-selector {
         gap: 8px;
       }
-      
+
       .language-btn {
         padding: 9px 12px;
         font-size: 0.85rem;
@@ -476,7 +540,6 @@
       }
     }
 
-    /* Garantir que os botões de idioma nunca quebrem linha */
     .language-selector {
       flex-wrap: nowrap;
     }
@@ -518,50 +581,174 @@
   <!-- Conteúdo Principal -->
   <div class="container">
     <h1>Leitura Bíblica Aleatória</h1>
-    
+
     <div class="language-selector">
       <button class="language-btn active" onclick="setLanguage('web')">Inglês (WEB)</button>
       <button class="language-btn" onclick="setLanguage('almeida')">Português (Almeida)</button>
     </div>
-    
+
+    <!-- Novo container de busca -->
+    <div class="search-container">
+      <div class="select-group">
+        <label for="bookSelect">Livro:</label>
+        <select id="bookSelect" onchange="updateChapters()">
+          <option value="">Selecione um livro</option>
+        </select>
+      </div>
+
+      <div class="select-group">
+        <label for="chapterSelect">Capítulo:</label>
+        <select id="chapterSelect" disabled>
+          <option value="">Selecione um capítulo</option>
+        </select>
+      </div>
+
+      <button class="search-button" onclick="loadSelectedChapter()" id="searchButton">
+        Buscar Capítulo
+      </button>
+    </div>
+
     <div class="reference" id="reference">Carregando referência...</div>
     <div class="chapter-text" id="chapterText">Por favor, aguarde...</div>
-    
+
     <div class="buttons">
       <button onclick="loadRandomChapter()" id="loadButton">
         <span class="spinner" id="spinner" style="display: none;"></span>
         Ler outro capítulo
       </button>
     </div>
-    
-    <footer>
-      <p>EN / PT: Bible available in English and Portuguese — public domain — no ad banners. / Bíblia disponível em Português e Inglês — domínio público — sem banners de anúncio.</p>
-    </footer>
-    
+
+    <!-- Link de Doação -->
+    <div style="text-align: center; margin: 20px 0;">
+      <a
+        href="https://link.mercadopago.com.br/doecamor"
+        target="_blank"
+        style="
+          color: var(--secondary);
+          text-decoration: none;
+          font-weight: 500;
+          font-size: 1rem;
+          display: inline-flex;
+          align-items: center;
+          gap: 5px;
+        "
+      >
+        💙 Apoie este projeto com uma doação
+      </a>
+    </div>
+
+    <!-- Link de Doação -->
+    <div style="text-align: center; margin: 20px 0;">
+      <a
+        href="https://wise.com/pay/me/wellingtona842"
+        target="_blank"
+        style="
+          color: var(--secondary);
+          text-decoration: none;
+          font-weight: 500;
+          font-size: 1rem;
+          display: inline-flex;
+          align-items: center;
+          gap: 5px;
+        "
+      >
+        💙 Help support this project with a donation
+      </a>
+    </div>
+
     <div class="share-container">
       <button id="shareBtn">📤 Share / Compartilhar</button>
     </div>
   </div>
 
+  <footer>
+    <div style="margin-bottom: 10px;">
+        <p style="margin: 0; font-size: 13px; color: #444;">
+            📖 <strong>Leitura Gratuita / Free Reading</strong> —
+            Disponível em Português e Inglês —
+            Sem banners de anúncios / No ad banners
+        </p>
+    </div>
+
+    <div style="border-top: 1px solid #eee; padding-top: 10px;">
+        <p style="margin: 0; font-size: 12px; color: #666;">
+            Desenvolvido por: <strong>Wellington A. R. Cardoso</strong> |
+            © <span id="currentYear"></span> Todos os direitos reservados
+        </p>
+    </div>
+  </footer>
+
   <script>
     let currentLanguage = 'web';
-    const books = [
-      { name: "Genesis", chapters: 50 },
-      { name: "Exodus", chapters: 40 },
-      { name: "Leviticus", chapters: 27 },
-      { name: "Numbers", chapters: 36 },
-      { name: "Deuteronomy", chapters: 34 },
-      { name: "Joshua", chapters: 24 },
-      { name: "Psalms", chapters: 150 },
-      { name: "Proverbs", chapters: 31 },
-      { name: "Isaiah", chapters: 66 },
-      { name: "Matthew", chapters: 28 },
-      { name: "Mark", chapters: 16 },
-      { name: "Luke", chapters: 24 },
-      { name: "John", chapters: 21 },
-      { name: "Acts", chapters: 28 },
-      { name: "Romans", chapters: 16 },
-      { name: "Revelation", chapters: 22 }
+
+    // Lista completa de livros bíblicos
+    const allBooks = [
+      { name: "Genesis", chapters: 50, pt: "Gênesis", code: "gn" },
+      { name: "Exodus", chapters: 40, pt: "Êxodo", code: "ex" },
+      { name: "Leviticus", chapters: 27, pt: "Levítico", code: "lv" },
+      { name: "Numbers", chapters: 36, pt: "Números", code: "nm" },
+      { name: "Deuteronomy", chapters: 34, pt: "Deuteronômio", code: "dt" },
+      { name: "Joshua", chapters: 24, pt: "Josué", code: "js" },
+      { name: "Judges", chapters: 21, pt: "Juízes", code: "jz" },
+      { name: "Ruth", chapters: 4, pt: "Rute", code: "rt" },
+      { name: "1 Samuel", chapters: 31, pt: "1 Samuel", code: "1sm" },
+      { name: "2 Samuel", chapters: 24, pt: "2 Samuel", code: "2sm" },
+      { name: "1 Kings", chapters: 22, pt: "1 Reis", code: "1rs" },
+      { name: "2 Kings", chapters: 25, pt: "2 Reis", code: "2rs" },
+      { name: "1 Chronicles", chapters: 29, pt: "1 Crônicas", code: "1cr" },
+      { name: "2 Chronicles", chapters: 36, pt: "2 Crônicas", code: "2cr" },
+      { name: "Ezra", chapters: 10, pt: "Esdras", code: "ed" },
+      { name: "Nehemiah", chapters: 13, pt: "Neemias", code: "ne" },
+      { name: "Esther", chapters: 10, pt: "Ester", code: "et" },
+      { name: "Job", chapters: 42, pt: "Jó", code: "jó" },
+      { name: "Psalms", chapters: 150, pt: "Salmos", code: "sl" },
+      { name: "Proverbs", chapters: 31, pt: "Provérbios", code: "pv" },
+      { name: "Ecclesiastes", chapters: 12, pt: "Eclesiastes", code: "ec" },
+      { name: "Song of Solomon", chapters: 8, pt: "Cânticos", code: "ct" },
+      { name: "Isaiah", chapters: 66, pt: "Isaías", code: "is" },
+      { name: "Jeremiah", chapters: 52, pt: "Jeremias", code: "jr" },
+      { name: "Lamentations", chapters: 5, pt: "Lamentações", code: "lm" },
+      { name: "Ezekiel", chapters: 48, pt: "Ezequiel", code: "ez" },
+      { name: "Daniel", chapters: 12, pt: "Daniel", code: "dn" },
+      { name: "Hosea", chapters: 14, pt: "Oséias", code: "os" },
+      { name: "Joel", chapters: 3, pt: "Joel", code: "jl" },
+      { name: "Amos", chapters: 9, pt: "Amós", code: "am" },
+      { name: "Obadiah", chapters: 1, pt: "Obadias", code: "ob" },
+      { name: "Jonah", chapters: 4, pt: "Jonas", code: "jn" },
+      { name: "Micah", chapters: 7, pt: "Miqueias", code: "mq" },
+      { name: "Nahum", chapters: 3, pt: "Naum", code: "na" },
+      { name: "Habakkuk", chapters: 3, pt: "Habacuque", code: "hc" },
+      { name: "Zephaniah", chapters: 3, pt: "Sofonias", code: "sf" },
+      { name: "Haggai", chapters: 2, pt: "Ageu", code: "ag" },
+      { name: "Zechariah", chapters: 14, pt: "Zacarias", code: "zc" },
+      { name: "Malachi", chapters: 4, pt: "Malaquias", code: "ml" },
+      { name: "Matthew", chapters: 28, pt: "Mateus", code: "mt" },
+      { name: "Mark", chapters: 16, pt: "Marcos", code: "mc" },
+      { name: "Luke", chapters: 24, pt: "Lucas", code: "lc" },
+      { name: "John", chapters: 21, pt: "João", code: "jo" },
+      { name: "Acts", chapters: 28, pt: "Atos", code: "at" },
+      { name: "Romans", chapters: 16, pt: "Romanos", code: "rm" },
+      { name: "1 Corinthians", chapters: 16, pt: "1 Coríntios", code: "1co" },
+      { name: "2 Corinthians", chapters: 13, pt: "2 Coríntios", code: "2co" },
+      { name: "Galatians", chapters: 6, pt: "Gálatas", code: "gl" },
+      { name: "Ephesians", chapters: 6, pt: "Efésios", code: "ef" },
+      { name: "Philippians", chapters: 4, pt: "Filipenses", code: "fp" },
+      { name: "Colossians", chapters: 4, pt: "Colossenses", code: "cl" },
+      { name: "1 Thessalonians", chapters: 5, pt: "1 Tessalonicenses", code: "1ts" },
+      { name: "2 Thessalonians", chapters: 3, pt: "2 Tessalonicenses", code: "2ts" },
+      { name: "1 Timothy", chapters: 6, pt: "1 Timóteo", code: "1tm" },
+      { name: "2 Timothy", chapters: 4, pt: "2 Timóteo", code: "2tm" },
+      { name: "Titus", chapters: 3, pt: "Tito", code: "tt" },
+      { name: "Philemon", chapters: 1, pt: "Filemom", code: "fm" },
+      { name: "Hebrews", chapters: 13, pt: "Hebreus", code: "hb" },
+      { name: "James", chapters: 5, pt: "Tiago", code: "tg" },
+      { name: "1 Peter", chapters: 5, pt: "1 Pedro", code: "1pe" },
+      { name: "2 Peter", chapters: 3, pt: "2 Pedro", code: "2pe" },
+      { name: "1 John", chapters: 5, pt: "1 João", code: "1jo" },
+      { name: "2 John", chapters: 1, pt: "2 João", code: "2jo" },
+      { name: "3 John", chapters: 1, pt: "3 João", code: "3jo" },
+      { name: "Jude", chapters: 1, pt: "Judas", code: "jd" },
+      { name: "Revelation", chapters: 22, pt: "Apocalipse", code: "ap" }
     ];
 
     function setLanguage(lang) {
@@ -570,11 +757,28 @@
         btn.classList.remove('active');
       });
       document.querySelector(`.language-btn[onclick="setLanguage('${lang}')"]`).classList.add('active');
+
+      const bookSelect = document.getElementById('bookSelect');
+      const selectedBook = bookSelect.value;
+      bookSelect.innerHTML = '<option value="">Selecione um livro</option>';
+
+      allBooks.forEach(book => {
+        const option = document.createElement('option');
+        option.value = book.name;
+        option.textContent = lang === 'almeida' ? book.pt : book.name;
+        bookSelect.appendChild(option);
+      });
+
+      if (selectedBook) {
+        bookSelect.value = selectedBook;
+        updateChapters();
+      }
+
       loadRandomChapter();
     }
 
     function getRandomReference() {
-      const book = books[Math.floor(Math.random() * books.length)];
+      const book = allBooks[Math.floor(Math.random() * allBooks.length)];
       const chapter = Math.floor(Math.random() * book.chapters) + 1;
       return { book: book.name, chapter };
     }
@@ -582,52 +786,236 @@
     async function fetchChapter(book, chapter) {
       try {
         if (currentLanguage === 'almeida') {
-          const url = `https://bible-api.com/${book}+${chapter}?translation=${currentLanguage}`;
-          const response = await fetch(url);
+          const bookData = allBooks.find(b => b.name === book);
+          if (!bookData) throw new Error("Livro não encontrado");
+
+          const url = `https://www.abibliadigital.com.br/api/verses/ara/${bookData.code}/${chapter}`;
+
+          const response = await fetch(url, {
+            headers: {
+              'Accept': 'application/json'
+            }
+          });
+
           if (!response.ok) {
-            throw new Error("Não foi possível carregar a versão Almeida. Tente novamente.");
+            const urlARC = `https://www.abibliadigital.com.br/api/verses/arc/${bookData.code}/${chapter}`;
+            const responseARC = await fetch(urlARC, {
+              headers: {
+                'Accept': 'application/json'
+              }
+            });
+
+            if (!responseARC.ok) {
+              throw new Error(`Não foi possível carregar o capítulo (${response.status} ${responseARC.status})`);
+            }
+
+            const data = await responseARC.json();
+            return {
+              book: { name: bookData.pt },
+              chapter: { number: chapter },
+              verses: data.verses.map(v => ({
+                number: v.number,
+                text: v.text
+              }))
+            };
           }
-          return await response.json();
+
+          const data = await response.json();
+          return {
+            book: { name: bookData.pt },
+            chapter: { number: chapter },
+            verses: data.verses.map(v => ({
+              number: v.number,
+              text: v.text
+            }))
+          };
+
         } else {
-          const url = `https://bible-api.com/${book}+${chapter}?translation=${currentLanguage}`;
+          const url = `https://bible-api.com/${book}+${chapter}?translation=web`;
           const response = await fetch(url);
+
           if (!response.ok) {
-            throw new Error("Não foi possível carregar o capítulo. Tente novamente.");
+            throw new Error(`Não foi possível carregar o capítulo. Tente novamente. (Erro: ${response.status})`);
           }
-          return await response.json();
+
+          const data = await response.json();
+
+          return {
+            book: { name: data.reference.split(' ').slice(0, -1).join(' ') },
+            chapter: { number: chapter },
+            verses: data.verses.map(v => ({
+              number: parseInt(v.verse),
+              text: v.text.trim()
+            }))
+          };
         }
       } catch (err) {
-        throw new Error("Erro ao carregar o capítulo. Tente novamente.");
+        console.error('Erro na API:', err);
+
+        if (currentLanguage === 'almeida') {
+          try {
+            const bookData = allBooks.find(b => b.name === book);
+            const fallbackUrl = `https://bible-api.com/${encodeURIComponent(bookData.pt)}+${chapter}?translation=almeida`;
+            const response = await fetch(fallbackUrl);
+            if (response.ok) {
+              const data = await response.json();
+              return {
+                book: { name: bookData.pt },
+                chapter: { number: chapter },
+                verses: data.verses.map(v => ({
+                  number: parseInt(v.verse),
+                  text: v.text.trim()
+                }))
+              };
+            }
+          } catch (fallbackErr) {
+            console.error('Fallback também falhou:', fallbackErr);
+          }
+        }
+
+        throw new Error(`Erro ao carregar o capítulo: ${err.message}`);
       }
     }
 
+    function correctBibleText(text) {
+      const corrections = [
+        { pattern: /\bë tua\b/gi, replacement: 'À tua' },
+        { pattern: /\bË tua\b/g, replacement: 'À tua' },
+        { pattern: /\bë\b/gi, replacement: 'à' },
+        { pattern: /\bË\b/g, replacement: 'À' },
+        { pattern: /\bdeos\b/gi, replacement: 'deus' },
+        { pattern: /\bcriaçao\b/gi, replacement: 'criação' },
+        { pattern: /\bcoroaçao\b/gi, replacement: 'coroação' },
+        { pattern: /\bpaï¿½\b/gi, replacement: 'pai' },
+        { pattern: /\bmãe\b/gi, replacement: 'mãe' },
+        { pattern: /\bcaï¿½\b/gi, replacement: 'cão' },
+        { pattern: /\bçao\b/gi, replacement: 'ção' },
+        { pattern: /\bçoes\b/gi, replacement: 'ções' },
+        { pattern: /\bsenhor\b/gi, replacement: 'Senhor' },
+        { pattern: /\bcristo\b/gi, replacement: 'Cristo' },
+        { pattern: /\bespirito\s+santo\b/gi, replacement: 'Espírito Santo' },
+        { pattern: /\bdeus\b/gi, replacement: 'Deus' },
+        { pattern: /\bjesuï¿½\b/gi, replacement: 'Jesus' },
+        { pattern: /\bpedro\b/gi, replacement: 'Pedro' },
+        { pattern: /\bpaulo\b/gi, replacement: 'Paulo' },
+        { pattern: /\bjoao\b/gi, replacement: 'João' },
+        { pattern: /\bmateus\b/gi, replacement: 'Mateus' },
+        { pattern: /\bmarcos\b/gi, replacement: 'Marcos' },
+        { pattern: /\blucas\b/gi, replacement: 'Lucas' },
+      ];
+
+      let corrected = text;
+
+      corrections.forEach(correction => {
+        corrected = corrected.replace(correction.pattern, correction.replacement);
+      });
+
+      corrected = corrected
+        .replace(/Ã¡/g, 'á').replace(/Ã©/g, 'é').replace(/Ã­/g, 'í')
+        .replace(/Ã³/g, 'ó').replace(/Ãº/g, 'ú').replace(/Ã£/g, 'ã')
+        .replace(/Ãµ/g, 'õ').replace(/Ã§/g, 'ç').replace(/Ãª/g, 'ê')
+        .replace(/Ã´/g, 'ô').replace(/Ã /g, 'à').replace(/Ã¿/g, 'ÿ')
+        .replace(/Ã€/g, 'À').replace(/Ã‰/g, 'É').replace(/Ã/g, 'Í')
+        .replace(/Ã“/g, 'Ó').replace(/Ãš/g, 'Ú').replace(/Ãƒ/g, 'Ã')
+        .replace(/Ã•/g, 'Õ').replace(/Ã‡/g, 'Ç').replace(/ÃŠ/g, 'Ê')
+        .replace(/Ã”/g, 'Ô');
+
+      return corrected;
+    }
+
     function displayChapter(data) {
-      if (currentLanguage === 'almeida') {
-        if (data.error) {
-          document.getElementById("reference").textContent = "Erro ao carregar a versão Almeida";
-          document.getElementById("chapterText").textContent = "Não foi possível carregar a versão Almeida. Tente novamente ou use a versão em inglês.";
+      try {
+        if (data.book && data.chapter && data.verses && data.verses.length > 0) {
+          document.getElementById("reference").textContent = `${data.book.name} ${data.chapter.number}`;
+
+          const versesText = data.verses.map(v => {
+            const verseNumber = v.number;
+            const verseText = correctBibleText(v.text);
+            return `${verseNumber}. ${verseText}`;
+          }).join("\n\n");
+
+          document.getElementById("chapterText").textContent = versesText;
         } else {
-          document.getElementById("reference").textContent = data.reference;
-          const verses = data.verses.map(v => `${v.verse}. ${v.text.trim()}`).join("\n\n");
-          document.getElementById("chapterText").textContent = verses;
+          throw new Error("Dados inválidos recebidos");
         }
-      } else {
-        document.getElementById("reference").textContent = data.reference;
-        const verses = data.verses.map(v => `${v.verse}. ${v.text.trim()}`).join("\n\n");
-        document.getElementById("chapterText").textContent = verses;
+      } catch (err) {
+        console.error("Erro ao exibir capítulo:", err);
+        document.getElementById("reference").textContent = "Erro ao carregar";
+        document.getElementById("chapterText").textContent = "Não foi possível carregar o capítulo. Tente novamente ou selecione outra versão.";
+      }
+    }
+
+    function populateBookSelect() {
+      const bookSelect = document.getElementById('bookSelect');
+      bookSelect.innerHTML = '<option value="">Selecione um livro</option>';
+      allBooks.forEach(book => {
+        const option = document.createElement('option');
+        option.value = book.name;
+        option.textContent = currentLanguage === 'almeida' ? book.pt : book.name;
+        bookSelect.appendChild(option);
+      });
+    }
+
+    function updateChapters() {
+      const bookSelect = document.getElementById('bookSelect');
+      const chapterSelect = document.getElementById('chapterSelect');
+      const selectedBook = allBooks.find(book => book.name === bookSelect.value);
+
+      chapterSelect.innerHTML = '<option value="">Selecione um capítulo</option>';
+      chapterSelect.disabled = true;
+
+      if (selectedBook) {
+        chapterSelect.disabled = false;
+        for (let i = 1; i <= selectedBook.chapters; i++) {
+          const option = document.createElement('option');
+          option.value = i;
+          option.textContent = i;
+          chapterSelect.appendChild(option);
+        }
+      }
+    }
+
+    async function loadSelectedChapter() {
+      const bookSelect = document.getElementById('bookSelect');
+      const chapterSelect = document.getElementById('chapterSelect');
+
+      if (!bookSelect.value || !chapterSelect.value) {
+        alert('Por favor, selecione um livro e um capítulo.');
+        return;
+      }
+
+      const searchButton = document.getElementById('searchButton');
+      const originalText = searchButton.textContent;
+      searchButton.classList.add('loading');
+      searchButton.innerHTML = '<span class="spinner" style="display: inline-block;"></span> Carregando...';
+      searchButton.disabled = true;
+
+      try {
+        const book = bookSelect.value;
+        const chapter = chapterSelect.value;
+        const data = await fetchChapter(book, chapter);
+        displayChapter(data);
+      } catch (err) {
+        document.getElementById("reference").textContent = "Erro";
+        document.getElementById("chapterText").textContent = err.message;
+        console.error(err);
+      } finally {
+        searchButton.classList.remove('loading');
+        searchButton.textContent = originalText;
+        searchButton.disabled = false;
       }
     }
 
     async function loadRandomChapter() {
-      document.getElementById("reference").textContent = "Carregando referência...";
-      document.getElementById("chapterText").textContent = "Carregando capítulo...";
-      
-      // Mostrar spinner e desativar botão
+      document.getElementById("reference").textContent = "Carregando...";
+      document.getElementById("chapterText").textContent = "Por favor, aguarde...";
+
       const loadButton = document.getElementById('loadButton');
-      const spinner = document.getElementById('spinner');
+      const originalText = loadButton.textContent;
       loadButton.classList.add('loading');
-      spinner.style.display = 'inline-block';
-      
+      loadButton.innerHTML = '<span class="spinner" style="display: inline-block;"></span> Carregando...';
+      loadButton.disabled = true;
+
       try {
         const { book, chapter } = getRandomReference();
         const data = await fetchChapter(book, chapter);
@@ -637,191 +1025,53 @@
         document.getElementById("chapterText").textContent = err.message;
         console.error(err);
       } finally {
-        // Esconder spinner e reativar botão
         loadButton.classList.remove('loading');
-        spinner.style.display = 'none';
+        loadButton.textContent = originalText;
+        loadButton.disabled = false;
       }
     }
 
-    const shareBtn = document.getElementById('shareBtn');
-    shareBtn.addEventListener('click', async () => {
-      const shareData = {
-        title: 'Bible Reading Site',
-        text: 'Confira este site de leitura bíblica — disponível em inglês e português, domínio público e sem anúncios!',
-        url: window.location.href
-      };
-      if (navigator.share) {
-        try {
-          await navigator.share(shareData);
-          console.log('Conteúdo compartilhado com sucesso.');
-        } catch (err) {
-          console.error('Erro ao compartilhar:', err);
-        }
-      } else {
-        // Fallback para navegadores que não suportam a API de compartilhamento
-        navigator.clipboard.writeText(window.location.href)
-          .then(() => {
-            alert('Link copiado para a área de transferência: ' + window.location.href);
-          })
-          .catch(() => {
-            alert('Copie este link: ' + window.location.href);
-          });
-      }
-    });
+    window.onload = function() {
+      populateBookSelect();
+      loadRandomChapter();
+    };
 
-    window.onload = loadRandomChapter;
-
-    // Service Worker
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js')
         .then(() => console.log('Service Worker registrado com sucesso.'))
         .catch(err => console.log('Erro ao registrar o Service Worker:', err));
     }
   </script>
-  
-<script>
-(function() {
-  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby3CMbpfOKhO7wLknpqlKVJ4IMt2Gm5GYrI91TIMZcUOzxapT6xzZ59EwZ8y_6a4dk9cQ/exec";
 
-  // Função para pegar o IP
-  async function getIP() {
-    try {
-      const response = await fetch('https://api.ipify.org?format=json');
-      const data = await response.json();
-      return data.ip;
-    } catch (error) {
-      console.error("Erro ao pegar IP:", error);
-      return "N/A";
-    }
-  }
-
-  // Função para pegar o IP
-async function getIP() {
-  try {
-    const response = await fetch("https://api.ipify.org?format=json");
-    const data = await response.json();
-    return data.ip;
-  } catch (error) {
-    console.error("Erro ao pegar IP:", error);
-    return "N/A";
-  }
-}
-
-// Função para pegar a localização (latitude/longitude)
-function getLocation() {
-  return new Promise((resolve) => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          resolve({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude
-          });
-        },
-        (error) => {
-          console.error("Erro ao pegar localização:", error);
-          resolve(null);
-        }
-      );
-    } else {
-      console.error("Geolocalização não é suportada.");
-      resolve(null);
-    }
-  });
-}
-
-// Função para pegar cidade/estado/país a partir das coordenadas
-async function getLocationDetails(latitude, longitude) {
-  try {
-    const response = await fetch(
-      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
-    );
-    const data = await response.json();
-    return {
-      city: data.address.city || data.address.town || data.address.village || "Desconhecido",
-      state: data.address.state || "Desconhecido",
-      country: data.address.country || "Desconhecido"
-    };
-  } catch (error) {
-    console.error("Erro ao pegar detalhes da localização:", error);
-    return { city: "N/A", state: "N/A", country: "N/A" };
-  }
-}
-
-// Função para enviar todos os dados
-async function sendData() {
-  const ip = await getIP();
-  const location = await getLocation();
-  let city = "N/A";
-  let state = "N/A";
-  let country = "N/A";
-  if (location) {
-    const details = await getLocationDetails(location.latitude, location.longitude);
-    city = details.city;
-    state = details.state;
-    country = details.country;
-  }
-
-  // Define o 'source' com base no site atual
-  const source = window.location.href.includes("bibliaonline")
-    ? "biblia_online"
-    : "biblia_quiz";
-
-  const dados = {
-    page: window.location.href,
-    referrer: document.referrer || "Direto",
-    userAgent: navigator.userAgent,
-    ip: ip,
-    latitude: location ? location.latitude : "N/A",
-    longitude: location ? location.longitude : "N/A",
-    city: city,
-    state: state,
-    country: country,
-    source: source // Adiciona o campo 'source'
-  };
-
-  fetch(WEB_APP_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(dados)
-  })
-  .then(() => console.log("Dados enviados com sucesso!"))
-  .catch(error => console.error("Erro ao enviar dados:", error));
-}
-
-// Chama a função para enviar os dados
-sendData();
-
-})();
-</script>
-
-  <footer>
-  <div class="footer-content">
-    <div class="footer-top">
-      <p>
-        📖 <strong>Leitura Bíblica Gratuita / Free Bible Reading</strong> — 
-        Disponível em Português e Inglês — 
-        Sem anúncios / No ads
-      </p>
-    </div>
-    
-    <div class="footer-divider">
-      <div class="footer-bottom">
-        <p>
-          Desenvolvedor: Wellington A R Cardoso | 
-          © <span id="currentYear"></span> Todos os direitos reservados
-        </p>
-      </div>
-    </div>
-  </div>
-</footer>
-
-<script>
+  <script>
     document.getElementById('currentYear').textContent = new Date().getFullYear();
-</script>
+  </script>
 
+  <script>
+    document.addEventListener("contextmenu", function(e) {
+      e.preventDefault();
+    });
 
-  
+    document.onkeydown = function(e) {
+      if (
+        e.keyCode === 123 ||
+        (e.ctrlKey && e.shiftKey && e.keyCode === 73) ||
+        (e.ctrlKey && e.shiftKey && e.keyCode === 74) ||
+        (e.ctrlKey && e.keyCode === 85) ||
+        (e.ctrlKey && e.keyCode === 83)
+      ) {
+        e.preventDefault();
+        return false;
+      }
+    };
+
+    document.addEventListener("copy", (e) => e.preventDefault());
+    document.addEventListener("cut", (e) => e.preventDefault());
+    document.addEventListener("dragstart", (e) => e.preventDefault());
+
+    document.querySelectorAll("*").forEach(el => {
+      el.style.userSelect = "none";
+    });
+  </script>
 </body>
 </html>
